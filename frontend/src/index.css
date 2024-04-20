@@ -24,11 +24,16 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
+
+/* body:has(.login-page) {
+  background:url("https://plus.unsplash.com/premium_photo-1712160355586-478ff10fb5aa?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDY4fHhqUFI0aGxrQkdBfHxlbnwwfHx8fHw%3D");
+  background-image: url('https://images.unsplash.com/photo-1685700369657-822f48abec7a?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+  background-image: url('https://images.unsplash.com/photo-1711623227189-52e9780b607b?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDkwfHhqUFI0aGxrQkdBfHxlbnwwfHx8fHw%3D');
+  background-size: cover;
+} */
 
 h1 {
   font-size: 3.2em;

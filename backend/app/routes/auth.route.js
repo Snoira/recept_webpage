@@ -7,3 +7,10 @@ authRouter.post('/register', registerUser)
 authRouter.post("/login", loginUser)
 
 module.exports = authRouter;
+
+// {
+//     "email": "nora@velde.se",
+//     "password": "testtest8",
+//     "firstname": "Nora",
+//     "lastname": "Velde"
+// }

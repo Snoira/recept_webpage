@@ -7,7 +7,6 @@ function App() {
 
   return (
     <>
-      <h1>app</h1>
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/home" element={<HomePage />} />
