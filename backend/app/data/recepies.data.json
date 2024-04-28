@@ -1,0 +1,195 @@
+[
+    {
+        "user": "6619247aa32b68adadb3b10b",
+        "title": "Jordgubbsröra med chiafrön",
+        "description": {
+            "portions": 4,
+            "time": 10,
+            "category": "sylt",
+            "descriptionText": "Gott till allt"
+        },
+        "image": {
+            "imageURL": "https://www.gimmesomeoven.com/wp-content/uploads/2018/01/Homemade-10-Minute-Chia-Seed-Jam-Recipe-8.jpg",
+            "alt": "A glass jar with strawberry jam in it. There's a spoon sticking out of the jar. "
+        },
+        "ingredientList": [
+            {
+                "amount": 4,
+                "unit": "dl",
+                "ingredient": "Jordgubbar"
+            },
+            {
+                "amount": 2,
+                "unit": "Msk",
+                "ingredient": "Chiafrön"
+            },
+            {
+                "amount": 1,
+                "unit": "Msk",
+                "ingredient": "Limejuice"
+            },
+            {
+                "amount": 1,
+                "unit": "Msk",
+                "ingredient": "Honung"
+            }
+        ],
+        "instructions": [
+            "Värm jordgubbarna i en liten kastrull till de börjar brytas ned och koka lätt. Rör om då och då. Använd en sked för att mosa jordgubbarna till önskad konsistens.",
+            "Tillsätt chiafrön och limejuicen till kastrullen och rör om till en jämn sås. Smaka av och tillsätt honung efter behov.",
+            "Ta bort kastrullen från plattan och låt svalna i ca 5 min (sylten kommer tjockna medan den svalnar).",
+            "Rör om sylten ordentligt en sista gång. Använd direkt, eller överför till en förseglad behållare och kyl i upp till 1 vecka, eller frys i upp till 3 månader."
+        ]
+    },
+    {
+        "user": "661e6b9c6f3ec629830b616e",
+        "title": "Köttbullar",
+        "description": {
+            "portions": 4,
+            "time": 60,
+            "category": "köttbullar",
+            "descriptionText": "Klassiska köttbullar"
+        },
+        "image": {
+            "imageURL": "https://www.ica.se//icase.azureedge.net/imagevaultfiles/id_16107/cf_6902/kottbullar-718754.jpg",
+            "alt": "A plate with meatballs, lingonberry jam and mashed potatoes"
+        },
+        "ingredientList": [
+            {
+                "amount": 500,
+                "unit": "g",
+                "ingredient": "köttfärs"
+            },
+            {
+                "amount": 1,
+                "unit": "",
+                "ingredient": "ägg"
+            },
+            {
+                "amount": 1,
+                "unit": "dl",
+                "ingredient": "ströbröd"
+            },
+            {
+                "amount": 1,
+                "unit": "dl",
+                "ingredient": "grädde"
+            },
+            {
+                "amount": 1,
+                "unit": "",
+                "ingredient": "lök"
+            },
+            {
+                "amount": 1,
+                "unit": "tsk",
+                "ingredient": "salt"
+            },
+            {
+                "amount": 1,
+                "unit": "krm",
+                "ingredient": "peppar"
+            }
+        ],
+        "instructions": [
+            "Blanda ströbröd och grädde i en bunke och låt svälla i 10 minuter.",
+            "Skala och finhacka löken. Blanda färs, lök, ägg, salt och peppar i en bunke.",
+            "Tillsätt ströbrödsblandningen och arbeta ihop till en jämn smet.",
+            "Forma smeten till små bollar och stek dem i smör tills de är genomstekta."
+        ]
+    },
+    {
+        "user": "661e6b9c6f3ec629830b616e",
+        "title": "Kladdkaka",
+        "description": {
+            "portions": 8,
+            "time": 30,
+            "category": "kladdkaka",
+            "descriptionText": "En kladdig kladdkaka"
+        },
+        "image": {
+            "imageURL": "https://www.ica.se//icase.azureedge.net/imagevaultfiles/id_16107/cf_6902/kladdkaka-716336.jpg",
+            "alt": "A chocolate cake with a slice cut out of it"
+        },
+        "ingredientList": [
+            {
+                "amount": 2,
+                "unit": "dl",
+                "ingredient": "socker"
+            },
+            {
+                "amount": 2,
+                "unit": "dl",
+                "ingredient": "vetemjöl"
+            },
+            {
+                "amount": 4,
+                "unit": "",
+                "ingredient": "ägg"
+            },
+            {
+                "amount": 3,
+                "unit": "msk",
+                "ingredient": "kakao"
+            },
+            {
+                "amount": 150,
+                "unit": "g",
+                "ingredient": "smör"
+            }
+        ],
+        "instructions": [
+            "Sätt ugnen på 175 grader.",
+            "Smält smöret och låt det svalna.",
+            "Vispa ägg och socker pösigt.",
+            "Blanda i vetemjöl och kakao.",
+            "Tillsätt smöret och rör om.",
+            "Häll smeten i en smord form och grädda i mitten av ugnen i ca 15 minuter."
+        ]
+    },
+    {
+        "user": "6619247aa32b68adadb3b10b",
+        "title": "Mormors Pannkakor",
+        "description": {
+            "portions": 4,
+            "time": 60,
+            "category": "pannkakor",
+            "descriptionText": "Världens godaste pannkakor!"
+        },
+        "image": {
+            "imageURL": "https://img.koket.se/standard-giant/pannkaka-ny.jpg.webp",
+            "alt": "A stack of panncakes"
+        },
+        "ingredientList": [
+            {
+                "amount": 4,
+                "unit": "dl",
+                "ingredient": "ägg"
+            },
+            {
+                "amount": 4,
+                "unit": "dl",
+                "ingredient": "mjöl"
+            },
+            {
+                "amount": 8,
+                "unit": "dl",
+                "ingredient": "mjölk"
+            },
+            {
+                "amount": 1,
+                "unit": "tsk",
+                "ingredient": "salt"
+            }
+        ],
+        "instructions": [
+            "knäck äggen i en bunke, häll i mjölet, saltet och hälften av mjölken.",
+            "Vispa smeten tills den är klumpfri, tillsätt resten av mjölken",
+            "Smält smör i en stekpanna och stek pannkakorna",
+            "Servera pannkakorna med bär och chokladsås"
+        ],
+        "subRecepies": [
+            "662e2f32eb61511752a3d71e"
+        ] 
+    }
+]

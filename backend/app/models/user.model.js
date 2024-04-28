@@ -4,44 +4,78 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema(
     {
         email: {
-            type: String, 
-            required: true, 
+            type: String,
+            required: true,
             unique: true,
-            mathc: /^[^@]+@[^@]+\.[^@]+$/,
+            match: /^[^@]+@[^@]+\.[^@]+$/,
         },
         password: {
-            type: String, 
+            type: String,
             required: true,
             minlength: 8,
             select: false, //vad är select?
+            validate: {
+                validator: function (value) {
+
+                    return value.length > 7
+
+                },
+                message: "Password must be at least 8 characters long"
+            }
         },
-        firstname: {
-            type: String, 
+        username: {
+            type: String,
             required: true,
+            unique: true,
+            validate: {
+                validator: async function (value) {
+                    // const user = await User.findOne({
+                    //     username: value
+                    // })
+                    return value.length > 3
+                },
+                message: "Username must be at least 3 characters long"
+            }
         },
-        lastname: {
-            type: String, 
-            required: true,
+        // role: {
+        //     type: String,
+        //     enum: ["user", "admin"],
+        //     default: "user",
+        // },
+        avatar: {
+            type: String,
         },
-        
+        favorites: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Recipe",
+            }
+        ],
+        rating: {
+            type: Number,
+            default: 0,
+        }
     },
     {
         timestamps: true,
     }
 )
 
-userSchema.virtual("fullName").get(function(){ //vad gör denna??
-    return `${this.firstName} ${this.lastName}`
+// userSchema.virtual("fullName").get(function () { //vad gör denna??
+//     return `${this.firstName} ${this.lastName}`
+// })
+userSchema.virtual("defaultAvatar").get(function () { //vad gör denna??
+    return `https://avatar.iran.liara.run/username?username=${this.username}&length=1`
 })
 
-userSchema.pre("save", async function (next){
+userSchema.pre("save", async function (next) {
     const user = this
     try {
-        if(user.isModified("password") || user.isNew){
+        if (user.isModified("password") || user.isNew) {
             user.password = await bcrypt.hash(user.password, 10)
         }
         next()
-    } catch(error){
+    } catch (error) {
         next(error)
     }
 })

@@ -53,6 +53,15 @@ async function loginUser(req, res){
     }
 }
 
+async function getUsers(req, res){
+    try {
+        const users = await User.find()
+        res.status(200).json(users)
+    } catch(error){
+        res.status(500).json({error: error.message})
+    }
+}
+
 // jonathans kod
 // async function loginUser(req, res) {
 //     const {
@@ -83,5 +92,6 @@ async function loginUser(req, res){
 
 module.exports = {
     registerUser,
-    loginUser
+    loginUser,
+    getUsers
 }

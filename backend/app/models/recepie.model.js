@@ -1,5 +1,73 @@
 const mongoose = require('mongoose');
 
+const { Schema } = mongoose;
+
+const recepieSchema = new Schema(
+    {
+        user: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            required: true
+        },
+        title: {
+            type: String,
+            required: true,
+        },
+        description: {
+            portions: {
+                type: Number
+            },
+            time: {
+                type: Number
+            },
+            category: {
+                type: String,
+                // required: true,
+            },
+            descriptionText: {
+                type: String,
+                // required: true,
+            }
+        },
+        image: {
+            imageURL: {
+                type: String,
+                // required: true,
+            },
+            alt: {
+                type: String,
+                // required: true,
+            }
+        },
+        ingredientList: [
+            {
+                amount: {
+                    type: Number,
+                },
+                unit: {
+                    type: String,
+                },
+                ingredient: {
+                    type: String,
+                    required: true,
+                }
+            }
+        ],
+        instructions: [
+            {
+                type: String,
+                required: true
+            }
+        ],
+        subRecepies: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Recepie'
+            }
+        ]
+    }
+)
+
 // const recepieSchema = new Schema(
 //     {
 //         user: {
@@ -20,37 +88,35 @@ const mongoose = require('mongoose');
 //             },
 //             category: {
 //                 type: String,
-//                 required: true,
+//                 // required: true,
 //             },
 //             descriptionText: {
 //                 type: String,
-//                 required: true,
+//                 // required: true,
 //             }
 //         },
 //         image: {
-//             image: {
+//             imageURL: {
 //                 type: String,
-//                 required: true,
+//                 // required: true,
 //             },
 //             alt: {
 //                 type: String,
-//                 required: true,
+//                 // required: true,
 //             }
 //         },
-//         ingredientList: [
-//             {
-//                 subGroup: {
+//         ingredients: [
+//             object = {
+//                 listName: {
 //                     type: String,
 //                 },
-//                 ingredients: [
-//                     {
+//                 ingredientList: [
+//                     object = {
 //                         amount: {
 //                             type: Number,
-//                             required: true,
 //                         },
 //                         unit: {
 //                             type: String,
-//                             required: true,
 //                         },
 //                         ingredient: {
 //                             type: String,
@@ -58,42 +124,35 @@ const mongoose = require('mongoose');
 //                         }
 //                     }
 //                 ]
-
-
 //             }
 //         ],
 //         instructions: [
 //             {
-//                 step: {
-//                     type: Number,
-//                     required: true,
-//                 },
-//                 instruction: {
-//                     type: String,
-//                     required: true,
-//                 }
+//                 type: String,
+//                 required: true
 //             }
 //         ]
 //     }
 // )
+
 // förenklad: 
-const recepieSchema = new mongoose.Schema(
-    {
-        user: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User',
-            required: true
-        },
-        title: {
-            type: String,
-            required: true,
-        },
-        recepie: {
-            type: String,
-            required: true
-        }
-    }
-) 
+// const recepieSchema = new mongoose.Schema(
+//     {
+//         user: {
+//             type: mongoose.Schema.Types.ObjectId,
+//             ref: 'User',
+//             required: true
+//         },
+//         title: {
+//             type: String,
+//             required: true,
+//         },
+//         recepie: {
+//             type: String,
+//             required: true
+//         }
+//     }
+// ) 
 
 const Recepie = mongoose.model("Recepie", recepieSchema)
 module.exports = Recepie;
