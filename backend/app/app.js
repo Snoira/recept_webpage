@@ -3,6 +3,7 @@ const cors = require('cors');
 // const { urlencoded } = require('express');
 const authRouter = require('./routes/auth.route.js');
 const recepieRouter = require('./routes/recepie.route.js');
+const recepieUnitsRouter = require('./routes/recepieUnits.route.js');
 
 const app = Express()
 
@@ -22,6 +23,7 @@ app.get('/', (req, res) => {
 
 app.use('/auth', authRouter)
 app.use('/recepies', recepieRouter)
+app.use('/recepieUnits', recepieUnitsRouter)
 
 
 module.exports = app;

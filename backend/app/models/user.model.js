@@ -45,12 +45,12 @@ const userSchema = new mongoose.Schema(
         avatar: {
             type: String,
         },
-        favorites: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "Recipe",
-            }
-        ],
+        // favorites: [
+        //     {
+        //         type: mongoose.Schema.Types.ObjectId,
+        //         ref: "Recipe",
+        //     }
+        // ],
         rating: {
             type: Number,
             default: 0,
