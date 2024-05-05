@@ -14,4 +14,20 @@ module.exports = authRouter;
 //     "password": "testtest8",
 //     "firstname": "Nora",
 //     "lastname": "Velde"
+// },
+// {
+//     "email": "blabla@test.se",
+//     "password": "testtest123",
+//     "firstname": "Klara",
+//     "lastname": "Färdiga"
+// },
+// {
+//     "email": "frida@test.se",
+//     "password": "fridatestar123",
+//     "username": "FridensLiljor"
+// },
+// {
+//     "email": "bengt@test.se",
+//     "password": "bengetestar123",
+//     "username": "BagarBengt"
 // }

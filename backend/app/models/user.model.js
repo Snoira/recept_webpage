@@ -1,5 +1,5 @@
-const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema(
     {
@@ -64,9 +64,9 @@ const userSchema = new mongoose.Schema(
 // userSchema.virtual("fullName").get(function () { //vad gör denna??
 //     return `${this.firstName} ${this.lastName}`
 // })
-userSchema.virtual("defaultAvatar").get(function () { //vad gör denna??
-    return `https://avatar.iran.liara.run/username?username=${this.username}&length=1`
-})
+// userSchema.virtual("defaultAvatar").get(function () { //vad gör denna??
+//     return `https://avatar.iran.liara.run/username?username=${this.username}&length=1`
+// })
 
 userSchema.pre("save", async function (next) {
     const user = this

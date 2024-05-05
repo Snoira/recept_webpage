@@ -1,12 +1,10 @@
-import axios from 'axios'
+import { useState, useEffect } from 'react'
 import { useFormik } from 'formik'
 import * as Yup from "yup";
-import { useState, useEffect } from 'react'
+import api from '../api'
 
-const RecepieForm = ({ createRecepie, setIngredientList, ingredientList }) => {
-    const [units, setUnits] = useState('')
-    const [ingredientsCount, setIngredientsCount] = useState(1);
-    // const [ingredientList, setIngredientList] = useState([])
+const RecepieForm = ({ createRecepie, addSubRecepie }) => {
+    const [recepiesByUser, setRecepiesByUser] = useState([])
 
     const validationSchema = Yup.object(
         {
@@ -17,9 +15,7 @@ const RecepieForm = ({ createRecepie, setIngredientList, ingredientList }) => {
             time: Yup.number().required('Required'),
             category: Yup.string().required('Required'),
             descriptionText: Yup.string().required('Required'),
-            ingredient: Yup.string().required('Required'),
-            // amount: Yup.number().required('Required'),
-            // unit: Yup.string().required('Required'),
+            ingredients: Yup.string().required('Required'),
             instructions: Yup.string().required('Required')
         }
     )
@@ -32,51 +28,29 @@ const RecepieForm = ({ createRecepie, setIngredientList, ingredientList }) => {
         time: '',
         category: '',
         descriptionText: '',
-        ingredient: '',
-        amount: '',
-        unit: '',
+        ingredients: '',
         instructions: ''
     }
 
     const formik = useFormik({
         initialValues,
         validationSchema,
-        onSubmit: (values, { createRecepie }) => {
+        onSubmit: async (values) => {
             console.log(values)
-            // createRecepie(values)
+            await createRecepie(values)
         }
     })
 
-
-
-    const addIngredientField = () => {
-        const ingredient = {
-            amount: formik.values.amount,
-            unit: formik.values.unit,
-            ingredient: formik.values.ingredient
-        }
-
-        setIngredientList([...ingredientList, ingredient])
-        console.log(ingredientList)
-
-        formik.setFieldValue('amount', '');
-        formik.setFieldValue('unit', '');
-        formik.setFieldValue('ingredient', '');
-
-        // setIngredientsCount(ingredientsCount + 1);
-    };
-
     useEffect(() => {
-        const fetchUnits = async () => {
-            const res = await axios.get('http://localhost:5000/recepieUnits/')
-            if (res.data) {
-                setUnits(res.data)
+        const getRecepiesByUser = async () => {
+            const response = await api.post('http://localhost:5000/recepies/user')
+            if (response.status === 200) {
+                setRecepiesByUser(response.data)
             } else {
-                console.log("Error fetching units")
+                console.log('Error getting recepies by user')
             }
         }
-        fetchUnits()
-    }, [])
+    })
 
     return (
         <>
@@ -124,44 +98,27 @@ const RecepieForm = ({ createRecepie, setIngredientList, ingredientList }) => {
                 <div className='col'>
                     <label htmlFor="descriptionText">Description</label>
                     <textarea id="descriptionText" name="descriptionText"
-                        className={`form-control ${formik.touched.category ? formik.errors.category ? "is-invalid" : "is-valid" : ""}`}
+                        className={`form-control ${formik.touched.descriptionText ? formik.errors.descriptionText ? "is-invalid" : "is-valid" : ""}`}
                         {...formik.getFieldProps("descriptionText")} />
                 </div>
-
-                {Array.from({ length: ingredientsCount }, (_, i) => (
-
-                    <div key={i} className='row' >
-                        <div className="input-group col mb-3">
-                            <input type="number" id="amount" name="amount"
-                                className={`form-control ${formik.touched.category ? formik.errors.category ? "is-invalid" : "is-valid" : ""}`}
-                                aria-label="number input for amount and a drop down menue for unit"
-                                {...formik.getFieldProps("amount")} />
-                            {units.length > 0 && <>
-                                <select name="unit" id="unit"
-                                    className={`btn btn-outline-secondary ${formik.touched.category ? formik.errors.category ? "is-invalid" : "is-valid" : ""}`}
-                                    {...formik.getFieldProps("unit")}>
-                                    <option value=" ">Unit</option>
-                                    {units.length > 0 && units.map((unit, i) => {
-                                        return (
-                                            <option key={i} value={unit}>{unit}</option>
-                                        )
-                                    })}
-                                </select>
-                            </>}
-                        </div>
-                        <div className='col mb-3' >
-                            <input type="text" id="ingredient" name="ingredient" placeholder='Ingredient'
-                                className={`form-control ${formik.touched.ingredient ? formik.errors.ingredient ? "is-invalid" : "is-valid" : ""}`}
-                                {...formik.getFieldProps("ingredient")} />
-                        </div>
-                    </div>
-
-                ))}
-                <button type="button" onClick={addIngredientField}>Add Ingredient</button>
-
+                <div>
+                    <label htmlFor="ingredients" >List of ingredients. Amount-unit-ingredient, separate the ingredients with enter. </label>
+                    <textarea id='ingredients' name='ingredients' placeholder='Amount-unit-ingredient'
+                        className={`form-control ${formik.touched.ingredients ? formik.errors.ingredients ? "is-invalid" : "is-valid" : ""}`}
+                        {...formik.getFieldProps("ingredients")} />
+                </div>
+                {recepiesByUser > 0 ? <div>
+                    <p>Would you like to incorporate one of your existing recepies into this one?</p>
+                    <select name="subRecepies" id="subRecepies">
+                        {recepiesByUser.map(recepie => {
+                            return <option value={recepie._id}>{recepie.title}</option>
+                        })}
+                    </select>
+                    <button onClick={() => { addSubRecepie(document.getElementById('subRecepies').value) }}>Add SubRecepie</button>
+                </div> : null}
                 <div>
                     {/* varje steg ska skiljas på med enter och/eller siffra så att meddelandet kan göras till en array i backend */}
-                    <label htmlFor="instructions">Instructions</label>
+                    <label htmlFor="instructions">Instructions, separate each step with enter. If you've added an existing recepie to this one, write "subrecepie" on the step you want the recepie to be prepared.</label>
                     <textarea id="instructions" name="instructions"
                         className={`form-control ${formik.touched.instructions ? formik.errors.instructions ? "is-invalid" : "is-valid" : ""}`}
                         {...formik.getFieldProps("instructions")}
@@ -169,7 +126,7 @@ const RecepieForm = ({ createRecepie, setIngredientList, ingredientList }) => {
                     {formik.errors.instructions && <div>{formik.errors.instructions}</div>}
                 </div>
                 <div>
-                    <button type="submit" onClick={()=>{formik.values}}>Create Recepie</button>
+                    <button type="submit" onClick={() => { formik.values }}>Create Recepie</button>
                 </div>
             </form>
         </>

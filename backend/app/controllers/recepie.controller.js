@@ -1,40 +1,24 @@
 const Recepie = require("../models/recepie.model.js")
+const User = require("../models/user.model.js")
 
 //lägg till Errorhantering i utils!!! 
 
 async function createRecepie(req, res) {
+    const { title, imageURL, alt, portions, time, category, descriptionText, ingredients, instructions, subRecepies } = req.body;
+    const createdBy = req.userId
     try {
-        console.log("req.body: ", req.body)
-        const {
-            user,
-            title,
-            description,
-            image,
-            ingredientList,
-            instructions,
-            subRecepies
-        } = req.body;
-
-        //det måste finnas ett bättre sätt att göra detta på
-        if (!user) {
-            return res.status(400).json({ message: "Missing user" });
-        } else if (!title) {
+        if (!title) {
             return res.status(400).json({ message: "Missing title" });
-        } else if (!description || !description.portions || !description.time || !description.category || !description.descriptionText) {
-            return res.status(400).json({ message: "Missing description" });
-        } else if (!image || !image.imageURL || !image.alt) {
-            return res.status(400).json({ message: "Missing image" });
-        } else if (!ingredientList || ingredientList.length === 0) {
+        } else if (!portions || !time || !category || !descriptionText) {
+            return res.status(400).json({ message: "Missing description information" });
+        } else if (!imageURL || !alt) {
+            return res.status(400).json({ message: "Missing image information" });
+        } else if (!ingredients || ingredients === "") {
             return res.status(400).json({ message: "Missing ingredientList" });
-        } else if (!instructions || instructions.length === 0) {
+        } else if (!instructions || instructions === "") {
             return res.status(400).json({ message: "Missing instructions" });
         } else {
-            ingredientList.forEach(obj => {
-                if (!obj.ingredient) {
-                    return res.status(400).json({ message: "Missing ingredient" });
-                }
-            })
-            if (subRecepies.length > 0) {
+            if (subRecepies && subRecepies.length > 0) {
                 subRecepies.forEach(obj => {
                     const recepie = Recepie.findById(obj)
                     if (!recepie) {
@@ -44,26 +28,52 @@ async function createRecepie(req, res) {
             }
         }
 
-        const recepieInputs = new Recepie({
+        //redunant kod?
+        const user = await User.findById(createdBy)
+        if (!user) return res.status(404).json({ message: "User not found" })
+
+        //kan jag använda mig av en funktion för att skapa ingredientList och instructionList?
+        const ingredientList = ingredients.split("\n").map((item) => {
+            if (item === "") return
+            else if (!item.includes("-")) return { ingredient: item }
+            else {
+                const [amount, unit, ingredient] = item.split("-")
+                return { amount: parseFloat(amount), unit, ingredient }
+            }
+        })
+
+        let instructionList = []
+
+        if (!instructions.includes("\n")) return res.status(400).json({ message: "Instructions must be separated by new lines" });
+        else instructionList = instructions.split("\n")
+
+        const recepieInputs = {
             user,
             title,
-            description,
-            image,
+            image: {
+                imageURL,
+                alt
+            },
+            description: {
+                portions,
+                time,
+                category,
+                descriptionText
+            },
             ingredientList,
-            instructions,
-            subRecepies
-        })
-        const newRecepie = await recepieInputs.save()
-        console.log("New recepie: ", newRecepie)
+            instructionList,
+        }
+
+        const newRecepie = await Recepie.create(recepieInputs)
         if (newRecepie) {
             res.status(201).send(newRecepie);
         } else {
             res.status(400).json({ error: "Could not create recepie" })
-            // res.status(400).send({ message: "Could not create recepie" });
         }
+
     } catch (error) {
         console.log("Error in createRecepie:", error);
-        res.status(400).json({ error: error.message })
+        res.status(500).json({ error: error.message })
     }
 }
 
@@ -81,42 +91,28 @@ async function getRecepies(req, res) {
 }
 
 async function editRecepie(req, res) {
-    try {
-        const recepie = await Recepie.findById(req.params.id)
-        if (!recepie) {
-            return res.status(404).json({ message: "Recepie not found" })
-        }
+    const recepieId = req.params.id
+    const createdBy = req.userId
+    const { title, imageURL, alt, portions, time, category, descriptionText, ingredients, instructions } = req.body;
 
+    try {
+        const recepie = await Recepie.findById(recepieId)
+        if (!recepie) return res.status(404).json({ message: "Recepie not found" })
+
+        if (recepie.user !== createdBy) return res.status(401).json({ message: "Not authorized to edit this recepie" })
         //kolla så att personen som försöker ändra receptet är samma som den som skapade det, middleware?
 
-        const {
-            user,
-            title,
-            description,
-            image,
-            ingredientList,
-            instructions,
-            subRecepies
-        } = req.body;
-
-        if (!user) {
-            return res.status(400).json({ message: "Missing user" });
-        } else if (!title) {
+        if (!title) {
             return res.status(400).json({ message: "Missing title" });
-        } else if (!description || !description.portions || !description.time || !description.category || !description.descriptionText) {
-            return res.status(400).json({ message: "Missing description" });
-        } else if (!image || !image.imageURL || !image.alt) {
-            return res.status(400).json({ message: "Missing image" });
-        } else if (!ingredientList || ingredientList.length === 0) {
+        } else if (!portions || !time || !category || !descriptionText) {
+            return res.status(400).json({ message: "Missing description information" });
+        } else if (!imageURL || !alt) {
+            return res.status(400).json({ message: "Missing image information" });
+        } else if (!ingredients || ingredients === "") {
             return res.status(400).json({ message: "Missing ingredientList" });
-        } else if (!instructions || instructions.length === 0) {
+        } else if (!instructions || instructions === "") {
             return res.status(400).json({ message: "Missing instructions" });
         } else {
-            ingredientList.forEach(obj => {
-                if (!obj.ingredient) {
-                    return res.status(400).json({ message: "Missing ingredient" });
-                }
-            })
             if (subRecepies.length > 0) {
                 subRecepies.forEach(obj => {
                     const recepie = Recepie.findById(obj)
@@ -127,27 +123,95 @@ async function editRecepie(req, res) {
             }
         }
 
-        //detta ser lite konstigt ut, måste gå att förenkla?
-        recepie.user = user
-        recepie.title = title
-        recepie.description = description
-        recepie.image = image
-        recepie.ingredientList = ingredientList
-        recepie.instructions = instructions
-        recepie.subRecepies = subRecepies
+        //finns det ett annat sätt att uppdatera produkten på? 
+        //Hur gör jag med värdena son finns i array-form? alltså ändra på en specifik del i arrayen?
 
-        const updatedRecepie = await recepie.save()
+        const ingredientList = ingredients.split("\n").map((item) => {
+            if (item === "") return
+            else if (!item.includes("-")) return { ingredient: item }
+            else {
+                const [amount, unit, ingredient] = item.split("-")
+                return { amount: parseFloat(amount), unit, ingredient }
+            }
+        })
+
+        let instructionsList = []
+
+        if (!instructions.includes("\n")) return res.status(400).json({ message: "Instructions must be separated by new lines" });
+        else instructionsList = instructions.split("\n")
+
+        const recepieInputs = {
+            title,
+            image: {
+                imageURL,
+                alt
+            },
+            description: {
+                portions,
+                time,
+                category,
+                descriptionText
+            },
+            ingredientList,
+            instructionList,
+        }
+
+        const updatedRecepie = await recepie.findByIdAndUpdate(recepieId, recepieInputs, { new: true })
         console.log("Updated recepie: ", updatedRecepie)
-        res.status(200).json(updatedRecepie)
+        if (updatedRecepie) {
+            res.status(200).json(updatedRecepie)
+        } else {
+            res.status(400).json({ error: "Could not update recepie" })
+        }
+
     } catch (error) {
         console.log("Error in editRecepie:", error);
-        res.status(400).json({ error: error.message })
+        res.status(500).json({ error: error.message })
     }
 }
 
+async function deleteRecepie(req, res) {
+    const recepieId = req.params.id
+    const createdBy = req.userId
+
+    try {
+        const recepie = await Recepie.findById(recepieId)
+        if (!recepie) return res.status(404).json({ message: "Recepie not found" })
+
+        if (recepie.user !== createdBy) return res.status(401).json({ message: "Not authorized to edit this recepie" })
+        //kolla så att personen som försöker ta bort receptet är samma som den som skapade det, middleware?
+
+        const deletedRecepie = await Recepie.findByIdAndDelete(recepieId)
+        if (deletedRecepie) {
+            res.status(200).json(deletedRecepie)
+        } else {
+            res.status(400).json({ error: "Could not delete recepie" })
+        }
+
+    } catch (error) {
+        console.log("Error in deleteRecepie:", error);
+        res.status(500).json({ error: error.message })
+    }
+}
+
+async function getRecepiesByUser(req, res) {
+    const user = req.userId
+    try {
+        const recepies = await Recepie.find({ user: user })
+        if (recepies) {
+            res.status(200).json(recepies)
+        } else {
+            res.status(404).json({ error: "No recepies found" })
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+}
 
 module.exports = {
     createRecepie,
     getRecepies,
-    editRecepie
+    getRecepiesByUser,
+    editRecepie,
+    deleteRecepie
 }
