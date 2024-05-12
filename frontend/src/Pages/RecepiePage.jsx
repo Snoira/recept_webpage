@@ -5,15 +5,16 @@ import { useEffect, useState } from 'react'
 import api from '../api'
 import RecepieForm from '../Components/RecepieForm'
 import { useToaster } from '../Context/ToasterContext'
+import { useFavorites } from '../Context/FavoritesContext'
 
 const RecepiePage = () => {
     const [editMode, setEditMode] = useState(false)
     const [subRecepies, setSubRecepies] = useState([])
     const [recepie, setRecepie] = useState(null)
-    const [isFavorite, setIsFavorite] = useState(false)
 
     const { recepieId } = useParams()
     const { errorToaster, successToaster } = useToaster()
+    const { addFavorite, removeFavorite, favorites} = useFavorites()
 
     const navigate = useNavigate()
 
@@ -72,20 +73,29 @@ const RecepiePage = () => {
         }
     }
 
-    const saveAsFavorite = async () => {
-        try {
-            const res = await api.put(`http://localhost:5000/favorites/add/${recepieId}`)
-            if (res.status === 200) {
-                successToaster(recepie.title, "saved as favorite")
-                setIsFavorite(true)
-                console.log(res.data)
-            } else {
-                console.log(res.status)
-            }
-        } catch (error) {
-            console.log("Error saving as favorite", error)
+    const handleFavoriteClick = async () => {
+        if(favorites.includes(recepieId)){
+            await removeFavorite(recepieId)
+        } else {
+            await addFavorite(recepieId)
         }
     }
+
+    const isFavorite = favorites.includes(recepieId)
+    // const saveAsFavorite = async () => {
+    //     try {
+    //         const res = await api.put(`http://localhost:5000/favorites/add/${recepieId}`)
+    //         if (res.status === 200) {
+    //             successToaster(recepie.title, "saved as favorite")
+    //             setIsFavorite(true)
+    //             console.log(res.data)
+    //         } else {
+    //             console.log(res.status)
+    //         }
+    //     } catch (error) {
+    //         console.log("Error saving as favorite", error)
+    //     }
+    // }
 
     return (
         <div>RecepiePage
@@ -120,7 +130,7 @@ const RecepiePage = () => {
                 </>
             }
             <button onClick={() => setEditMode(!editMode)}>{ editMode? 'Cancle' : 'Edit Recepie' }</button>
-            <button onClick={saveAsFavorite}>Save as favorite</button>
+            <button onClick={handleFavoriteClick}>{isFavorite ? 'Remove from Favorites' : 'Save as Favorite'}</button>
             {/* <button onClick={deleteRecepie}>Delete Recepie</button> */}
         </div>
     )

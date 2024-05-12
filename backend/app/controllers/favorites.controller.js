@@ -25,8 +25,9 @@ async function addToFavorites(req, res) {
         } else {
             favorite.recepieList.push(recipeId);
             const updatedFavorite = await favorite.save();
+            await updatedFavorite.populate("recepieList");
             if (updatedFavorite) {
-                res.status(200).send(updatedFavorite);
+                res.status(200).send(updatedFavorite.recepieList);
             } else {
                 res.status(400).json({ message: "Error updating favorite" }); //vilken felkod?
             }
@@ -45,7 +46,7 @@ async function getFavorites(req, res) {
         const favorites = await Favorites.findOne({ user });
         await favorites.populate("recepieList");
     if (favorites) {
-        res.status(200).json(favorites);
+        res.status(200).json(favorites.recepieList);
     } else {
         res.status(404).json({ message: "No favorites found" });
     }
@@ -68,8 +69,9 @@ async function removeFavorite(req, res) {
         const newFavorites = Favorites.recepieList.filter((id) => id !== recipeId);
         console.log("newFavorites", newFavorites)
         const updatedFavorites = await Favorites.save();
+        await updatedFavorites.populate("recepieList");
         if (updatedFavorites) {
-            res.status(200).send(updatedFavorites);
+            res.status(200).send(updatedFavorites.recepieList);
         } else {
             res.status(400).json({ message: "Error removing favorite" });
         }
