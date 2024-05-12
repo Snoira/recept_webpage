@@ -1,9 +1,14 @@
 const Express = require('express');
-const { createRecepie, getRecepies } = require('../controllers/recepie.controller.js');
+const { createRecepie, getRecepies, getRecepiesByUser, getRecepieById, editRecepie, deleteRecepie } = require('../controllers/recepie.controller.js');
+const authMiddleware = require('../middlewares/auth.middleware.js');
 
 const recepieRouter = Express.Router();
 
-recepieRouter.post('/create', createRecepie)
 recepieRouter.get("/", getRecepies)
+recepieRouter.get("/user/", authMiddleware, getRecepiesByUser)
+recepieRouter.get("/:id", getRecepieById)
+recepieRouter.post('/create', authMiddleware, createRecepie)
+recepieRouter.put("/edit/:id", authMiddleware, editRecepie)
+recepieRouter.delete("/delete/:id", authMiddleware, deleteRecepie)
 
 module.exports = recepieRouter;

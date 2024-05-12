@@ -1,86 +1,11 @@
 const mongoose = require('mongoose');
 
-// const recepieSchema = new Schema(
-//     {
-//         user: {
-//             type: Schema.Types.ObjectId,
-//             ref: 'User',
-//             required: true
-//         },
-//         title: {
-//             type: String,
-//             required: true,
-//         },
-//         description: {
-//             portions: {
-//                 type: Number
-//             },
-//             time: {
-//                 type: Number
-//             },
-//             category: {
-//                 type: String,
-//                 required: true,
-//             },
-//             descriptionText: {
-//                 type: String,
-//                 required: true,
-//             }
-//         },
-//         image: {
-//             image: {
-//                 type: String,
-//                 required: true,
-//             },
-//             alt: {
-//                 type: String,
-//                 required: true,
-//             }
-//         },
-//         ingredientList: [
-//             {
-//                 subGroup: {
-//                     type: String,
-//                 },
-//                 ingredients: [
-//                     {
-//                         amount: {
-//                             type: Number,
-//                             required: true,
-//                         },
-//                         unit: {
-//                             type: String,
-//                             required: true,
-//                         },
-//                         ingredient: {
-//                             type: String,
-//                             required: true,
-//                         }
-//                     }
-//                 ]
+const { Schema } = mongoose;
 
-
-//             }
-//         ],
-//         instructions: [
-//             {
-//                 step: {
-//                     type: Number,
-//                     required: true,
-//                 },
-//                 instruction: {
-//                     type: String,
-//                     required: true,
-//                 }
-//             }
-//         ]
-//     }
-// )
-// förenklad: 
-const recepieSchema = new mongoose.Schema(
+const recepieSchema = new Schema(
     {
         user: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: 'User',
             required: true
         },
@@ -88,12 +13,66 @@ const recepieSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        recepie: {
-            type: String,
-            required: true
-        }
+        description: {
+            portions: {
+                type: Number
+            },
+            time: {
+                type: Number
+            },
+            category: {
+                type: String,
+                // required: true,
+            },
+            descriptionText: {
+                type: String,
+                // required: true,
+            }
+        },
+        image: {
+            imageURL: {
+                type: String,
+                // required: true,
+            },
+            alt: {
+                type: String,
+                // required: true,
+            }
+        },
+        ingredientList: [
+            {
+                amount: {
+                    type: Number,
+                },
+                unit: {
+                    type: String,
+                    enum: ['l', 'dl', 'cl', 'ml', 'msk', 'tsk', 'krm', 'g', 'hg', 'kg', 'st', 'nypa', 'kvistar', 'förp'],
+                    // default: 'st'
+                },
+                ingredient: {
+                    type: String,
+                    required: true,
+                }
+            }
+        ],
+        instructionList: {
+            type: [String],
+            required: true,
+            validate: {
+                validator: function (value) {
+                    return value.length > 0
+                },
+                message: "Instructions must be separated by new lines"
+            }
+        },
+        subRecepies: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Recepie'
+            }
+        ]
     }
-) 
+)
 
 const Recepie = mongoose.model("Recepie", recepieSchema)
 module.exports = Recepie;
