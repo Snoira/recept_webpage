@@ -1,7 +1,7 @@
 import {useFormik} from "formik"
 import * as Yup from "yup"
 
-const RegisterForm = ({register}) => {
+const RegisterForm = ({register, showRegisterComp}) => {
     const validationSchema = Yup.object({
         email: Yup.string()
             .email('Invalid email format')
@@ -31,6 +31,7 @@ const RegisterForm = ({register}) => {
     })
 
     return (
+        <>
         <form onSubmit={formik.handleSubmit} className='form-floating'>
             <div className='col-auto'>
                 <label htmlFor="email" className="float-start">Email</label>
@@ -76,8 +77,10 @@ const RegisterForm = ({register}) => {
                     <div className='invalid-feedback'>{formik.errors.username}</div>
                 ) : null}
             </div>
-            <button type="submit" className="btn btn-primary">Sign In</button>
+            <button type="submit" className="btn btn-primary">Create account</button>
         </form>
+        <button onClick={showRegisterComp}>I have an existing account</button>
+        </>
     )
 }
 

@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
 import { useFormik } from 'formik'
+import ConfirmDeleteModal from './ConfirmDeleteModal';
 import * as Yup from "yup";
-import api from '../api'
 
-const RecepieForm = ({ createRecepie, addSubRecepie }) => {
-    const [recepiesByUser, setRecepiesByUser] = useState([])
+const RecepieForm = ({ recepie, submitFunction, deleteFunction }) => {
+    const [questionDelete, setQuestionDelete] = useState(false);
+    // if (!recepie) { recepie = { title: '', image: { imageURL: '', alt: '' }, description: { portions: '', time: '', category: '', descriptionText: '' }, ingredientList: [], instructionList: [] } }
 
     const validationSchema = Yup.object(
         {
@@ -20,37 +21,66 @@ const RecepieForm = ({ createRecepie, addSubRecepie }) => {
         }
     )
 
-    const initialValues = {
-        title: '',
-        imageURL: '',
-        alt: '',
-        portions: '',
-        time: '',
-        category: '',
-        descriptionText: '',
-        ingredients: '',
-        instructions: ''
-    }
+    const initialValues = recepie ?
+        {
+            title: recepie.title,
+            imageURL: recepie.image.imageURL,
+            alt: recepie.image.alt,
+            portions: recepie.description.portions,
+            time: recepie.description.time,
+            category: recepie.description.category,
+            descriptionText: recepie.description.descriptionText,
+            ingredients: recepie.ingredientList.map((item) => {
+                if (!item) return '';
+                else if (!item.amount && !item.unit) return item.ingredient;
+                else return `${item.amount}-${item.unit}-${item.ingredient}`;
+            }).join('\n'),
+            instructions: recepie.instructionList.join('\n')
+        }
+        // {
+        //     title: `${recepie.title}`,
+        //     imageURL: `${recepie.image.imageURL}`,
+        //     alt: `${recepie.image.alt}` || '',
+        //     portions: `${recepie.description.portions}`,
+        //     time: `${recepie.description.time}`,
+        //     category: `${recepie.description.category}`,
+        //     descriptionText: `${recepie.description.descriptionText}`,
+        //     ingredients: `${recepie.ingredientList.map((item) => {
+        //         if (!item) return '';
+        //         else if (!item.amount && !item.unit) return item.ingredient;
+        //         else return `${item.amount}-${item.unit}-${item.ingredient}`;
+        //     }).join('\n')}` || '',
+        //     instructions: `${recepie.instructionList.join('\n')}` || ''
+        // } 
+        :
+        {
+            title: '',
+            imageURL: '',
+            alt: '',
+            portions: '',
+            time: '',
+            category: '',
+            descriptionText: '',
+            ingredients: '',
+            instructions: ''
+        }
 
     const formik = useFormik({
         initialValues,
         validationSchema,
         onSubmit: async (values) => {
             console.log(values)
-            await createRecepie(values)
+            await submitFunction(values)
         }
     })
 
-    useEffect(() => {
-        const getRecepiesByUser = async () => {
-            const response = await api.post('http://localhost:5000/recepies/user')
-            if (response.status === 200) {
-                setRecepiesByUser(response.data)
-            } else {
-                console.log('Error getting recepies by user')
-            }
-        }
-    })
+    const showModal = () => {
+        setQuestionDelete(true)
+    }
+
+    const closeModal = () => {
+        setQuestionDelete(false)
+    }
 
     return (
         <>
@@ -107,15 +137,6 @@ const RecepieForm = ({ createRecepie, addSubRecepie }) => {
                         className={`form-control ${formik.touched.ingredients ? formik.errors.ingredients ? "is-invalid" : "is-valid" : ""}`}
                         {...formik.getFieldProps("ingredients")} />
                 </div>
-                {recepiesByUser > 0 ? <div>
-                    <p>Would you like to incorporate one of your existing recepies into this one?</p>
-                    <select name="subRecepies" id="subRecepies">
-                        {recepiesByUser.map(recepie => {
-                            return <option value={recepie._id}>{recepie.title}</option>
-                        })}
-                    </select>
-                    <button onClick={() => { addSubRecepie(document.getElementById('subRecepies').value) }}>Add SubRecepie</button>
-                </div> : null}
                 <div>
                     {/* varje steg ska skiljas på med enter och/eller siffra så att meddelandet kan göras till en array i backend */}
                     <label htmlFor="instructions">Instructions, separate each step with enter. If you've added an existing recepie to this one, write "subrecepie" on the step you want the recepie to be prepared.</label>
@@ -126,9 +147,11 @@ const RecepieForm = ({ createRecepie, addSubRecepie }) => {
                     {formik.errors.instructions && <div>{formik.errors.instructions}</div>}
                 </div>
                 <div>
-                    <button type="submit" onClick={() => { formik.values }}>Create Recepie</button>
+                    <button type="submit" onClick={() => { formik.values }}>{recepie ? "Update Recepie" : "Create Recepie"}</button>
                 </div>
             </form>
+            <button onClick={showModal}>Delete Recepie</button>
+            <ConfirmDeleteModal closeModal={closeModal} deleteFunction={deleteFunction} recepie={recepie} questionDelete={questionDelete} />
         </>
     )
 }

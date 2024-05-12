@@ -3,17 +3,27 @@ const User = require('../models/user.model.js');
 const { generateTokens } = require('../utils/token.js');
 
 async function registerUser(req, res) {
-
-    const { email, password, username } = req.body
-    const user = {
-        email,
-        password,
-        username
-    }
+    const {email, username} = req.body
     try {
-        const newUser = await user.create(user)
+        const checkEmail =  await User.find({email})
+        if(!checkEmail) return res.status(400).json({ error: "Account already registered with email" })
+        
+        const checkUsername = await User.find({username}) 
+        if(!checkUsername) return res.status(400).json({error: "Username taken"})
+
+        const newUser = await User.create(req.body)
+        if (!newUser) return res.status(400).json({ error: "User not created" })
+
         const tokens = generateTokens(newUser)
-        res.status(201).json(tokens)
+        if(!tokens) return res.status(400).json({ error: "Tokens not generated" })
+
+        const account = {
+            newUser,
+            tokens
+        }
+
+        res.status(201).json(account)
+
     } catch (error) {
         res.status(400).json({ error: error.message })
         console.log("Error creating user: ", error.message)
@@ -35,26 +45,30 @@ async function registerUser(req, res) {
 async function loginUser(req, res) {
     const { email, password } = req.body
     try {
-    const user = await User.findOne({ email }).select("+password") //.select(["+password"]) i jonathans kod
-    if (!user) {
-        return res.status(404).json({ error: "User not found" })//404 eller 400?
-    }
+        const user = await User.findOne({ email }).select("+password") //.select(["+password"]) i jonathans kod
+        if (!user) return res.status(404).json({ error: "User not found" })//404 eller 400? "Invalid credentials" för att göra en säkrare errorhantering
+    
         const isMatch = await bcrypt.compare(password, user.password)
-        if (!isMatch) {
-            return res.status(401).json({ error: "Invalid credentials" })
-        }
+        if (!isMatch) return res.status(401).json({ error: "Invalid credentials" })
+        
         const tokens = generateTokens(user)
-        // console.log("User logged in: ", user)
-        // console.log("Tokens: ", tokens)
-        res.status(200).json(tokens)
+        if(!tokens) return res.status(400).json({ error: "Tokens not generated" })
+
+        const account = {
+            user,
+            tokens
+        }
+
+        res.status(200).json(account)
     } catch (error) {
         res.status(404).json({ error: error.message })
     }
 }
 
-async function getUsers(req, res) {
+async function getUser(req, res) {
+    const userId = req.userId
     try {
-        const users = await User.find()
+        const users = await User.findById(userId)
         res.status(200).json(users)
     } catch (error) {
         res.status(500).json({ error: error.message })
@@ -92,5 +106,5 @@ async function getUsers(req, res) {
 module.exports = {
     registerUser,
     loginUser,
-    getUsers
+    getUser
 }

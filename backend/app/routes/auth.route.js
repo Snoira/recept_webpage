@@ -1,11 +1,11 @@
 const Express = require('express');
-const { registerUser, loginUser, getUsers } = require('../controllers/auth.controller.js');
+const { registerUser, loginUser, getUser } = require('../controllers/auth.controller.js');
 
 const authRouter = Express.Router();
 
 authRouter.post('/register', registerUser)
 authRouter.post("/login", loginUser)
-authRouter.get("/users", getUsers)
+// authRouter.get("/user", getUser)
 
 module.exports = authRouter;
 
@@ -28,6 +28,6 @@ module.exports = authRouter;
 // },
 // {
 //     "email": "bengt@test.se",
-//     "password": "bengetestar123",
-//     "username": "BagarBengt"
+//     "password": "testtest1",
+//     "username": "BagarBengt" "BenganBakar"
 // }

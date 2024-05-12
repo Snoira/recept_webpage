@@ -1,7 +1,8 @@
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
+// import { useHistory } from 'react-router-dom'
 
-const SignInForm = ({ logIn }) => {
+const SignInForm = ({ logIn, showRegisterComp }) => {
 
   const validationSchema = Yup.object({
     email: Yup.string()
@@ -51,6 +52,8 @@ const SignInForm = ({ logIn }) => {
         </div>
         <button type="submit" className="btn btn-primary">Sign In</button>
       </form>
+      <button onClick={showRegisterComp}>Register account</button>
+      
 
 
       {/* <div> */}

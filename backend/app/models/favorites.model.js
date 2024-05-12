@@ -7,13 +7,11 @@ const favoritesSchema = new Schema({
         ref: 'User',
         required: true
     },
-    recipes: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'Recipe',
-            required: true
-        }
-    ]
+    recepieList: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Recepie',
+    }]
+  
 }, {
     timestamps: true
 })

@@ -1,22 +1,8 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom'
 
-const RenderRecepies = () => {
-    const [recepies, setRecepies] = useState([])
-
-    useEffect(() => {
-        const fetchRecepies = async () => {
-            const res = await axios.get('http://localhost:5000/recepies/')
-            if (res.data) {
-                setRecepies(res.data)
-            } else {
-                console.log("Error fetching recepies")
-            }
-        }
-
-        fetchRecepies()
-    }, [])
-
+const RenderRecepies = ({recepies, from}) => {
+if(from === "UserPage") return 
+ 
     return (
         <>
             {
@@ -27,7 +13,7 @@ const RenderRecepies = () => {
                             <div className="card-body">
                                 <h5 className="card-title">{recepie.title}</h5>
                                 <p className="card-text">{recepie.description.descriptionText}</p>
-                                {/* <a href="#" className="btn btn-primary">Go somewhere</a> */}
+                                <Link to={`/recepie/${recepie._id}`} >View Recepie</Link>
                             </div>
                         </div>
                     )
