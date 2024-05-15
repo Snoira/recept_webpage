@@ -46,7 +46,7 @@ const recepieSchema = new Schema(
                 },
                 unit: {
                     type: String,
-                    enum: ['l', 'dl', 'cl', 'ml', 'msk', 'tsk', 'krm', 'g', 'hg', 'kg', 'st', 'nypa', 'kvistar', 'förp'],
+                    enum: ['l', 'dl', 'cl', 'ml', 'msk', 'tsk', 'krm', 'g', 'hg', 'kg', 'st', 'nypa', 'kvistar', 'förp', 'påse'],
                     // default: 'st'
                 },
                 ingredient: {

@@ -21,11 +21,6 @@ export const UserProvider = ({ children }) => {
         const token = data.tokens.accessToken
         localStorage.setItem('token', token)
 
-        const userId = data.user._id
-        localStorage.setItem('userId', userId)
-        const username = data.user.username
-        localStorage.setItem('username', username)
-
         setUser(data.user || data.newUser)
         console.log('Logged in', token)
     }

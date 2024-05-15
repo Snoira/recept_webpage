@@ -133,14 +133,14 @@ const RecepieForm = ({ recepie, submitFunction, deleteFunction, handleEditMode, 
                 </div>
                 <div>
                     <button type="submit" onClick={() => { formik.values }}>{recepie ? "Update Recepie" : "Create Recepie"}</button>
-                    {recepie &&
-                        <>
-                            <button onClick={showModal}>Delete Recepie</button>
-                            <button onClick={handleEditMode}>Cancel</button>
-                        </>
-                    }
                 </div>
             </form>
+            {recepie &&
+                <>
+                    <button onClick={showModal}>Delete Recepie</button>
+                    <button onClick={handleEditMode}>Cancel</button>
+                </>
+            }
             <ConfirmDeleteModal closeModal={closeModal} deleteFunction={deleteFunction} recepie={recepie} questionDelete={questionDelete} />
         </>
     )
