@@ -10,23 +10,23 @@ export const FavoritesProvider = ({ children }) => {
     const { errorToaster } = useToaster()
     const { user } = useUser()
 
-    useEffect(() => {
-        const fetchFavorites = async () => {
-            try{
-                const res = await api.get('http://localhost:5000/favorites/')
-                if(res.status === 200){
-                setFavorites(res.data)
-                }
-            } catch (error) {
-                console.log("Error fetching favorites", error)
-                errorToaster("Something went wrong, try again later")
+    // useEffect(() => {
+    //     const fetchFavorites = async () => {
+    //         try{
+    //             const res = await api.get('http://localhost:5000/favorites/')
+    //             if(res.status === 200){
+    //             setFavorites(res.data)
+    //             }
+    //         } catch (error) {
+    //             console.log("Error fetching favorites", error)
+    //             errorToaster("Something went wrong, try again later")
 
-            }
-        }
+    //         }
+    //     }
         
-        if (user) fetchFavorites()
+    //     if (user) fetchFavorites()
 
-    }, [])
+    // }, [])
 
     const addFavorite = async (recepieId) => {
         try {

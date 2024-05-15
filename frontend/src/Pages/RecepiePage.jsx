@@ -3,9 +3,13 @@ import axios from 'axios'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import api from '../api'
+import FavoriteBtn from '../Components/FavoriteBtn'
+import LikeBtn from '../Components/LikeBtn'
+import CommentSection from '../Components/CommentSection'
 import RecepieForm from '../Components/RecepieForm'
 import { useToaster } from '../Context/ToasterContext'
-import { useFavorites } from '../Context/FavoritesContext'
+import { useUser } from '../Context/UserContext'
+// import { useFavorites } from '../Context/FavoritesContext'
 
 const RecepiePage = () => {
     const [editMode, setEditMode] = useState(false)
@@ -14,7 +18,8 @@ const RecepiePage = () => {
 
     const { recepieId } = useParams()
     const { errorToaster, successToaster } = useToaster()
-    const { addFavorite, removeFavorite, favorites} = useFavorites()
+    const { user } = useUser()
+    // const { addFavorite, removeFavorite, favorites } = useFavorites()
 
     const navigate = useNavigate()
 
@@ -23,6 +28,7 @@ const RecepiePage = () => {
             const res = await axios.get(`http://localhost:5000/recepies/${recepieId}`)
             if (res.data) {
                 setRecepie(res.data)
+                console.log(res.data)
             } else if (res.status === 404) {
                 navigate('*')
                 console.log("Recepie not found")
@@ -45,7 +51,7 @@ const RecepiePage = () => {
             }
             else {
                 console.log(res.status)
-        
+
             }
         } catch (error) {
             console.log("Error deleting recepie", error)
@@ -73,66 +79,84 @@ const RecepiePage = () => {
         }
     }
 
-    const handleFavoriteClick = async () => {
-        if(favorites.includes(recepieId)){
-            await removeFavorite(recepieId)
-        } else {
-            await addFavorite(recepieId)
-        }
+    const handleEditMode = () => {
+        setEditMode(!editMode)
     }
 
-    const isFavorite = favorites.includes(recepieId)
-    // const saveAsFavorite = async () => {
-    //     try {
-    //         const res = await api.put(`http://localhost:5000/favorites/add/${recepieId}`)
-    //         if (res.status === 200) {
-    //             successToaster(recepie.title, "saved as favorite")
-    //             setIsFavorite(true)
-    //             console.log(res.data)
-    //         } else {
-    //             console.log(res.status)
-    //         }
-    //     } catch (error) {
-    //         console.log("Error saving as favorite", error)
-    //     }
-    // }
-
     return (
-        <div>RecepiePage
-            {(recepie && !editMode) ? <div>
-                <div>
-                    <p>Made by {recepie.user.username}</p>
-                </div>
-                <h1>{recepie.title}</h1>
-                <img src={recepie.image.imageURL} alt={recepie.image.alt} />
-                <p>{recepie.description.portions}</p>
-                <p>{recepie.description.time}</p>
-                <p>{recepie.description.category}</p>
-                <p>{recepie.description.descriptionText}</p>
-                <ul>
-                    {
-                        recepie.ingredientList.map((li, i) => {
-                            return <li key={i}>{(li.amount && li.unit) ? `${li.amount} ${li.unit} ${li.ingredient}` : `${li.ingredient}`}</li>
-                        })
-                    }
-                </ul>
-                <ol>
-                    {
-                        recepie.instructionList.map((li, i) => {
-                            return <li key={i}>{li}</li>
-                        })
-                    }
-                </ol>
-            </div>
-                :
-                <>
-                    <RecepieForm recepie={recepie} submitFunction={editRecepie} deleteFunction={deleteRecepie} />
+        <>
+            {recepie ? editMode ?
+                <RecepieForm submitFunction={editRecepie} recepie={recepie} handleEditMode={handleEditMode} deleteFunction={deleteRecepie} />
+                : <>
+                    <div className="container col-xxl-8 px-4 py-5">
+                        <div className="row flex-lg-row-reverse align-items-center g-5 py-5">
+                            <div className="col-10 col-sm-8 col-lg-6">
+                                <img src={recepie.image.imageURL} alt={recepie.image.alt} className="d-block mx-lg-auto img-fluid" width="700" height="500" loading="lazy" />
+                            </div>
+                            <div className="col-lg-6">
+                                <h1 className="display-5 fw-bold text-body-emphasis lh-1 mb-3">{recepie.title}</h1>
+                                <p className="lead">{recepie.description.descriptionText}</p>
+                                <div className="d-grid gap-2 d-md-flex justify-content-between">
+                                    <p>Servings: {recepie.description.portions}</p>
+                                    <p>Cookingtime: {recepie.description.time}</p>
+                                    <p>Category: {recepie.description.category}</p>
+                                </div>
+                                <div className="d-grid gap-2 d-md-flex justify-content-around">
+                                    {(recepie.user._id !== user?._id) ?
+                                        <>
+                                            <FavoriteBtn recepie={recepie} />
+                                            <LikeBtn recepie={recepie} />
+                                        </>
+                                        : <button onClick={handleEditMode}>Edit recepie</button>}
+                                </div>
+                            </div>
+                        </div>
+                        <div className='row'>
+                            <h6 className='col'>
+                                <small className='col text-body-secondary'>
+                                    Created by:  
+                                </small>
+                                 {recepie.user.username}
+                            </h6>
+                            <p>
+                               total likes: {recepie.user.rating}
+                            </p>
+                        </div>
+                    </div>
+                    <div className='row'>
+                        <div className='col-6 col-md-4'>
+                            <h2>Ingredients</h2>
+                            <ul className="list-group">
+                                {
+                                    recepie.ingredientList.map((li, i) => {
+                                        return <li key={i} className="list-group-item">{(li.amount && li.unit) ? `${li.amount} ${li.unit} ${li.ingredient}` : `${li.ingredient}`}</li>
+                                    })
+                                }
+                            </ul>
+                        </div>
+                        <div className='col-md-8' >
+                            <div>
+                                <h2>Instructions</h2>
+                                <ol className="list-group list-group-flush">
+                                    {
+                                        recepie.instructionList.map((li, i) => {
+                                            return <li key={i} className="list-group-item">{li}</li>
+                                        })
+                                    }
+                                </ol>
+                            </div>
+                            <div>
+                                <CommentSection recepie={recepie} />
+                            </div>
+                        </div>
+                    </div>
+
+
                 </>
+                : <div>Loading...</div>
             }
-            <button onClick={() => setEditMode(!editMode)}>{ editMode? 'Cancle' : 'Edit Recepie' }</button>
-            <button onClick={handleFavoriteClick}>{isFavorite ? 'Remove from Favorites' : 'Save as Favorite'}</button>
-            {/* <button onClick={deleteRecepie}>Delete Recepie</button> */}
-        </div>
+
+        </>
     )
 }
 

@@ -70,7 +70,11 @@ const recepieSchema = new Schema(
                 type: Schema.Types.ObjectId,
                 ref: 'Recepie'
             }
-        ]
+        ],
+        likes: [{
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+        }]
     }
 )
 

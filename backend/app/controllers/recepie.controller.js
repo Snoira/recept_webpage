@@ -95,7 +95,7 @@ async function editRecepie(req, res) {
 
     try {
         if (recepieId !== _id) return res.status(400).json({ message: "The recepies don't match." })
-    
+
         const recepie = await Recepie.findById(recepieId)
         if (!recepie) return res.status(404).json({ message: "Recepie not found" })
         const createdBy = recepie.user.toString()
@@ -224,11 +224,133 @@ async function getRecepieById(req, res) {
     }
 }
 
+async function likeRecepie(req, res) {
+    const recepieId = req.params.id
+    const userId = req.userId
+    try {
+        const recepie = await Recepie.findById({ _id: recepieId })
+        if (!recepie) return res.status(404).json({ message: "Recepie not found" })
+
+        const user = await User.findById({ _id: userId })
+        if (!user) return res.status(404).json({ message: "User not found" })
+
+        if (recepie.user.toString() === userId) return res.status(401).json({ message: "One cannot like their own recepies" })
+
+        if (recepie.likes.includes(userId)) return res.status(400).json({ message: "Already liked" })
+
+        recepie.likes.push(userId)
+        const updatedRecepie = await recepie.save()
+
+        if (updatedRecepie) {
+            res.status(200).json(updatedRecepie)
+
+            const createdBy = await User.findById(recepie.user)
+            if (createdBy) {
+                console.log("createdBy: ", createdBy)
+                const likeCount = await Recepie.aggregate([
+                    { $match: { user: createdBy._id } },
+                    { $unwind: "$likes" },
+                    { $group: { _id: "$user", totalLikes: { $sum: 1 } } }
+                ]);
+                if (likeCount.length > 0) {
+                    // res.json({ totalLikes: result[0].totalLikes });
+                    createdBy.rating = likeCount[0].totalLikes
+                } else {
+                    // res.json({ totalLikes: 0 });
+                    createdBy.rating = 0
+                }
+                console.log("createdBy.rating: ", createdBy.rating)
+                await createdBy.save()
+
+            } else {
+                res.status(404).json({ message: "Recepie creator not found" });
+            }
+
+        } else {
+            res.status(400).json({ error: "Could not like recepie" })
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+}
+
+async function unlikeRecepie(req, res) {
+    const recepieId = req.params.id
+    const userId = req.userId
+    try {
+        const recepie = await Recepie.findById({ _id: recepieId })
+        if (!recepie) return res.status(404).json({ message: "Recepie not found" })
+
+        const user = await User.findById({ _id: userId })
+        if (!user) return res.status(404).json({ message: "User not found" })
+
+        if (recepie.user.toString() === userId) return res.status(401).json({ message: "One cannot like their own recepies" })
+
+        if (!recepie.likes.includes(userId)) return res.status(400).json({ message: "Not liked" })
+        recepie.likes = recepie.likes.filter(id => id.toString() !== userId)
+
+        const updatedRecepie = await recepie.save()
+
+        if (updatedRecepie) {
+            res.status(200).json(updatedRecepie)
+
+            const createdBy = await User.findById(recepie.user)
+            if (createdBy) {
+                console.log("createdBy: ", createdBy)
+                const likeCount = await Recepie.aggregate([
+                    { $match: { user: createdBy._id } },
+                    { $unwind: "$likes" },
+                    { $group: { _id: "$user", totalLikes: { $sum: 1 } } }
+                ]);
+                if (likeCount.length > 0) {
+                    // res.json({ totalLikes: result[0].totalLikes });
+                    createdBy.rating = likeCount[0].totalLikes
+                } else {
+                    // res.json({ totalLikes: 0 });
+                    createdBy.rating = 0
+                }
+                console.log("createdBy.rating: ", createdBy.rating)
+                const newLikes = await createdBy.save()
+                console.log("newLikes: ", newLikes)
+            } else {
+                res.status(404).json({ message: "Recepie creator not found" });
+            }
+
+
+        } else {
+            res.status(400).json({ error: "Could not like recepie" })
+        }
+
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+}
+
+async function getLikes(req, res) {
+    const recepieId = req.params.id
+    try {
+        const recepie = await Recepie.findById(recepieId)
+        if (!recepie) return res.status(404).json({ message: "Recepie not found" })
+        const likes = recepie.likes
+        if (likes) {
+            res.status(200).json(likes)
+        } else {
+            res.status(404).json({ error: "No likes found" })
+        }
+
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+}
+
 module.exports = {
     createRecepie,
     getRecepies,
     getRecepiesByUser,
     getRecepieById,
     editRecepie,
-    deleteRecepie
+    deleteRecepie,
+    likeRecepie,
+    unlikeRecepie,
+    getLikes
 }

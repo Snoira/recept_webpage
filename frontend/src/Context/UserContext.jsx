@@ -5,13 +5,11 @@ const UserContext = createContext()
 
 export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(()=>{
-        // Try to get the user from localStorage when the component is first rendered
         const savedUser = localStorage.getItem('user')
         return savedUser ? JSON.parse(savedUser) : null
     })
 
     useEffect(() => {
-        // Whenever the user state changes, save it to localStorage
         if (user) {
           localStorage.setItem('user', JSON.stringify(user))
         } else {

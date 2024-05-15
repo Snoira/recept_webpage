@@ -19,19 +19,19 @@ function App() {
       <UserProvider>
         <ToasterProvider>
           <FavoritesProvider>
-        <Header />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/user" element={
-          <PrivateRoute>
-            <UserPage />
-          </PrivateRoute>
-        } />
-        <Route path="/recepie/:recepieId" element={<RecepiePage />} />
-        <Route path="*" element={<h1>404 Not Found</h1>} />
-      </Routes>
-      </FavoritesProvider>
+            <Header />
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/user" element={
+                <PrivateRoute>
+                  <UserPage />
+                </PrivateRoute>
+              } />
+              <Route path="/recepie/:recepieId" element={<RecepiePage />} />
+              <Route path="*" element={<h1>404 Not Found</h1>} />
+            </Routes>
+          </FavoritesProvider>
         </ToasterProvider>
       </UserProvider>
       <ToastContainer position="bottom-right"

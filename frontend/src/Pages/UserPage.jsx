@@ -55,8 +55,8 @@ const UserPage = () => {
             <h1>
                 Welcome {user.username}
             </h1>
-            <button onClick={() => setShowCreateRecepie(!showCreateRecepie)}>Create Recepie</button>
-            {showCreateRecepie && <RecepieForm submitFunction={createRecepie} addSubRecepie={addSubRecepie} />}
+            <button onClick={() => setShowCreateRecepie(!showCreateRecepie)}>{ showCreateRecepie ? "Cancel" : "Create Recepie"}</button>
+            {showCreateRecepie && <RecepieForm submitFunction={createRecepie} addSubRecepie={addSubRecepie} setShowCreateRecepie={setShowCreateRecepie} />}
             {recepiesByUser.length > 0 ?
                 <ul>
                     {

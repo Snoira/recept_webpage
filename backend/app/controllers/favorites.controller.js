@@ -2,38 +2,40 @@ const Favorites = require('../models/favorites.model');
 const Recepie = require('../models/recepie.model');
 
 async function addToFavorites(req, res) {
+    // borde ändra till tydligare namn på variabler
+    // const userId = req.body.user;
+    const userId = req.userId;
+    const recipeId = req.params.id;
     try {
-        const userId = req.userId;
-        const recipeId = req.params.id;
-        
-        if (!recipeId) return res.status(400).json({ message: "Missing recipe" }); 
+        if (!recipeId) return res.status(400).json({ message: "Missing recipe" });
 
-        const favoriteRecepie = await Recepie.findById({ recipeId });
+        const favoriteRecepie = await Recepie.findById({ _id: recipeId });
         if (!favoriteRecepie) return res.status(404).json({ message: "Recipe not found" });
-        if (favoriteRecepie.user === userId) return res.status(401).json({ message: "One cannot favorite their own recepies" })
-        //flytta ned denna till om användaren över huvud taget har favorites?
-        else if (Favorites.recepieList.includes(recipeId)) throw new Error('Recipe is already in favorites');
 
-        const favorite = await Favorites.findOne({ user: userId });
-        if (!favorite) {
-            const newFavorite = await Favorites.create({ user: userId, recepieList: [recipeId] });
-            if (newFavorite) {
-                res.status(201).send(newFavorite.recepieList);
-            } else {
-                res.status(400).json({ message: "Error creating favorite" }); //vilken felkod?
-            }
+        const createdBy = favoriteRecepie.user.toString();
+        if (createdBy === userId) return res.status(401).json({ message: "One cannot favorite their own recepies" })
+
+        const savedFavorites = await Favorites.findOne({ user: userId });
+        if (!savedFavorites) {
+            const newSavedFavorites = await Favorites.create({ user: userId, recepieList: [recipeId] });
+            await newSavedFavorites.populate("recepieList");
+
+            if (newSavedFavorites) res.status(201).send(newSavedFavorites.recepieList);
+            else res.status(400).json({ message: "Error creating favorite" }); //vilken felkod?
+
         } else {
-            favorite.recepieList.push(recipeId);
-            const updatedFavorite = await favorite.save();
-            await updatedFavorite.populate("recepieList");
-            if (updatedFavorite) {
-                res.status(200).send(updatedFavorite.recepieList);
+            if (savedFavorites.recepieList.includes(recipeId)) throw new Error('Recipe is already in favorites');
+            else savedFavorites.recepieList.push(recipeId);
+
+            const updatedFavorites = await savedFavorites.save();
+            if (updatedFavorites) {
+                // await updatedFavorites.populate("recepieList");
+                res.status(200).send(updatedFavorites.recepieList);
             } else {
                 res.status(400).json({ message: "Error updating favorite" }); //vilken felkod?
             }
         }
-        //insåg precis att man kan använda svaret för att uppdatera sidan i frontend så att den uppdaterade versionen syns.
-     
+
     } catch (error) {
         res.status(500).json({ message: error.message });
         console.log("Error creating favorite: ", error.message);
@@ -43,33 +45,35 @@ async function addToFavorites(req, res) {
 async function getFavorites(req, res) {
     const user = req.userId;
     try {
-        const favorites = await Favorites.findOne({ user });
-        await favorites.populate("recepieList");
-    if (favorites) {
-        res.status(200).json(favorites.recepieList);
-    } else {
-        res.status(404).json({ message: "No favorites found" });
-    }
+        const savedFavorites = await Favorites.findOne({ user });
+        if (!savedFavorites) return res.status(404).json({ message: "No favorites found" });
+        // if (savedFavorites.recepieList.length > 0) await savedFavorites.populate("recepieList");
+        res.status(200).send(savedFavorites.recepieList);
+
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 }
 
 async function removeFavorite(req, res) {
+    // const userId = req.body.user;
+    const userId = req.userId;
+    const recipeId = req.params.id;
     try {
-        const user = req.userId;
-        const recipeId = req.params.id;
         if (!recipeId) return res.status(400).json({ message: "Missing recipe" });
 
-        const favoriteRecepie = await Recepie.findById({ recipeId });
+        const favoriteRecepie = await Recepie.findById({ _id: recipeId });
         if (!favoriteRecepie) return res.status(404).json({ message: "Recipe not found" });
 
-        if (!Favorites.recepieList.includes(recipeId)) throw new Error('Recipe is not in favorites');
+        const savedFavorites = await Favorites.findOne({ user: userId });
+        if (!savedFavorites) return res.status(404).json({ message: "No favorites found" });
+        if (!savedFavorites.recepieList.includes(recipeId)) return res.status(404).json({ message: 'Recipe is not in favorites' });
 
-        const newFavorites = Favorites.recepieList.filter((id) => id !== recipeId);
-        console.log("newFavorites", newFavorites)
-        const updatedFavorites = await Favorites.save();
-        await updatedFavorites.populate("recepieList");
+        const newSavedFavorites = savedFavorites.recepieList.filter((id) => id.toString() !== recipeId);
+        savedFavorites.recepieList = newSavedFavorites;
+
+        const updatedFavorites = await savedFavorites.save();
+        // if (updatedFavorites.recepieList.length > 0) await updatedFavorites.populate("recepieList");
         if (updatedFavorites) {
             res.status(200).send(updatedFavorites.recepieList);
         } else {
