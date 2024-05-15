@@ -7,7 +7,5 @@ const favoritesRouter = Express.Router();
 favoritesRouter.post('/add/:id', authMiddleware, addToFavorites)
 favoritesRouter.get('/', authMiddleware, getFavorites)
 favoritesRouter.put('/remove/:id', authMiddleware, removeFavorite)
-// favoritesRouter.post('/add/:id', addToFavorites)
-// favoritesRouter.put('/remove/:id', removeFavorite)
 
 module.exports = favoritesRouter;

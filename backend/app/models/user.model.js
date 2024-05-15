@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: true,
             minlength: 8,
-            select: false, //vad är select?
+            select: false,
             validate: {
                 validator: function (value) {
 
@@ -61,10 +61,10 @@ const userSchema = new mongoose.Schema(
     }
 )
 
-// userSchema.virtual("fullName").get(function () { //vad gör denna??
+// userSchema.virtual("fullName").get(function () { 
 //     return `${this.firstName} ${this.lastName}`
 // })
-// userSchema.virtual("defaultAvatar").get(function () { //vad gör denna??
+// userSchema.virtual("defaultAvatar").get(function () { 
 //     return `https://avatar.iran.liara.run/username?username=${this.username}&length=1`
 // })
 

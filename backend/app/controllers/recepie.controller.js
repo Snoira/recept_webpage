@@ -1,7 +1,7 @@
 const Recepie = require("../models/recepie.model.js")
 const User = require("../models/user.model.js")
 
-//lägg till Errorhantering i utils!!! 
+//errorhantering till utils, men ej prio
 
 async function createRecepie(req, res) {
     const { title, imageURL, alt, portions, time, category, descriptionText, ingredients, instructions, subRecepies } = req.body;
@@ -28,7 +28,8 @@ async function createRecepie(req, res) {
         const user = await User.findById(createdBy)
         if (!user) return res.status(404).json({ message: "User not found" })
 
-        //kan jag använda mig av en funktion för att skapa ingredientList och instructionList?
+        //tanken var från början att ha en mer utvecklad frontend för ingredienser och instruktion
+        //Detta lever kvar från dom ambitionerna... Finns lättare sätt att göra detta på men jag tror jag vill fortsätta på min ide senare
         const ingredientList = ingredients.split("\n").map((item) => {
             if (item === "") return
             else if (!item.includes("-")) return { ingredient: item }
@@ -122,9 +123,6 @@ async function editRecepie(req, res) {
                 })
             }
         }
-
-        //finns det ett annat sätt att uppdatera produkten på? 
-        //Hur gör jag med värdena son finns i array-form? alltså ändra på en specifik del i arrayen?
 
         const ingredientList = ingredients.split("\n").map((item) => {
             if (item === "") return
@@ -253,10 +251,8 @@ async function likeRecepie(req, res) {
                     { $group: { _id: "$user", totalLikes: { $sum: 1 } } }
                 ]);
                 if (likeCount.length > 0) {
-                    // res.json({ totalLikes: result[0].totalLikes });
                     createdBy.rating = likeCount[0].totalLikes
                 } else {
-                    // res.json({ totalLikes: 0 });
                     createdBy.rating = 0
                 }
                 console.log("createdBy.rating: ", createdBy.rating)

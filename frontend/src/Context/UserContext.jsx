@@ -40,9 +40,3 @@ export const UserProvider = ({ children }) => {
 export const useUser = () => {
     return useContext(UserContext)
 }
-
-// Please note that localStorage should be used carefully, 
-// as it can expose your application to potential security risks. 
-// It's generally not recommended to store sensitive information like passwords or tokens in localStorage. 
-// If you're storing sensitive information, 
-// consider using HTTP-only cookies or a server-side session instead.
