@@ -6,6 +6,7 @@ import UserPage from './Pages/UserPage'
 import PrivateRoute from './Components/PrivateRoute'
 import { UserProvider } from './Context/UserContext'
 import { ToasterProvider } from './Context/ToasterContext'
+import { FavoritesProvider } from './Context/FavoritesContext'
 import { ToastContainer } from 'react-toastify'
 import Header from './Components/Header'
 import RecepiePage from './Pages/RecepiePage'
@@ -17,18 +18,20 @@ function App() {
     <>
       <UserProvider>
         <ToasterProvider>
-        <Header />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/user" element={
-          <PrivateRoute>
-            <UserPage />
-          </PrivateRoute>
-        } />
-        <Route path="/recepie/:recepieId" element={<RecepiePage />} />
-        <Route path="*" element={<h1>404 Not Found</h1>} />
-      </Routes>
+          <FavoritesProvider>
+            <Header />
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/user" element={
+                <PrivateRoute>
+                  <UserPage />
+                </PrivateRoute>
+              } />
+              <Route path="/recepie/:recepieId" element={<RecepiePage />} />
+              <Route path="*" element={<h1>404 Not Found</h1>} />
+            </Routes>
+          </FavoritesProvider>
         </ToasterProvider>
       </UserProvider>
       <ToastContainer position="bottom-right"

@@ -21,7 +21,6 @@ function HomePage() {
 
   return (
     <>
-    <button onClick={()=> localStorage.clear()}>X</button>
       <RenderRecepies recepies={recepies} from={"HomePage"} />
     </>
   )

@@ -3,9 +3,8 @@ import { useFormik } from 'formik'
 import ConfirmDeleteModal from './ConfirmDeleteModal';
 import * as Yup from "yup";
 
-const RecepieForm = ({ recepie, submitFunction, deleteFunction }) => {
+const RecepieForm = ({ recepie, submitFunction, deleteFunction, handleEditMode, setShowCreateRecepie }) => {
     const [questionDelete, setQuestionDelete] = useState(false);
-    // if (!recepie) { recepie = { title: '', image: { imageURL: '', alt: '' }, description: { portions: '', time: '', category: '', descriptionText: '' }, ingredientList: [], instructionList: [] } }
 
     const validationSchema = Yup.object(
         {
@@ -21,49 +20,35 @@ const RecepieForm = ({ recepie, submitFunction, deleteFunction }) => {
         }
     )
 
-    const initialValues = recepie ?
-        {
-            title: recepie.title,
-            imageURL: recepie.image.imageURL,
-            alt: recepie.image.alt,
-            portions: recepie.description.portions,
-            time: recepie.description.time,
-            category: recepie.description.category,
-            descriptionText: recepie.description.descriptionText,
-            ingredients: recepie.ingredientList.map((item) => {
-                if (!item) return '';
-                else if (!item.amount && !item.unit) return item.ingredient;
-                else return `${item.amount}-${item.unit}-${item.ingredient}`;
-            }).join('\n'),
-            instructions: recepie.instructionList.join('\n')
-        }
-        // {
-        //     title: `${recepie.title}`,
-        //     imageURL: `${recepie.image.imageURL}`,
-        //     alt: `${recepie.image.alt}` || '',
-        //     portions: `${recepie.description.portions}`,
-        //     time: `${recepie.description.time}`,
-        //     category: `${recepie.description.category}`,
-        //     descriptionText: `${recepie.description.descriptionText}`,
-        //     ingredients: `${recepie.ingredientList.map((item) => {
-        //         if (!item) return '';
-        //         else if (!item.amount && !item.unit) return item.ingredient;
-        //         else return `${item.amount}-${item.unit}-${item.ingredient}`;
-        //     }).join('\n')}` || '',
-        //     instructions: `${recepie.instructionList.join('\n')}` || ''
-        // } 
-        :
-        {
-            title: '',
-            imageURL: '',
-            alt: '',
-            portions: '',
-            time: '',
-            category: '',
-            descriptionText: '',
-            ingredients: '',
-            instructions: ''
-        }
+    const initialValuesCreateRec = {
+        title: '',
+        imageURL: '',
+        alt: '',
+        portions: '',
+        time: '',
+        category: '',
+        descriptionText: '',
+        ingredients: '',
+        instructions: ''
+    }
+
+    const initialValuesEditRec = recepie ? {
+        title: recepie.title,
+        imageURL: recepie.image.imageURL,
+        alt: recepie.image.alt,
+        portions: recepie.description.portions,
+        time: recepie.description.time,
+        category: recepie.description.category,
+        descriptionText: recepie.description.descriptionText,
+        ingredients: recepie.ingredientList.map((item) => {
+            if (!item) return '';
+            else if (!item.amount && !item.unit) return item.ingredient;
+            else return `${item.amount}-${item.unit}-${item.ingredient}`;
+        }).join('\n'),
+        instructions: recepie.instructionList.join('\n')
+    } : null
+
+    const initialValues = recepie ? initialValuesEditRec : initialValuesCreateRec
 
     const formik = useFormik({
         initialValues,
@@ -150,7 +135,12 @@ const RecepieForm = ({ recepie, submitFunction, deleteFunction }) => {
                     <button type="submit" onClick={() => { formik.values }}>{recepie ? "Update Recepie" : "Create Recepie"}</button>
                 </div>
             </form>
-            <button onClick={showModal}>Delete Recepie</button>
+            {recepie &&
+                <>
+                    <button onClick={showModal}>Delete Recepie</button>
+                    <button onClick={handleEditMode}>Cancel</button>
+                </>
+            }
             <ConfirmDeleteModal closeModal={closeModal} deleteFunction={deleteFunction} recepie={recepie} questionDelete={questionDelete} />
         </>
     )
