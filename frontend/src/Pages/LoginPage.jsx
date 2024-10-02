@@ -53,9 +53,22 @@ function LoginPage() {
 
   return (
     <div
-      //className={`d-flex justify-content-center align-items-center min-vh-100 ${style.container}`} 
-      className={style.background}>
-      {showRegister ? <RegisterForm register={register} showRegisterComp={showRegisterComp} /> : <SignInForm logIn={logIn} showRegisterComp={showRegisterComp} />}
+      className={style.background}
+      >
+      <div
+        className={`d-flex justify-content-center align-items-center min-vh-100 ${style.container}`}
+      >
+        <div className={`row border rounded-lg p-3 bg-white shadow ${style.boxArea}`}>
+          <div className={`col-md-6 rounded-lg d-flex justify-content-center align-content-center flex-column ${style.leftBox}`}>
+            <div className={`${style.featuredImage} mb-3`}>
+              <img src="https://picsum.photos/id/429/400/500"
+                alt="placeholder image"
+                className={`${style.imgEl} img-fluid`} />
+            </div>
+          </div>
+        {showRegister ? <RegisterForm register={register} showRegisterComp={showRegisterComp} /> : <SignInForm logIn={logIn} showRegisterComp={showRegisterComp} />}
+        </div>
+      </div>
     </div>
   )
 }
