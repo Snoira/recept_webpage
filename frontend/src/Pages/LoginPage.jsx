@@ -52,7 +52,9 @@ function LoginPage() {
   }
 
   return (
-    <div className="login-page">
+    <div
+      //className={`d-flex justify-content-center align-items-center min-vh-100 ${style.container}`} 
+      className={style.background}>
       {showRegister ? <RegisterForm register={register} showRegisterComp={showRegisterComp} /> : <SignInForm logIn={logIn} showRegisterComp={showRegisterComp} />}
     </div>
   )
