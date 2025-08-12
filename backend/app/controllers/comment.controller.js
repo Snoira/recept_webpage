@@ -1,8 +1,8 @@
-const Recepie = require("../models/recepie.model.js")
-const User = require("../models/user.model.js")
-const Comment = require("../models/comment.model.js")
+import Recepie from "../models/recepie.model.js"
+import User from "../models/user.model.js"
+import Comment from "../models/comment.model.js"
 
-async function createComment(req, res) {
+export async function createComment(req, res) {
     const { content } = req.body
 
     const { id } = req.params
@@ -29,7 +29,7 @@ async function createComment(req, res) {
     }
 }
 
-async function getComments(req, res) {
+export async function getComments(req, res) {
     const { id } = req.params
     try {
         const recepie = await Recepie.findById(id)
@@ -48,7 +48,7 @@ async function getComments(req, res) {
     }
 }
 
-async function deleteComment(req, res) {
+export async function deleteComment(req, res) {
     const { id } = req.params
     const userId = req.userId
     try {
@@ -69,4 +69,3 @@ async function deleteComment(req, res) {
     }
 }
 
-module.exports = { createComment, getComments, deleteComment }

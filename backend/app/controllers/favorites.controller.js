@@ -1,7 +1,7 @@
-const Favorites = require('../models/favorites.model');
-const Recepie = require('../models/recepie.model');
+import Favorites from '../models/favorites.model.js';
+import Recepie from '../models/recepie.model.js';
 
-async function addToFavorites(req, res) {
+export async function addToFavorites(req, res) {
     // borde ändra till tydligare namn på variabler
     // const userId = req.body.user;
     const userId = req.userId;
@@ -42,7 +42,7 @@ async function addToFavorites(req, res) {
     }
 }
 
-async function getFavorites(req, res) {
+export async function getFavorites(req, res) {
     const user = req.userId;
     try {
         const savedFavorites = await Favorites.findOne({ user });
@@ -55,7 +55,7 @@ async function getFavorites(req, res) {
     }
 }
 
-async function removeFavorite(req, res) {
+export async function removeFavorite(req, res) {
     // const userId = req.body.user;
     const userId = req.userId;
     const recipeId = req.params.id;
@@ -85,9 +85,3 @@ async function removeFavorite(req, res) {
         console.log("Error removing favorite: ", error.message);
     }
 }
-
-module.exports = {
-    addToFavorites,
-    getFavorites,
-    removeFavorite
-};

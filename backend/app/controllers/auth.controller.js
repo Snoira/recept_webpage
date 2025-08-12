@@ -1,8 +1,8 @@
-const bcrypt = require('bcrypt');
-const User = require('../models/user.model.js');
-const { generateTokens } = require('../utils/token.js');
+import bcrypt from 'bcrypt';
+import User from '../models/user.model.js';
+import { generateTokens } from '../utils/token.js';
 
-async function registerUser(req, res) {
+export async function registerUser(req, res) {
     const {email, username} = req.body
     try {
         const checkEmail =  await User.find({email})
@@ -42,7 +42,7 @@ async function registerUser(req, res) {
 //     }
 // }
 
-async function loginUser(req, res) {
+export async function loginUser(req, res) {
     const { email, password } = req.body
     try {
         const user = await User.findOne({ email }).select("+password") //.select(["+password"]) i jonathans kod
@@ -65,7 +65,7 @@ async function loginUser(req, res) {
     }
 }
 
-async function getUser(req, res) {
+export async function getUser(req, res) {
     const userId = req.userId
     try {
         const users = await User.findById(userId)
@@ -102,9 +102,3 @@ async function getUser(req, res) {
 //         })
 //     }
 // }
-
-module.exports = {
-    registerUser,
-    loginUser,
-    getUser
-}

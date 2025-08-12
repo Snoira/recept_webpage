@@ -1,10 +1,10 @@
-const Express = require('express');
-const cors = require('cors');
+import Express from 'express';
+import cors from 'cors';
 // const { urlencoded } = require('express');
-const authRouter = require('./routes/auth.route.js');
-const recepieRouter = require('./routes/recepie.route.js');
-const favoritesRouter = require('./routes/favorites.route.js');
-const commentRouter = require('./routes/comment.route.js');
+import authRouter from './routes/auth.route.js';
+import recepieRouter from './routes/recepie.route.js';
+import favoritesRouter from './routes/favorites.route.js';
+import commentRouter from './routes/comment.route.js';
 
 
 const app = Express()
@@ -29,4 +29,4 @@ app.use('/favorites', favoritesRouter)
 app.use('/comment', commentRouter)
 
 
-module.exports = app;
+export default app;

@@ -1,6 +1,6 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
-function generateTokens(user){
+export function generateTokens(user){
     const accessToken = jwt.sign(
         {id: user.id},
         process.env.ACCESS_TOKEN_SECRET,
@@ -17,20 +17,14 @@ function generateTokens(user){
     }
 }
 
-function verifyAccessToken(token){
+export function verifyAccessToken(token){
     const verifiedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET) //const verifiedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => { if(err) return res.sendStatus(403) req.user = user next() }
     console.log("verify token", verifiedToken)
     return verifiedToken
 }
 
-function verifyRefreshToken(token){
+export function verifyRefreshToken(token){
     const verifiedToken = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET)
     console.log("verify token", verifiedToken)
     return verifiedToken
-}
-
-module.exports = {
-    generateTokens,
-    verifyAccessToken,
-    verifyRefreshToken
 }
