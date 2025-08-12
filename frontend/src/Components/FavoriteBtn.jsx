@@ -4,6 +4,8 @@ import { useUser } from '../Context/UserContext'
 import api from '../api'
 import { useToaster } from '../Context/ToasterContext'
 
+const FAVORITES_URL = `${import.meta.env.API_URL || 'http://localhost:8080'}/favorites`;
+
 const FavoriteBtn = ({ recepie }) => {
     //känns redundant med state om jag redan har favorites i localStorage... inte som user där man lätt vill importera ett state?
     //aja, backend verkar funka som den ska.
@@ -30,7 +32,7 @@ const FavoriteBtn = ({ recepie }) => {
         if(!isAuthenticated) return
         const fetchFavorites = async () => {
             try {
-                const res = await api.get(`http://localhost:5000/favorites/`)
+                const res = await api.get(FAVORITES_URL)
                 if (res.status === 200) {
                     console.log("favorites res.data", res.data)
                     setFavorites(res.data)
@@ -65,7 +67,7 @@ const FavoriteBtn = ({ recepie }) => {
             }
 
             if (isFavorite) {
-                const res = await api.put(`http://localhost:5000/favorites/remove/${recepie._id}`)
+                const res = await api.put(`${FAVORITES_URL}/remove/${recepie._id}`)
 
                 if (res.status === 200) {
                     setIsFavorite(false)
@@ -77,7 +79,7 @@ const FavoriteBtn = ({ recepie }) => {
                 }
 
             } else {
-                const res = await api.post(`http://localhost:5000/favorites/add/${recepie._id}`)
+                const res = await api.post(`${FAVORITES_URL}/add/${recepie._id}`)
                 if (res.status === 200) {
                     setIsFavorite(true)
                     setFavorites(res.data)

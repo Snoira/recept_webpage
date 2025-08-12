@@ -3,12 +3,14 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import RenderRecepies from '../Components/RenderRecepies';
 
+const API_URL = import.meta.env.API_URL || 'http://localhost:8080';
+
 function HomePage() {
   const [recepies, setRecepies] = useState([])
 
   useEffect(() => {
     const fetchRecepies = async () => {
-      const res = await axios.get('http://localhost:5000/recepies/')
+      const res = await axios.get(`${API_URL}/recepies/`)
       if (res.data) {
         setRecepies(res.data)
       } else {
