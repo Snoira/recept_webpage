@@ -1,5 +1,5 @@
-const Express = require('express');
-const { registerUser, loginUser, getUser } = require('../controllers/auth.controller.js');
+import Express from 'express';
+import  { registerUser, loginUser, getUser } from '../controllers/auth.controller.js';
 
 const authRouter = Express.Router();
 
@@ -7,7 +7,7 @@ authRouter.post('/register', registerUser)
 authRouter.post("/login", loginUser)
 // authRouter.get("/user", getUser)
 
-module.exports = authRouter;
+export default authRouter; 
 
 // {
 //     "email": "nora@velde.se",

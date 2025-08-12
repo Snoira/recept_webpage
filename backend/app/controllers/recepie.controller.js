@@ -1,9 +1,9 @@
-const Recepie = require("../models/recepie.model.js")
-const User = require("../models/user.model.js")
+import Recepie from "../models/recepie.model.js";
+import User from "../models/user.model.js";
 
 //errorhantering till utils, men ej prio
 
-async function createRecepie(req, res) {
+export async function createRecepie(req, res) {
     const { title, imageURL, alt, portions, time, category, descriptionText, ingredients, instructions, subRecepies } = req.body;
     const createdBy = req.userId
     try {
@@ -75,7 +75,7 @@ async function createRecepie(req, res) {
     }
 }
 
-async function getRecepies(req, res) {
+export async function getRecepies(req, res) {
 
     try {
         const recepies = await Recepie.find()
@@ -89,7 +89,7 @@ async function getRecepies(req, res) {
     }
 }
 
-async function editRecepie(req, res) {
+export async function editRecepie(req, res) {
     const reqBy = req.userId
     const recepieId = req.params.id
     const { title, imageURL, alt, portions, time, category, descriptionText, ingredients, instructions, subRecepies, _id } = req.body;
@@ -168,7 +168,7 @@ async function editRecepie(req, res) {
     }
 }
 
-async function deleteRecepie(req, res) {
+export async function deleteRecepie(req, res) {
     const recepieId = req.params.id
     const reqBy = req.userId
 
@@ -192,7 +192,7 @@ async function deleteRecepie(req, res) {
     }
 }
 
-async function getRecepiesByUser(req, res) {
+export async function getRecepiesByUser(req, res) {
     try {
         const user = req.userId
         if (!user) return res.status(400).json({ message: "Missing user" })
@@ -207,7 +207,7 @@ async function getRecepiesByUser(req, res) {
     }
 }
 
-async function getRecepieById(req, res) {
+export async function getRecepieById(req, res) {
     const recepieId = req.params.id
     try {
         const recepie = await Recepie.findById(recepieId)
@@ -222,7 +222,7 @@ async function getRecepieById(req, res) {
     }
 }
 
-async function likeRecepie(req, res) {
+export async function likeRecepie(req, res) {
     const recepieId = req.params.id
     const userId = req.userId
     try {
@@ -270,7 +270,7 @@ async function likeRecepie(req, res) {
     }
 }
 
-async function unlikeRecepie(req, res) {
+export async function unlikeRecepie(req, res) {
     const recepieId = req.params.id
     const userId = req.userId
     try {
@@ -322,7 +322,7 @@ async function unlikeRecepie(req, res) {
     }
 }
 
-async function getLikes(req, res) {
+export async function getLikes(req, res) {
     const recepieId = req.params.id
     try {
         const recepie = await Recepie.findById(recepieId)
@@ -337,16 +337,4 @@ async function getLikes(req, res) {
     } catch (error) {
         res.status(500).json({ error: error.message })
     }
-}
-
-module.exports = {
-    createRecepie,
-    getRecepies,
-    getRecepiesByUser,
-    getRecepieById,
-    editRecepie,
-    deleteRecepie,
-    likeRecepie,
-    unlikeRecepie,
-    getLikes
 }

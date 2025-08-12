@@ -6,6 +6,8 @@ import { useUser } from '../Context/UserContext'
 import SignInForm from "../Components/SignInForm"
 import RegisterForm from "../Components/RegisterForm"
 
+const AUTH_URL = `${import.meta.env.API_URL || 'http://localhost:8080'}/auth`;
+
 function LoginPage() {
   const [showRegister, setShowRegister] = useState(false)
   const { signInUser, } = useUser()
@@ -15,7 +17,7 @@ function LoginPage() {
 
   const logIn = async (inputs) => {
     try {
-      const res = await axios.post('http://localhost:5000/auth/login', inputs)
+      const res = await axios.post(`${AUTH_URL}/login`, inputs)
       if (res.status === 200) {
 
         console.log(res.data)
@@ -32,7 +34,7 @@ function LoginPage() {
 
   const register = async (inputs) => {
     try {
-      const res = await axios.post('http://localhost:5000/auth/register', inputs)
+      const res = await axios.post(`${AUTH_URL}/register`, inputs)
       if (res.status === 201) {
 
         signInUser(res.data)

@@ -1,6 +1,6 @@
-const fs = require("fs/promises");
+import fs from 'fs/promises';
 
-async function readDatabaseFile(path) {
+export async function readDatabaseFile(path) {
     if (!path) {
       throw new Error("No path given to file");
     }
@@ -12,5 +12,3 @@ async function readDatabaseFile(path) {
       throw new Error(error);
     }
   }
-
-  module.exports = {readDatabaseFile};

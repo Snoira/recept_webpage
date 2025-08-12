@@ -4,6 +4,8 @@ import { useUser } from '../Context/UserContext'
 import api from '../api'
 import { useToaster } from '../Context/ToasterContext'
 
+const COMMENT_URL = `${import.meta.env.API_URL || 'http://localhost:8080'}/comment`;
+
 const CommentSection = ({ recepie }) => {
     const [comments, setComments] = useState([])
     const { user } = useUser()
@@ -19,7 +21,7 @@ const CommentSection = ({ recepie }) => {
     useEffect(() => {
         const fetchComments = async () => {
             try {
-                const res = await api.get(`http://localhost:5000/comment/recepie/${recepie._id}`)
+                const res = await api.get(`${COMMENT_URL}/recepie/${recepie._id}`)
                 if (res.status === 200) {
                     console.log("comments res.data", res.data)
                     setComments(res.data)
@@ -40,7 +42,7 @@ const CommentSection = ({ recepie }) => {
                 navigate('/login', { state: { from: location } })
                 return
             }
-            const res = await api.post(`http://localhost:5000/comment/create/${recepie._id}`, { content })
+            const res = await api.post(`${COMMENT_URL}/create/${recepie._id}`, { content })
             if (res.status === 201) {
                 console.log("comment res.data", res.data)
                 setComments([...comments, res.data])
@@ -56,7 +58,7 @@ const CommentSection = ({ recepie }) => {
 
     const deleteComment = async (commentId) => {
         try {
-            const res = await api.delete(`http://localhost:5000/comment/delete/${commentId}`)
+            const res = await api.delete(`${COMMENT_URL}/delete/${commentId}`)
             if (res.status === 204) {
                 setComments(comments.filter(comment => comment._id !== commentId))
             } else {

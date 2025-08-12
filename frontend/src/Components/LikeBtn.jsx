@@ -5,6 +5,8 @@ import { useToaster } from '../Context/ToasterContext'
 import api from '../api'
 import axios from 'axios'
 
+const RECEPIE_URL = `${import.meta.env.API_URL || 'http://localhost:8080'}/recepies`;
+
 const LikeBtn = ({ recepie }) => {
     const [isLiked, setIsLiked] = useState(false)
     const { user } = useUser()
@@ -28,7 +30,7 @@ const LikeBtn = ({ recepie }) => {
         }
 
         if (isLiked) {
-            const res = await api.put(`http://localhost:5000/recepies/unlike/${recepie._id}`)
+            const res = await api.put(`${RECEPIE_URL}/unlike/${recepie._id}`)
             if (res.status === 200) {
                 console.log("Unlike")
                 setIsLiked(false)
@@ -36,7 +38,7 @@ const LikeBtn = ({ recepie }) => {
                 console.log("Error removing like")
             }
         } else {
-            const res = await api.put(`http://localhost:5000/recepies/like/${recepie._id}`)
+            const res = await api.put(`${RECEPIE_URL}/like/${recepie._id}`)
             if (res.status === 200) {
                 console.log("Like")
                 setIsLiked(true)
@@ -50,7 +52,7 @@ const LikeBtn = ({ recepie }) => {
     useEffect(() => {
         if (!isAuthenticated) return
         const fetchLikes = async () => {
-            const res = await axios.get(`http://localhost:5000/recepies/get/likes/${recepie._id}`)
+            const res = await axios.get(`${RECEPIE_URL}/get/likes/${recepie._id}`)
             if (res.status === 200) {
                 console.log(res.data)
                 if (res.data.includes(user._id)) {

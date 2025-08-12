@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const databaseURI = process.env.DATABASE_PATH
 
-function connect(){
+export function connect(){
     mongoose 
     .connect(databaseURI)
     .then(()=>{
@@ -21,5 +21,3 @@ function connect(){
 //         console.log("ERROR: Mongoose did not connect", error)
 //     }
 // }
-
-module.exports = {connect}

@@ -6,6 +6,8 @@ import RecepieForm from '../Components/RecepieForm';
 // import RenderRecepies from '../Components/RenderRecepies';
 import { useToaster } from '../Context/ToasterContext';
 
+const RECEPIE_URL = `${import.meta.env.API_URL || 'http://localhost:8080'}/recepies`;
+
 const UserPage = () => {
     const [subRecepies, setSubRecepies] = useState([])
     const [recepiesByUser, setRecepiesByUser] = useState([])
@@ -20,7 +22,7 @@ const UserPage = () => {
     const createRecepie = async (inputs) => {
         const recepie = { ...inputs, subRecepies: subRecepies }
         try {
-            const res = await api.post('http://localhost:5000/recepies/create', recepie)
+            const res = await api.post(`${RECEPIE_URL}/create`, recepie)
             if (res.status === 201) {
                 console.log(res.data)
                 successToaster(res.data.title, "created")
@@ -36,7 +38,7 @@ const UserPage = () => {
     useEffect(() => {
         const fetchRecepiesByUser = async () => {
             try {
-                const res = await api.get(`http://localhost:5000/recepies/user/`)
+                const res = await api.get(`${RECEPIE_URL}/user/`)
                 if (res.data) {
                     setRecepiesByUser(res.data)
                 } else {

@@ -11,6 +11,8 @@ import { useToaster } from '../Context/ToasterContext'
 import { useUser } from '../Context/UserContext'
 // import { useFavorites } from '../Context/FavoritesContext'
 
+const RECEPIE_URL = `${import.meta.env.API_URL || 'http://localhost:8080'}/recepies`;
+
 const RecepiePage = () => {
     const [editMode, setEditMode] = useState(false)
     const [subRecepies, setSubRecepies] = useState([])
@@ -25,7 +27,7 @@ const RecepiePage = () => {
 
     useEffect(() => {
         const fetchRecepie = async () => {
-            const res = await axios.get(`http://localhost:5000/recepies/${recepieId}`)
+            const res = await axios.get(`${RECEPIE_URL}/${recepieId}`)
             if (res.data) {
                 setRecepie(res.data)
                 console.log(res.data)
@@ -39,7 +41,7 @@ const RecepiePage = () => {
 
     const deleteRecepie = async () => {
         try {
-            const res = await api.delete(`http://localhost:5000/recepies/delete/${recepieId}`)
+            const res = await api.delete(`${RECEPIE_URL}/delete/${recepieId}`)
             if (res.status === 204) {
                 navigate('/')
                 successToaster(recepie.title, "deleted")
@@ -62,7 +64,7 @@ const RecepiePage = () => {
         const newRecepie = { ...values, subRecepies: subRecepies, _id: recepie._id }
 
         try {
-            const res = await api.put(`http://localhost:5000/recepies/edit/${recepieId}`, newRecepie)
+            const res = await api.put(`${RECEPIE_URL}/edit/${recepieId}`, newRecepie)
             if (res.status === 200) {
                 successToaster(recepie.title, "edited")
                 setRecepie(res.data)
