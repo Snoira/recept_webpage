@@ -1,5 +1,190 @@
-.background{
-    background-image: url('https://plus.unsplash.com/premium_photo-1712160355586-478ff10fb5aa?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDY4fHhqUFI0aGxrQkdBfHxlbnwwfHx8fHw%3D');
+*,
+*:after,
+*:before {
+    box-sizing: border-box;
+}
+
+.loginPage{
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    background-color: #E1E1E1;
+}
+
+.formContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 425px;
+    padding: 0.75rem;
+}
+
+.cardHeading {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #6d6e6e;
+    line-height: 1.222;
+    margin: 2rem 0;
+}
+
+.cardForm {
+    width: 100%;
+    padding: 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+input {
+    appearance: none;
+    border-radius: 0;
+}
+
+.input {
+    display: flex;
+    flex-direction: column-reverse;
+    position: relative;
+    padding-top: 1.5rem;
+
+    &+.input {
+        margin-top: 1.5rem;
+    }
+}
+
+.inputLabel {
+    color: #6d6e6e;
+    position: absolute;
+    top: 1.5rem;
+    transition: .25s ease;
+}
+
+/* .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+} */
+
+.inputField {
+    border: 0;
+    z-index: 1;
+    background-color: transparent;
+    border-bottom: 2px solid #6d6e6e;
+    font: inherit;
+    font-size: 1.125rem;
+    padding: .25rem 0;
+
+    &:focus,
+    &:valid,
+    &.isValid {
+        outline: transparent;
+        border-bottom-color: #6d6e6e;
+
+        &+.inputLabel {
+            color: #6d6e6e;
+            transform: translateY(-1.5rem);
+        }
+    }
+
+    &.isInvalid {
+        border-bottom-color: red;
+
+        &+.inputLabel {
+            color: red;
+            transform: translateY(-1.5rem);
+        }
+    }
+}
+
+.action {
+    margin-top: 2rem;
+}
+
+.actionButton {
+    font-size: 1.25rem;
+    padding: 1em;
+    width: 100%;
+    font-weight: 500;
+    background-color: #8e8e8e;
+    border-radius: 8px;
+    color: #FFFFFF;
+    border: 0;
+
+    &:focus {
+        outline: transparent;
+    }
+}
+
+.cardInfo {
+    padding: 1rem 1rem;
+    text-align: center;
+    font-size: .875rem;
+    color: #8e8e8e;
+
+    button {
+        color: #6d6e6e;
+        text-decoration: none;
+    }
 
 }
 
+
+/* .inputField:focus {
+    & ~ span {
+        position: relative;
+        &::before {
+            position: absolute;
+            right: -20px;
+            top: 5px;
+        }
+    }
+}
+&.isInvalid {
+    border-bottom-color: #AC3931;
+    & ~ span::before {
+        content: "✖";
+        color: #AC3931;
+    }
+}
+&.isValid {
+    &:valid ~ span::before {
+        content: "✓";
+        color: #2F69C6;
+    }
+} */
+
+/* .inputField ~ span {
+  position: relative;
+}
+
+.inputField ~ span::before {
+  position: absolute;
+  right: -20px;
+  top: 5px;
+}
+
+
+.inputField.isInvalid {
+    border-bottom-color: #AC3931;
+}
+
+.inputField.isInvalid ~ span::before {
+  content: "✖";
+  color: #AC3931;
+}
+
+.inputField:valid ~ span::before {
+  content: "✓";
+  color: #2F69C6;
+}
+
+.inputField:focus ~ span::before {
+  content: "✓";
+  color: #2F69C6;
+}
+.inputField:focus ~ span {
+  position: relative;
+} */

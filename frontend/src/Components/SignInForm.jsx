@@ -1,8 +1,32 @@
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-// import { useHistory } from 'react-router-dom'
+import style from '../Styles/LoginPage.module.css'
+import axios from 'axios';
+import { useUser } from '../Context/UserContext'
+import { useNavigate, useLocation } from 'react-router-dom'
 
-const SignInForm = ({ logIn, showRegisterComp }) => {
+const SignInForm = ({hasAccountAction}) => {
+
+  const { signInUser } = useUser()
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  const logIn = async (inputs) => {
+    try {
+      const res = await axios.post(`${AUTH_URL}/login`, inputs)
+      if (res.status === 200) {
+
+        console.log(res.data)
+        signInUser(res.data)
+        navigate(location.state?.from ? location.state.from : '/')
+
+      } else {
+        console.log('Error')
+      }
+    } catch (error) {
+      console.log('Error', error)
+    }
+  }
 
   const validationSchema = Yup.object({
     email: Yup.string()
@@ -26,67 +50,44 @@ const SignInForm = ({ logIn, showRegisterComp }) => {
   })
 
   return (
-    <>
-      <form onSubmit={formik.handleSubmit} className='form-floating'>
-        <div className='col-auto'>
-          <label htmlFor="email" className="float-start">Email</label>
-          <input type="email" id="email" className="form-control"
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
+    <div className={style.formContainer}>
+      <h2 className={style.cardHeading}>
+        Log in!
+      </h2>
+
+      <form onSubmit={formik.handleSubmit} className={style.cardForm}>
+        <div className={style.input}>
           {formik.touched.email && formik.errors.email ? (
             <div className='invalid-feedback'>{formik.errors.email}</div>
           ) : null}
-        </div>
-        <div className='col-auto'>
-          <label htmlFor="password" className="float-start">Password</label>
-          <input type="password" id="password" className="form-control"
-            value={formik.values.password}
+          <input type="email" id="email" className={`${style.inputField} ${formik.touched.email ? (formik.errors.email ? style.isInvalid : style.isValid) : ''}`}
+            value={formik.values.email}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
+            required
           />
+          <label htmlFor="email" className={style.inputLabel}>Email </label>
+        </div>
+        <div className={style.input}>
           {formik.touched.password && formik.errors.password ? (
             <div className='invalid-feedback'>{formik.errors.password}</div>
           ) : null}
+          <input type="password" id="password" className={`${style.inputField} ${formik.touched.password ? (formik.errors.password ? style.isInvalid : style.isValid) : ''}`}
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            required
+          />
+          <label htmlFor="password" className={style.inputLabel}>Password</label>
         </div>
-        <button type="submit" className="btn btn-primary">Sign In</button>
+        <div className={style.action}>
+          <button type="submit" className={style.actionButton}>Log In</button>
+        </div>
       </form>
-      <button onClick={showRegisterComp}>Register account</button>
-      
-
-
-      {/* <div> */}
-      {/* <div className='bg-light'>
-      <form >
-        <div className='mb-3'>
-          <label htmlFor="email" className="float-start">Email</label>
-          <input type="email" id="email" className="form-control" placeholder="exempel@email.com"
-            value={email} />
-        </div>
-        
-        <label className="input input-bordered flex items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-4 h-4 opacity-70"><path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" /><path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" /></svg>
-          <input type="text" placeholder="Email" 
-          className={`form-control ${formik.touched.imageURL ? formik.errors.imageURL ? "is-invalid" : "is-valid" : ""}`}
-          {...formik.getFieldProps("imageURL")} />
-        </label>
-        <div className='mb-3'>
-          <label htmlFor="password">Password</label>
-          <input type="password" id="password" className="form-control" placeholder="*********"
-            value={password} onVolumeChange={e => setPassword(e.target.value)} />
-        </div>
-        <label className="input input-bordered flex items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-4 h-4 opacity-70"><path fillRule="evenodd" d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z" clipRule="evenodd" /></svg>
-          <input type="password" value="password"
-          className={`form-control ${formik.touched.imageURL ? formik.errors.imageURL ? "is-invalid" : "is-valid" : ""}`}
-          {...formik.getFieldProps("imageURL")} />
-        </label>
-        <button type="submit" className="btn btn-primary">Sign In</button>
-      </form>
-      </div> */}
-
-    </>
+      <div className={style.cardInfo}>
+        <p>Don't have an account? <button onClick={hasAccountAction}>Sign up</button></p>
+      </div>
+    </div>
 
   )
 }

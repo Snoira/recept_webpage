@@ -1,4 +1,6 @@
-:root {
+@import 'tailwindcss';
+
+/* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -26,7 +28,7 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-}
+} */
 
 /* body:has(.login-page) {
   background:url("https://plus.unsplash.com/premium_photo-1712160355586-478ff10fb5aa?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDY4fHhqUFI0aGxrQkdBfHxlbnwwfHx8fHw%3D");
@@ -35,7 +37,7 @@ body {
   background-size: cover;
 } */
 
-h1 {
+/* h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
@@ -70,4 +72,4 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
-}
+} */
