@@ -1,32 +1,13 @@
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import style from '../Styles/LoginPage.module.css'
-import axios from 'axios';
-import { useUser } from '../Context/UserContext'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useSession } from '../Context/SessionContext'
 
-const SignInForm = ({hasAccountAction}) => {
 
-  const { signInUser } = useUser()
-  const navigate = useNavigate()
-  const location = useLocation()
+const SignInForm = ({ hasAccountAction }) => {
 
-  const logIn = async (inputs) => {
-    try {
-      const res = await axios.post(`${AUTH_URL}/login`, inputs)
-      if (res.status === 200) {
+  const { logIn } = useSession()
 
-        console.log(res.data)
-        signInUser(res.data)
-        navigate(location.state?.from ? location.state.from : '/')
-
-      } else {
-        console.log('Error')
-      }
-    } catch (error) {
-      console.log('Error', error)
-    }
-  }
 
   const validationSchema = Yup.object({
     email: Yup.string()
@@ -44,10 +25,19 @@ const SignInForm = ({hasAccountAction}) => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      console.log(values)
-      await logIn(values)
+      try {
+        await logIn(values)
+      } catch (error) {
+        //snygga till senare med modal eller liknande
+        alert(error.message)
+      }
     }
   })
+
+
+  if (formik.isSubmitting) {
+    return <div className={style.formContainer}>Logging in...</div>
+  }
 
   return (
     <div className={style.formContainer}>
@@ -84,6 +74,7 @@ const SignInForm = ({hasAccountAction}) => {
           <button type="submit" className={style.actionButton}>Log In</button>
         </div>
       </form>
+
       <div className={style.cardInfo}>
         <p>Don't have an account? <button onClick={hasAccountAction}>Sign up</button></p>
       </div>

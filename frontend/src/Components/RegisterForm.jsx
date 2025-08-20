@@ -1,33 +1,13 @@
 import { useFormik } from "formik"
 import * as Yup from "yup"
 import style from '../Styles/LoginPage.module.css'
-import axios from 'axios';
-import { useUser } from '../Context/UserContext'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useSession } from '../Context/SessionContext'
 
-const AUTH_URL = `${import.meta.env.API_URL || 'http://localhost:8080'}/auth`;
 
-const RegisterForm = ({hasAccountAction}) => {
+const RegisterForm = ({ hasAccountAction }) => {
 
-    const { signInUser } = useUser()
-    const navigate = useNavigate()
-    const location = useLocation()
+    const { register } = useSession()
 
-    const register = async (inputs) => {
-    try {
-        const res = await axios.post(`${AUTH_URL}/register`, inputs)
-        if (res.status === 201) {
-
-            signInUser(res.data)
-            navigate(location.state?.from ? location.state.from : '/')
-
-        } else {
-            console.log('Error')
-        }
-    } catch (error) {
-        console.log('Error', error)
-    }
-}
 
     const validationSchema = Yup.object({
         email: Yup.string()
@@ -57,8 +37,12 @@ const RegisterForm = ({hasAccountAction}) => {
         },
         validationSchema: validationSchema,
         onSubmit: async (values) => {
-            console.log(values)
-            await register(values)
+            try {
+                await register(values)
+            } catch (error) {
+                //snygga till senare med modal eller liknande 
+                alert(error.message)
+            }
         }
     })
 

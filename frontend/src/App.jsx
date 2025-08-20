@@ -5,6 +5,7 @@ import HomePage from './Pages/HomePage'
 import UserPage from './Pages/UserPage'
 import PrivateRoute from './Components/PrivateRoute'
 import { UserProvider } from './Context/UserContext'
+import { SessionProvider } from './Context/SessionContext'
 import { ToasterProvider } from './Context/ToasterContext'
 import { ToastContainer } from 'react-toastify'
 import Header from './Components/Header'
@@ -16,8 +17,8 @@ function App() {
   return (
     <>
       <UserProvider>
-        <ToasterProvider>
-            <Header />
+        <SessionProvider>
+          <ToasterProvider>
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/login" element={<LoginPage />} />
@@ -30,6 +31,7 @@ function App() {
               <Route path="*" element={<h1>404 Not Found</h1>} />
             </Routes>
         </ToasterProvider>
+        </SessionProvider>
       </UserProvider>
       <ToastContainer position="bottom-right"
         autoClose={5000}
