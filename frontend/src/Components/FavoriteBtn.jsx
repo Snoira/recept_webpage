@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useUser } from '../Context/UserContext'
-import api from '../api'
+import { useSession } from '../Context/SessionContext'
+import apiClient from '../api'
 import { useToaster } from '../Context/ToasterContext'
 
 const FAVORITES_URL = `${import.meta.env.API_URL || 'http://localhost:8080'}/favorites`;
@@ -19,11 +19,10 @@ const FavoriteBtn = ({ recepie }) => {
         return savedFavorites ? JSON.parse(savedFavorites).includes(recepie._id) : null
     })
 
-    const { user } = useUser()
+    const { user } = useSession()
     const { errorToaster } = useToaster()
 
-    const token = localStorage.getItem('token');
-    const isAuthenticated = !!token;
+    const isAuthenticated = !!user;
 
     const navigate = useNavigate()
     const location = useLocation()
@@ -32,7 +31,7 @@ const FavoriteBtn = ({ recepie }) => {
         if(!isAuthenticated) return
         const fetchFavorites = async () => {
             try {
-                const res = await api.get(FAVORITES_URL)
+                const res = await apiClient.get("/favorites")
                 if (res.status === 200) {
                     console.log("favorites res.data", res.data)
                     setFavorites(res.data)
@@ -67,7 +66,7 @@ const FavoriteBtn = ({ recepie }) => {
             }
 
             if (isFavorite) {
-                const res = await api.put(`${FAVORITES_URL}/remove/${recepie._id}`)
+                const res = await apiClient.put(`/favorites/remove/${recepie._id}`)
 
                 if (res.status === 200) {
                     setIsFavorite(false)
@@ -79,7 +78,7 @@ const FavoriteBtn = ({ recepie }) => {
                 }
 
             } else {
-                const res = await api.post(`${FAVORITES_URL}/add/${recepie._id}`)
+                const res = await apiClient.post(`/favorites/add/${recepie._id}`)
                 if (res.status === 200) {
                     setIsFavorite(true)
                     setFavorites(res.data)

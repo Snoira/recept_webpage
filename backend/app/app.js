@@ -1,6 +1,7 @@
 import Express from 'express';
 import cors from 'cors';
 // const { urlencoded } = require('express');
+import cookieParser from 'cookie-parser';
 import authRouter from './routes/auth.route.js';
 import recepieRouter from './routes/recepie.route.js';
 import favoritesRouter from './routes/favorites.route.js';
@@ -15,9 +16,10 @@ app.use(Express.urlencoded({ extended: true }))
 app.use(
     cors({
         origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
-        // credentials: true,
+        credentials: true,
     })
 )
+app.use(cookieParser())
 
 app.get('/', (req, res) => {
     res.send('Hello World')

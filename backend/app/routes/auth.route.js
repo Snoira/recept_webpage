@@ -1,13 +1,15 @@
 import Express from 'express';
-import  { registerUser, loginUser, getUser } from '../controllers/auth.controller.js';
+import { registerUser, loginUser, logoutUser, refreshToken } from '../controllers/auth.controller.js';
 
 const authRouter = Express.Router();
 
 authRouter.post('/register', registerUser)
 authRouter.post("/login", loginUser)
+authRouter.post("/logout", logoutUser)
+authRouter.post("/refresh", refreshToken)
 // authRouter.get("/user", getUser)
 
-export default authRouter; 
+export default authRouter;
 
 // {
 //     "email": "nora@velde.se",

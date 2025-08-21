@@ -1,58 +1,59 @@
 import { useEffect, useState } from 'react'
-import { useUser } from '../Context/UserContext'
+import { useSession } from '../Context/SessionContext'
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useToaster } from '../Context/ToasterContext'
-import api from '../api'
-import axios from 'axios'
+import apiClient from '../api'
+import { AxiosError } from 'axios';
 
-const RECEPIE_URL = `${import.meta.env.API_URL || 'http://localhost:8080'}/recepies`;
 
 const LikeBtn = ({ recepie }) => {
     const [isLiked, setIsLiked] = useState(false)
-    const { user } = useUser()
-    const { errorToaster } = useToaster()
-
-    const token = localStorage.getItem('token');
-    const isAuthenticated = !!token;
+    const { user, refreshToken } = useSession()
+    const isAuthenticated = !!user
+    const isDisabled = recepie.user._id === user?._id
 
     const navigate = useNavigate()
     const location = useLocation()
 
-
-    const handleLike = async () => {
-        if (!isAuthenticated) {
-            navigate('/login', { state: { from: location } })
-            return
-        }
-        else if (recepie.user._id === user._id) {
-            errorToaster("You can't like your own recepie")
-            return
-        }
-
-        if (isLiked) {
-            const res = await api.put(`${RECEPIE_URL}/unlike/${recepie._id}`)
-            if (res.status === 200) {
-                console.log("Unlike")
-                setIsLiked(false)
-            } else {
-                console.log("Error removing like")
+    const like = async () => {
+        try {
+            await apiClient.put(`/recepies/like/${recepie._id}`)
+            setIsLiked(true)
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                if (error.response?.status === 401) {
+                    const isRefreshed = await refreshToken()
+                    if (isRefreshed) return like()
+                }
             }
-        } else {
-            const res = await api.put(`${RECEPIE_URL}/like/${recepie._id}`)
-            if (res.status === 200) {
-                console.log("Like")
-                setIsLiked(true)
-            } else {
-                console.log("Error adding like")
-            }
+            return navigate('/login', { state: { from: location } })
         }
     }
 
+    const unlike = async () => {
+        try {
+            await apiClient.put(`/recepies/unlike/${recepie._id}`)
+            setIsLiked(false)
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                if (error.response?.status === 401) {
+                    const isRefreshed = await refreshToken()
+                    if (isRefreshed) return unlike()
+                }
+            }
+            return navigate('/login', { state: { from: location } })
+        }
+    }
+
+    const handleLike = async () => {
+        if (!isAuthenticated) return navigate('/login', { state: { from: location } })
+        if (isLiked) await unlike()
+        else await like()
+    }
 
     useEffect(() => {
         if (!isAuthenticated) return
         const fetchLikes = async () => {
-            const res = await axios.get(`${RECEPIE_URL}/get/likes/${recepie._id}`)
+            const res = await apiClient.get(`/recepies/get/likes/${recepie._id}`)
             if (res.status === 200) {
                 console.log(res.data)
                 if (res.data.includes(user._id)) {
