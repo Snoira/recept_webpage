@@ -1,28 +1,45 @@
 import bcrypt from 'bcrypt';
 import User from '../models/user.model.js';
-import { generateTokens } from '../utils/token.js';
+import { generateTokens, verifyRefreshToken } from '../utils/token.js';
+
+
+const accessTokenProperties = {
+    httpOnly: true,
+    maxAge: 15 * 60 * 1000, // 15 minutes
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'Strict'
+};
+const refreshTokenProperties = {
+    httpOnly: true,
+    maxAge: 24 * 3600 * 1000, // 24 hours
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'Strict'
+};
 
 export async function registerUser(req, res) {
-    const {email, username} = req.body
+    const { email, username } = req.body
     try {
-        const checkEmail =  await User.find({email})
-        if(!checkEmail) return res.status(400).json({ error: "Account already registered with email" })
-        
-        const checkUsername = await User.find({username}) 
-        if(!checkUsername) return res.status(400).json({error: "Username taken"})
+        const checkEmail = await User.find({ email })
+        if (!checkEmail) return res.status(400).json({ error: "Account already registered with email" })
 
-        const newUser = await User.create(req.body)
-        if (!newUser) return res.status(400).json({ error: "User not created" })
+        const checkUsername = await User.find({ username })
+        if (!checkUsername) return res.status(400).json({ error: "Username taken" })
 
-        const tokens = generateTokens(newUser)
-        if(!tokens) return res.status(400).json({ error: "Tokens not generated" })
+        const user = await User.create(req.body)
+        if (!user) return res.status(400).json({ error: "User not created" })
 
-        const account = {
-            newUser,
-            tokens
+        const tokens = generateTokens(user)
+        if (!tokens) return res.status(400).json({ error: "Tokens not generated" })
+
+        const safeUser = {
+            _id: user._id,
+            email: user.email,
+            username: user.username
         }
 
-        res.status(201).json(account)
+        res.cookie('accessToken', tokens.accessToken, accessTokenProperties)
+        res.cookie('refreshToken', tokens.refreshToken, refreshTokenProperties)
+        res.status(201).json(safeUser)
 
     } catch (error) {
         res.status(400).json({ error: error.message })
@@ -45,21 +62,26 @@ export async function registerUser(req, res) {
 export async function loginUser(req, res) {
     const { email, password } = req.body
     try {
+        console.log("LOGGING IN")
         const user = await User.findOne({ email }).select("+password") //.select(["+password"]) i jonathans kod
         if (!user) return res.status(404).json({ error: "User not found" })//404 eller 400? "Invalid credentials" för att göra en säkrare errorhantering
-    
+
         const isMatch = await bcrypt.compare(password, user.password)
         if (!isMatch) return res.status(401).json({ error: "Invalid credentials" })
-        
-        const tokens = generateTokens(user)
-        if(!tokens) return res.status(400).json({ error: "Tokens not generated" })
 
-        const account = {
-            user,
-            tokens
+        const tokens = generateTokens(user)
+        if (!tokens) return res.status(400).json({ error: "Tokens not generated" })
+
+        const safeUser = {
+            _id: user._id,
+            email: user.email,
+            username: user.username
         }
 
-        res.status(200).json(account)
+        res.cookie('accessToken', tokens.accessToken, accessTokenProperties)
+        res.cookie('refreshToken', tokens.refreshToken, refreshTokenProperties)
+        res.status(200).json(safeUser)
+
     } catch (error) {
         res.status(404).json({ error: error.message })
     }
@@ -102,3 +124,40 @@ export async function getUser(req, res) {
 //         })
 //     }
 // }
+
+export async function refreshToken(req, res) {
+    const { refreshToken } = req.cookies
+    if (!refreshToken) return res.status(403).json({ error: "No refresh token provided" })
+
+    try {
+        const verifiedToken = verifyRefreshToken(refreshToken)
+        if (!verifiedToken) return res.status(403).json({ error: "Invalid refresh token" })
+        console.log("verify token", verifiedToken.id)
+
+        const userId = verifiedToken.id
+        const user = await User.findById(userId)
+        if (!user) return res.status(404).json({ error: "User not found" })
+
+        const tokens = generateTokens(user)
+        if (!tokens) return res.status(400).json({ error: "Tokens not generated" })
+
+        const safeUser = {
+            _id: user._id,
+            email: user.email,
+            username: user.username
+        }
+
+        res.cookie('accessToken', tokens.accessToken, accessTokenProperties)
+        res.cookie('refreshToken', tokens.refreshToken, refreshTokenProperties)
+        res.status(200).json(safeUser)
+
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+}
+
+export async function logoutUser(req, res) {
+    res.clearCookie('accessToken', accessTokenProperties)
+    res.clearCookie('refreshToken', refreshTokenProperties)
+    res.status(200).json({ message: "Logged out successfully" })
+}

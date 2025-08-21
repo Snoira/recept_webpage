@@ -1,11 +1,10 @@
 import { createContext, useContext, useEffect, useCallback } from 'react'
 import { useState } from 'react'
-import axios, { AxiosError } from 'axios'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { useUser } from './UserContext'
+import { AxiosError } from 'axios'
+import apiClient from '../api'
 
 const SessionContext = createContext()
-const AUTH_URL = `${import.meta.env.API_URL ?? 'http://localhost:8080'}/auth`;
 
 export const SessionProvider = ({ children }) => {
     const [state, setState] = useState({
@@ -13,17 +12,15 @@ export const SessionProvider = ({ children }) => {
         userDetails: null,
     })
 
-    const { signInUser } = useUser()
-
     const navigate = useNavigate()
     const location = useLocation()
 
     const logIn = useCallback(
         async (inputs, redirectPath = "/") => {
             try {
-                const res = await axios.post(`${AUTH_URL}/login`, inputs)
-                setState({ isLoading: false, userDetails: res.data.user })
-                signInUser(res.data)
+                const res = await apiClient.post("/auth/login", inputs)
+                setState({ isLoading: false, userDetails: res.data })
+                console.log("User logged in", res.data)
                 navigate(location.state?.from ? location.state.from : redirectPath, { replace: true })
 
             } catch (error) {
@@ -37,9 +34,8 @@ export const SessionProvider = ({ children }) => {
 
     const register = async (inputs, redirectPath = "/") => {
         try {
-            const res = await axios.post(`${AUTH_URL}/register`, inputs)
+            const res = await apiClient.post("/auth/register", inputs)
             setState({ isLoading: false, userDetails: res.data.newUser })
-            signInUser(res.data)
             navigate(location.state?.from ? location.state.from : redirectPath, { replace: true })
 
         } catch (error) {
@@ -51,10 +47,40 @@ export const SessionProvider = ({ children }) => {
         }
     }
 
+    const refreshToken = async () => {
+        try {
+            console.log("refreshtoken function")
+            const res = await apiClient.post("/auth/refresh")
+            console.log("refreshtoken res.data", res.data)
+            setState({ isLoading: false, userDetails: res.data })
+            return true
+        } catch (error) {
+            setState({ isLoading: false, userDetails: null })
+            return false
+        }
+    }
 
+    const logOut = async () => {
+        try {
+            await apiClient.post("/auth/logout")
+            console.log("User logged out")
+        } catch (error) {
+            console.error("Error logging out:", error)
+        }
+        setState({ isLoading: false, userDetails: null })
+        navigate('/login', { replace: true })
+    }
+
+    const values = {
+        logIn,
+        logOut,
+        register,
+        refreshToken,  
+        user: state.userDetails,
+    }
 
     return (
-        <SessionContext.Provider value={{ logIn, register, user: state.userDetails }}>
+        <SessionContext.Provider value={values}>
             {children}
         </SessionContext.Provider>
     )
