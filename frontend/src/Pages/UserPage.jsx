@@ -1,18 +1,16 @@
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react';
-import { useUser } from '../Context/UserContext'
-import api from '../api';
+import { useSession } from '../Context/SessionContext'
+import apiClient from '../api';
 import RecepieForm from '../Components/RecepieForm';
 // import RenderRecepies from '../Components/RenderRecepies';
 import { useToaster } from '../Context/ToasterContext';
-
-const RECEPIE_URL = `${import.meta.env.API_URL || 'http://localhost:8080'}/recepies`;
 
 const UserPage = () => {
     const [subRecepies, setSubRecepies] = useState([])
     const [recepiesByUser, setRecepiesByUser] = useState([])
     const [showCreateRecepie, setShowCreateRecepie] = useState(false)
-    const { user } = useUser()
+    const { user } = useSession()
     const { errorToaster, successToaster } = useToaster()
 
     const addSubRecepie = (recepie) => {
@@ -22,7 +20,7 @@ const UserPage = () => {
     const createRecepie = async (inputs) => {
         const recepie = { ...inputs, subRecepies: subRecepies }
         try {
-            const res = await api.post(`${RECEPIE_URL}/create`, recepie)
+            const res = await apiClient.post(`/recepies/create`, recepie)
             if (res.status === 201) {
                 console.log(res.data)
                 successToaster(res.data.title, "created")
@@ -38,7 +36,7 @@ const UserPage = () => {
     useEffect(() => {
         const fetchRecepiesByUser = async () => {
             try {
-                const res = await api.get(`${RECEPIE_URL}/user/`)
+                const res = await apiClient.get(`/recepies/user/`)
                 if (res.data) {
                     setRecepiesByUser(res.data)
                 } else {

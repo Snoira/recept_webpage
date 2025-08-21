@@ -2,16 +2,15 @@ import React from 'react'
 import axios from 'axios'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import api from '../api'
+import apiClient from '../api'
 import FavoriteBtn from '../Components/FavoriteBtn'
 import LikeBtn from '../Components/LikeBtn'
 import CommentSection from '../Components/CommentSection'
 import RecepieForm from '../Components/RecepieForm'
 import { useToaster } from '../Context/ToasterContext'
-import { useUser } from '../Context/UserContext'
+import { useSession } from '../Context/SessionContext'
 // import { useFavorites } from '../Context/FavoritesContext'
 
-const RECEPIE_URL = `${import.meta.env.API_URL || 'http://localhost:8080'}/recepies`;
 
 const RecepiePage = () => {
     const [editMode, setEditMode] = useState(false)
@@ -20,14 +19,14 @@ const RecepiePage = () => {
 
     const { recepieId } = useParams()
     const { errorToaster, successToaster } = useToaster()
-    const { user } = useUser()
+    const { user } = useSession()
     // const { addFavorite, removeFavorite, favorites } = useFavorites()
 
     const navigate = useNavigate()
 
     useEffect(() => {
         const fetchRecepie = async () => {
-            const res = await axios.get(`${RECEPIE_URL}/${recepieId}`)
+            const res = await apiClient.get(`/recepies/${recepieId}`)
             if (res.data) {
                 setRecepie(res.data)
                 console.log(res.data)
@@ -41,7 +40,7 @@ const RecepiePage = () => {
 
     const deleteRecepie = async () => {
         try {
-            const res = await api.delete(`${RECEPIE_URL}/delete/${recepieId}`)
+            const res = await apiClient.delete(`/recepies/delete/${recepieId}`)
             if (res.status === 204) {
                 navigate('/')
                 successToaster(recepie.title, "deleted")
@@ -64,7 +63,7 @@ const RecepiePage = () => {
         const newRecepie = { ...values, subRecepies: subRecepies, _id: recepie._id }
 
         try {
-            const res = await api.put(`${RECEPIE_URL}/edit/${recepieId}`, newRecepie)
+            const res = await apiClient.put(`/recepies/edit/${recepieId}`, newRecepie)
             if (res.status === 200) {
                 successToaster(recepie.title, "edited")
                 setRecepie(res.data)

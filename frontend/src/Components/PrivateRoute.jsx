@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useSession } from '../Context/SessionContext';
 
 function PrivateRoute({ children }) {
-  const token = localStorage.getItem('token');
-  const isAuthenticated = !!token;
+  const { user } = useSession();
+  const isAuthenticated = !!user;
   const navigate = useNavigate();
   const location = useLocation();
 
