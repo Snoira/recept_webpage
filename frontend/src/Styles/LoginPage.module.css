@@ -35,9 +35,8 @@
     flex-direction: column;
 }
 
-input {
+.inputField {
     appearance: none;
-    border-radius: 0;
 }
 
 .input {

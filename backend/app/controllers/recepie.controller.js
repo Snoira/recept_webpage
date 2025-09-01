@@ -1,76 +1,55 @@
-import Recepie from "../models/recepie.model.js";
+import Recepie, { Recipe } from "../models/recepie.model.js";
 import User from "../models/user.model.js";
+import { recipeSchema, createRecipeSchema } from "../utils/validation.js";
+import { ZodError, prettifyError } from "zod";
 
 //errorhantering till utils, men ej prio
 
 export async function createRecepie(req, res) {
-    const { title, imageURL, alt, portions, time, category, descriptionText, ingredients, instructions, subRecepies } = req.body;
-    const createdBy = req.userId
+
+    const author = req.userId
+    // const { title, portions, time, categories, description, ingredientList, instructions, image } = req.body;
+
     try {
+        const recipeInputs = createRecipeSchema.parse(req.body)
+        
+            
 
-        if (!title) return res.status(400).json({ message: "Missing title" });
-        else if (!portions || !time || !category || !descriptionText) return res.status(400).json({ message: "Missing description information" });
-        else if (!imageURL || !alt) return res.status(400).json({ message: "Missing image information" });
-        else if (!ingredients || ingredients === "") return res.status(400).json({ message: "Missing ingredientList" });
-        else if (!instructions || instructions === "") return res.status(400).json({ message: "Missing instructions" })
-        else {
-            if (subRecepies && subRecepies.length > 0) {
-                subRecepies.forEach(obj => {
-                    const recepie = Recepie.findById(obj)
-                    if (!recepie) {
-                        return res.status(404).json({ message: "SubRecepie not found" }); //400 eller 404?
-                    }
-                })
-            }
-        }
-
-        //redunant kod?
-        const user = await User.findById(createdBy)
+        //redunant kod pga jwt verification?
+        const user = await User.findById(author)
         if (!user) return res.status(404).json({ message: "User not found" })
 
-        //tanken var från början att ha en mer utvecklad frontend för ingredienser och instruktion
-        //Detta lever kvar från dom ambitionerna... Finns lättare sätt att göra detta på men jag tror jag vill fortsätta på min ide senare
-        const ingredientList = ingredients.split("\n").map((item) => {
-            if (item === "") return
-            else if (!item.includes("-")) return { ingredient: item }
-            else {
-                const [amount, unit, ingredient] = item.split("-")
-                return { amount: parseFloat(amount), unit, ingredient }
-            }
-        })
 
-        let instructionList = []
+        res.status(201).json({ message: "Recipe created successfully" })
 
-        if (!instructions.includes("\n")) return res.status(400).json({ message: "Instructions must be separated by new lines" });
-        else instructionList = instructions.split("\n").filter(item => item !== "")
+        // const recipeInputs = {
+        //     author: user._id,
+        //     title,
+        //     description,
+        //     portions,
+        //     time,
+        //     categories,
+        //     ingredientsList,
+        //     instructions,
+        //     image,
+        // }
 
-        const recepieInputs = {
-            user,
-            title,
-            image: {
-                imageURL,
-                alt
-            },
-            description: {
-                portions,
-                time,
-                category,
-                descriptionText
-            },
-            ingredientList,
-            instructionList,
-        }
-
-        const newRecepie = await Recepie.create(recepieInputs)
-        await newRecepie.populate("user")
-        if (newRecepie) {
-            res.status(201).send(newRecepie);
-        } else {
-            res.status(400).json({ error: "Could not create recepie" })
-        }
+        // const newRecipe = await Recipe.create(recipeInputs)
+        // await newRecipe.populate("user")
+        // if (newRecipe) {
+        //     res.status(201).send(newRecipe);
+        // } else {
+        //     res.status(400).json({ error: "Could not create recipe" })
+        // }
 
     } catch (error) {
-        console.log("Error in createRecepie:", error);
+        if (error instanceof ZodError) {
+            const prettyError = prettifyError(error)
+            console.log("Validation error in createRecipe: \n", prettyError);
+            return res.status(400).json({ message: prettyError })
+        }
+
+        console.log("Error in createRecipe:", error);
         res.status(500).json({ error: error.message })
     }
 }

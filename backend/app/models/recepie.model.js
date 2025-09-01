@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
-const ENUM_UNIT = ['l', 'dl', 'cl', 'ml', 'msk', 'tsk', 'krm', 'g', 'hg', 'kg', 'st', 'nypa', 'kvistar', 'förp', 'påse'];
+const ENUM_UNIT = ['l', 'dl', 'cl', 'ml', 'msk', 'tsk', 'krm', 'g', 'hg', 'kg'];
 const ENUM_CATEGORY = ['Bakverk', 'Frukost', 'Lunch', 'Middag', 'Efterrätt', 'Dryck', 'Snacks', 'Sallad', 'Sås', 'Vegetariskt', 'Veganskt'];
 
 const IngredientItemSchema = new Schema({
@@ -23,7 +23,7 @@ const IngredientSectionSchema = new Schema({
 
 const StepSchema = new Schema({
     title: { type: String, trim: true, default: null },
-    steps: { type: [String], required: true }
+    steps: { type: [{ type: String, trim: true, min: 5 }], required: true }
 },
     { _id: false }
 )

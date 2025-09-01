@@ -114,7 +114,7 @@ select {
   }
 }
 
-.ingredientList {
+.ingredientGroup {
   border: 1px solid #ccc;
   border-radius: 8px;
   padding: 2rem 1rem;
@@ -129,6 +129,25 @@ select {
     right: 1rem;
     border-radius: 8px;
     cursor: pointer;
+  }
+
+  & .addButton{
+    grid-column: 1/-1;
+    justify-self: flex-start;
+    border: 2px solid #ccc;
+    background-color: white;
+    color: #848383;
+    & svg path{
+      stroke: #848383;
+    }
+    &:hover {
+      border-color: #525050;
+      color: #525050;
+
+      & svg path{
+        stroke: #525050;
+      }
+    }
   }
 }
 
@@ -286,6 +305,18 @@ select {
   }
 }
 
+.arrayError{
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 1rem;
+  color: #d32f2f;
+  svg{
+    width: 24px;
+    height: 24px;
+  }
+}
+
 .error {
   color: #d32f2f;
   position: relative;
@@ -364,7 +395,7 @@ select {
     gap: 0.25rem;
   }
 
-  .ingredientList {
+  .ingredientGroup {
     padding: 2rem 0;
     position: static;
     border: none;

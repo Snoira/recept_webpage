@@ -1,5 +1,5 @@
 import Header from '../Components/Header.jsx';
-import RecepieForm from '../Components/RecepieForm.jsx';
+import  RecepieForm from '../Components/RecepieForm.jsx';
 
 const CreateRecepie = () => {
 
@@ -8,6 +8,7 @@ const CreateRecepie = () => {
             <Header />
             <div>Create Recepie</div>
             <RecepieForm />
+           
         </>
     )
 }
