@@ -1,13 +1,11 @@
-import { useNavigate, useLocation } from 'react-router-dom'
-import { Formik, Form, useField, Field, FieldArray } from 'formik'
-import ConfirmDeleteModal from './ConfirmDeleteModal';
+import { useNavigate } from 'react-router-dom'
+import { Formik, Form, useField, FieldArray } from 'formik'
 import { useToaster } from '../Context/ToasterContext';
 import * as Yup from "yup";
 import style from '../Styles/RecipeForm.module.css'
 import apiClient from '../api.jsx';
 import { AxiosError } from 'axios';
 import { useSession } from '../Context/SessionContext.jsx';
-import { Children } from 'react';
 
 const ENUM_UNIT = ['l', 'dl', 'cl', 'ml', 'msk', 'tsk', 'krm', 'g', 'hg', 'kg'];
 const ENUM_CATEGORY = ['Bakverk', 'Frukost', 'Lunch', 'Middag', 'Efterrätt', 'Dryck', 'Snacks', 'Sallad', 'Sås', 'Vegetariskt', 'Veganskt'];

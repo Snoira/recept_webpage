@@ -1,4 +1,5 @@
-import Recepie, { Recipe } from "../models/recepie.model.js";
+import Recepie from "../models/recepie.model.js";
+import Recipe from "../models/recipe.model.js";
 import User from "../models/user.model.js";
 import { recipeSchema } from "../utils/validation.js";
 import { ZodError, prettifyError } from "zod";
@@ -44,7 +45,7 @@ export async function createRecepie(req, res) {
 
         const newRecipe = await Recipe.create(recipeInputs)
         await newRecipe.populate("author", "-password")
-        
+
         if (newRecipe) res.status(201).send(newRecipe);
 
 

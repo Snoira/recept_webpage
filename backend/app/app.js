@@ -6,6 +6,7 @@ import authRouter from './routes/auth.route.js';
 import recepieRouter from './routes/recepie.route.js';
 import favoritesRouter from './routes/favorites.route.js';
 import commentRouter from './routes/comment.route.js';
+import recipeRouter from './routes/recipe.route.js';
 
 
 const app = Express()
@@ -27,6 +28,7 @@ app.get('/', (req, res) => {
 
 app.use('/auth', authRouter)
 app.use('/recepies', recepieRouter)
+app.use('/recipes', recipeRouter)
 app.use('/favorites', favoritesRouter)
 app.use('/comment', commentRouter)
 
