@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSession } from '../Context/SessionContext'
 import apiClient from '../api'
-import { useToaster } from '../Context/ToasterContext'
 
 const FAVORITES_URL = `${import.meta.env.API_URL || 'http://localhost:8080'}/favorites`;
 
@@ -20,7 +19,6 @@ const FavoriteBtn = ({ recepie }) => {
     })
 
     const { user } = useSession()
-    const { errorToaster } = useToaster()
 
     const isAuthenticated = !!user;
 
@@ -44,7 +42,6 @@ const FavoriteBtn = ({ recepie }) => {
                     }
                 } else {
                     console.log(res.status)
-                    errorToaster("Something went wrong, try again later")
                 }
             } catch (error) {
                 console.log("Error fetching favorites", error)
@@ -61,7 +58,6 @@ const FavoriteBtn = ({ recepie }) => {
                 navigate('/login', { state: { from: location } })
                 return
             } else if (recepie.user._id === user._id) {
-                errorToaster("You can't favorite your own recepie")
                 return
             }
 
@@ -74,7 +70,6 @@ const FavoriteBtn = ({ recepie }) => {
                     if(res.data.length === 0) localStorage.removeItem('favoriteRec')
                 } else {
                     console.log(res.status)
-                    errorToaster("Something went wrong, try again later")
                 }
 
             } else {
@@ -89,7 +84,6 @@ const FavoriteBtn = ({ recepie }) => {
 
         } catch (error) {
             console.log("Error adding favorite", error)
-            errorToaster("Something went wrong, try again later")
         }
     }
 

@@ -7,7 +7,6 @@ import FavoriteBtn from '../Components/FavoriteBtn'
 import LikeBtn from '../Components/LikeBtn'
 import CommentSection from '../Components/CommentSection'
 import RecepieForm from '../Components/RecepieForm'
-import { useToaster } from '../Context/ToasterContext'
 import { useSession } from '../Context/SessionContext'
 // import { useFavorites } from '../Context/FavoritesContext'
 
@@ -18,7 +17,6 @@ const RecepiePage = () => {
     const [recepie, setRecepie] = useState(null)
 
     const { recepieId } = useParams()
-    const { errorToaster, successToaster } = useToaster()
     const { user } = useSession()
     // const { addFavorite, removeFavorite, favorites } = useFavorites()
 
@@ -43,12 +41,10 @@ const RecepiePage = () => {
             const res = await apiClient.delete(`/recepies/delete/${recepieId}`)
             if (res.status === 204) {
                 navigate('/')
-                successToaster(recepie.title, "deleted")
             } else if (res.status === 404) {
                 navigate('*')
             } else if (res.status === 401) {
                 console.log("Not authorized to delete this recepie")
-                errorToaster("You're not authorized to delete this recepie")
             }
             else {
                 console.log(res.status)
@@ -65,13 +61,11 @@ const RecepiePage = () => {
         try {
             const res = await apiClient.put(`/recepies/edit/${recepieId}`, newRecepie)
             if (res.status === 200) {
-                successToaster(recepie.title, "edited")
                 setRecepie(res.data)
                 setEditMode(false)
 
             } else if (res.status === 401) {
                 console.log("Not authorized to edit this recepie")
-                errorToaster("You're not authorized to edit this recepie")
             } else {
                 console.log(res.status)
             }

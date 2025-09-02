@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom'
 import { Formik, Form, useField, FieldArray } from 'formik'
-import { useToaster } from '../Context/ToasterContext';
 import * as Yup from "yup";
 import style from '../Styles/RecipeForm.module.css'
 import apiClient from '../api.jsx';
@@ -104,7 +103,6 @@ const ErrorMessage = ({ message }) => {
 };
 
 const RecepieForm = () => {
-    const { errorToaster, successToaster } = useToaster();
     const { refreshToken } = useSession()
     const navigate = useNavigate();
 
@@ -201,7 +199,6 @@ const RecepieForm = () => {
             const res = await apiClient.post(`/recepies/create`, cleanValues)
             console.log("Recipe created:", res.data)
             navigate(`/recepie/${res.data._id}`)
-            successToaster("success!")
 
         } catch (error) {
             if (error instanceof AxiosError) {
@@ -216,10 +213,8 @@ const RecepieForm = () => {
 
                 }
                 console.log("Error creating recipe:", error.response.data.message)
-                errorToaster("Error creating recipe " + error.response.data.message)
             }
             console.log("Error creating recipe:", error)
-            errorToaster("Error creating recipe")
         }
     }
 

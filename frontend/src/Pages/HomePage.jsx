@@ -9,10 +9,6 @@ const API_URL = import.meta.env.API_URL || 'http://localhost:8080';
 
 function HomePage() {
   const { recipes, isLoading, error } = useRecipe();
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading recipes</div>;
-
-  
   const [recepies, setRecepies] = useState([])
 
   useEffect(() => {
@@ -27,6 +23,9 @@ function HomePage() {
 
     fetchRecepies()
   }, [])
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading recipes</div>;
 
   return (
     <>

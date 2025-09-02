@@ -4,14 +4,12 @@ import { useSession } from '../Context/SessionContext'
 import apiClient from '../api';
 import RecepieForm from '../Components/RecepieForm';
 // import RenderRecepies from '../Components/RenderRecepies';
-import { useToaster } from '../Context/ToasterContext';
 
 const UserPage = () => {
     const [subRecepies, setSubRecepies] = useState([])
     const [recepiesByUser, setRecepiesByUser] = useState([])
     const [showCreateRecepie, setShowCreateRecepie] = useState(false)
     const { user } = useSession()
-    const { errorToaster, successToaster } = useToaster()
 
     const addSubRecepie = (recepie) => {
         setSubRecepies([...subRecepies, recepie])
@@ -23,10 +21,8 @@ const UserPage = () => {
             const res = await apiClient.post(`/recepies/create`, recepie)
             if (res.status === 201) {
                 console.log(res.data)
-                successToaster(res.data.title, "created")
             } else {
                 console.log("Error creating recepie", res.message)
-                errorToaster(res.message)
             }
         } catch (error) {
             console.log("Error creating recepie", error)

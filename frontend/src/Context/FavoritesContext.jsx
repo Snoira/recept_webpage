@@ -1,13 +1,11 @@
 // import { createContext, useContext, useEffect, useState } from 'react'
 // import api from '../api'
-// import { useToaster } from './ToasterContext'
 // import { useUser } from './UserContext'
 
 // const FavoritesContext = createContext()
 
 // export const FavoritesProvider = ({ children }) => {
 //     const [favorites, setFavorites] = useState([])
-//     const { errorToaster } = useToaster()
 //     const { user } = useUser()
 
 //     const addFavorite = async (recepieId) => {
@@ -19,11 +17,9 @@
 //                 console.log(res.data)
 //             } else {
 //                 console.log(res.status)
-//                 errorToaster("Something went wrong, try again later")
 //             }
 //         } catch (error) {
 //             console.log("Error saving as favorite", error)
-//             errorToaster("Something went wrong, try again later")
 //         }
 //     }
 
@@ -34,12 +30,10 @@
 //                 setFavorites(res.data)
 //             } else {
 //                 console.log(res.status)
-//                 errorToaster("Something went wrong, try again later")
 //             }
         
 //         }catch (error) {
 //             console.log("Error removing favorite", error)
-//             errorToaster("Something went wrong, try again later")
 //         }
 //     }
 

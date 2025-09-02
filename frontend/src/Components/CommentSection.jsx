@@ -2,12 +2,10 @@ import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom';
 import {useSession} from '../Context/SessionContext'
 import apiClient from '../api'
-import { useToaster } from '../Context/ToasterContext'
 
 const CommentSection = ({ recepie }) => {
     const [comments, setComments] = useState([])
     const { user } = useSession()
-    const { errorToaster } = useToaster()
     const [newComment, setNewComment] = useState('')
 
     const isAuthenticated = !!user;
@@ -24,7 +22,6 @@ const CommentSection = ({ recepie }) => {
                     setComments(res.data)
                 } else {
                     console.log(res.status)
-                    errorToaster("Something went wrong, try again later")
                 }
             } catch (error) {
                 console.log("Error fetching comments", error)
@@ -46,7 +43,6 @@ const CommentSection = ({ recepie }) => {
                 setNewComment('')
             } else {
                 console.log(res.status)
-                errorToaster("Something went wrong, try again later")
             }
         } catch (error) {
             console.log("Error creating comment", error)
@@ -60,7 +56,6 @@ const CommentSection = ({ recepie }) => {
                 setComments(comments.filter(comment => comment._id !== commentId))
             } else {
                 console.log(res.status)
-                errorToaster("Something went wrong, try again later")
             }
         } catch (error) {
             console.log("Error deleting comment", error)
