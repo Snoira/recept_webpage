@@ -1,6 +1,6 @@
 import Recepie, { Recipe } from "../models/recepie.model.js";
 import User from "../models/user.model.js";
-import { recipeSchema, createRecipeSchema } from "../utils/validation.js";
+import { recipeSchema } from "../utils/validation.js";
 import { ZodError, prettifyError } from "zod";
 
 //errorhantering till utils, men ej prio
@@ -11,36 +11,42 @@ export async function createRecepie(req, res) {
     // const { title, portions, time, categories, description, ingredientList, instructions, image } = req.body;
 
     try {
-        const recipeInputs = createRecipeSchema.parse(req.body)
-        
-            
+        if (!author) return res.status(400).json({ message: "Missing author" })
+        if (!req.body) return res.status(400).json({ message: "Missing recipe data" })
+
+        //validerar i tre steg, frontend, backend och mongoose. överdrivet eller bra?
+        const recipeInputs = recipeSchema.parse({ ...req.body, author })
+
+        console.log("recipeInputs: ", recipeInputs)
 
         //redunant kod pga jwt verification?
         const user = await User.findById(author)
         if (!user) return res.status(404).json({ message: "User not found" })
 
+        const capitalizeFirstLetter = (string) => {
+            const firstLetter = string.charAt(0).toUpperCase()
+            const restOfString = string.slice(1).toLowerCase()
+            return firstLetter + restOfString
+        }
 
-        res.status(201).json({ message: "Recipe created successfully" })
+        recipeInputs.title = capitalizeFirstLetter(recipeInputs.title)
+        recipeInputs.ingredients.map(group => {
+            if (group.title) group.title = capitalizeFirstLetter(group.title)
+            group.items.map(item => {
+                item.name = capitalizeFirstLetter(item.name)
+            })
+        })
+        recipeInputs.instructions.map(group => {
+            if (group.title) group.title = capitalizeFirstLetter(group.title)
+        })
 
-        // const recipeInputs = {
-        //     author: user._id,
-        //     title,
-        //     description,
-        //     portions,
-        //     time,
-        //     categories,
-        //     ingredientsList,
-        //     instructions,
-        //     image,
-        // }
+        //todo: vidare normalisering av data, t.ex amount+enhet (volym,vikt i ml,g) och liknande.
 
-        // const newRecipe = await Recipe.create(recipeInputs)
-        // await newRecipe.populate("user")
-        // if (newRecipe) {
-        //     res.status(201).send(newRecipe);
-        // } else {
-        //     res.status(400).json({ error: "Could not create recipe" })
-        // }
+        const newRecipe = await Recipe.create(recipeInputs)
+        await newRecipe.populate("author", "-password")
+        
+        if (newRecipe) res.status(201).send(newRecipe);
+
 
     } catch (error) {
         if (error instanceof ZodError) {
@@ -50,7 +56,7 @@ export async function createRecepie(req, res) {
         }
 
         console.log("Error in createRecipe:", error);
-        res.status(500).json({ error: error.message })
+        res.status(500).json({ message: error.message })
     }
 }
 

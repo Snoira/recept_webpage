@@ -159,16 +159,16 @@ const RecepieForm = () => {
 
     const validationSchema = Yup.object({
         title: Yup.string().trim().required("Required").min(2, "Must be at least 2 characters").max(100, "Must be 100 characters or less"),
-        time: Yup.number().min(5, "Must be at least 5 minutes").nullable(),
-        portions: Yup.number().min(1, "Must be at least 1").required("Required"),
+        time: Yup.number().min(5, "Must be at least 5 minutes").max(1440, "Must be 1440 minutes (24 hours) or less"),
+        portions: Yup.number().min(1, "Must be at least 1").max(100, "Must be 100 or less").required("Required"),
         description: Yup.string().trim().max(1000, "Must be 1000 characters or less").required("Required"),
-        categories: Yup.array().of(Yup.string().oneOf(ENUM_CATEGORY)),
+        categories: Yup.array().of(Yup.string().oneOf(ENUM_CATEGORY)).max(5, "Max 5 categories"),
         ingredients: Yup.array().of(
             Yup.object({
                 title: Yup.string().trim().max(100, "Must be 100 characters or less"),
                 items: Yup.array().of(Yup.object(
                     {
-                        amount: Yup.number().min(0, "Must be positive if used").nullable().test(
+                        amount: Yup.number().min(0.5, "Must be at least 0.5").max(1000, "Must be 1000 or less").test(
                             "amount-required-if-unit",
                             "Amount must be used if unit is specified",
                             function (value) {
@@ -179,18 +179,18 @@ const RecepieForm = () => {
                                 return true;
                             }
                         ),
-                        unit: Yup.string().oneOf(ENUM_UNIT).nullable(),
-                        name: Yup.string().trim().required("Required").max(100, "Must be 100 characters or less"),
-                        note: Yup.string().trim().nullable()
+                        unit: Yup.string().oneOf(ENUM_UNIT),
+                        name: Yup.string().trim().required("Required").min(2, "Must be at least 2 characters").max(100, "Must be 100 characters or less"),
+                        note: Yup.string().trim().max(100, "Must be 100 characters or less")
                     }
                 ).required("Must have ingredients")
-                ).min(1, "At least one ingredient is required")
+                ).min(1, "At least one ingredient is required").max(100, "Max 100 ingredients"),
             })
         ).min(1, "At least one ingredient section is required"),
-        instructions: Yup.array().of(Yup.string().trim().required("Required")).min(1, "At least one step is required"),
+        instructions: Yup.array().of(Yup.string().trim().required("Required").min(5, "Must be at least 5 characters").max(500, "Must be 500 characters or less")).min(1, "At least one step is required").max(50, "Max 50 steps"),
         image: Yup.object({
-            URL: Yup.string().trim().url("Invalid URL"),
-            alt: Yup.string().trim().max(500, "Must be 500 characters or less")
+            URL: Yup.string().trim().url("Invalid URL"), //säkerhetstänk här?? samma med framtida ändring till filuppladdning. 
+            alt: Yup.string().trim().min(2, "Must be at least 2 characters").max(500, "Must be 500 characters or less")
         })
     })
 
@@ -202,7 +202,7 @@ const RecepieForm = () => {
 
             const res = await apiClient.post(`/recepies/create`, cleanValues)
             console.log("Recipe created:", res.data)
-            // navigate(`/recepie/${res.data._id}`)
+            navigate(`/recepie/${res.data._id}`)
             successToaster("success!")
 
         } catch (error) {
@@ -224,8 +224,6 @@ const RecepieForm = () => {
             errorToaster("Error creating recipe")
         }
     }
-
-    const arrayTest = ["test1", "test2", "test3"];
 
     return (
         <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={createRecipe}>
