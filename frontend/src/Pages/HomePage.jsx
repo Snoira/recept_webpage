@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 // import { Link } from 'react-router-dom'
 import axios from 'axios';
 import RenderRecepies from '../Components/RenderRecepies';
-import RecipeCard from '../Components/RecipeCard';
+import RecipeCard, {PlaceHolderCard} from '../Components/RecipeCard';
 import { useRecipe } from '../Hooks/useRecipe';
 
 const API_URL = import.meta.env.API_URL || 'http://localhost:8080';
@@ -29,8 +29,10 @@ function HomePage() {
 
   return (
     <>
-      <h1>HomePage</h1>
-      <div>{recipes.map(recipe => <RecipeCard key={recipe._id} recipe={recipe} />)}</div>
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 p-2">
+        {recipes.map(recipe => <RecipeCard key={recipe._id} recipe={recipe} />)}
+        {[...Array(10)].map((_, i) => <PlaceHolderCard key={i} />)}
+      </div>
       <RenderRecepies recepies={recepies} from={"HomePage"} />
     </>
   )

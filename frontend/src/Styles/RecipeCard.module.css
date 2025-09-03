@@ -1,0 +1,81 @@
+.card {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    align-items: center;
+    border-radius: 12px;
+    border: 1px solid #dbdbdb;
+    overflow: hidden;
+
+    & h2 {
+        font-family: "Libre Baskerville", serif;
+        font-size: clamp(1em, 2vw, 1.6em);
+        font-weight: 700;
+    }
+
+    & p {
+        font-size: clamp(0.5em, 2vw, 1em);
+        font-weight: 400;
+    }
+}
+
+.cardContent {
+    padding: 0.5em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    /* margin-bottom: 36px; */
+}
+
+.cardImage {
+    /* border-radius: 12px; */
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    object-position: 50% 50%;
+}
+
+.categories {
+    /* display: none; */
+    margin-top: -1em;
+    width: fit-content;
+    background-color: #dbdbdb;
+    border-radius: 8px;
+    padding: 0.25em 0.5em;
+
+    & ul {
+        display: flex;
+        gap: 0.5em;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        & li {
+             font-size: clamp(0.5em, 1vw, 1em);
+            text-transform: uppercase;
+        }
+    }
+}
+
+.titleFlex {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.likes {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.9rem;
+    font-weight: 500;
+
+    & svg {
+        color: black;
+        width: 1.2em;
+        height: 1.2em;
+    }
+}

@@ -1,20 +1,30 @@
 @import 'tailwindcss';
 
-/* :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+:root {
+  font-family: "Libre Franklin", sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  --blue: #296eb4;
+  --green: #004f2d;
+  --eggshell: #FEFAE0;
+  --dark-red: #561d25;
+  --orange: #ff952b;
+  --white: hsl(0, 0%, 100%);
+  --dark: hsl(0, 0%, 7%);
+  --text-gray: hsl(0, 0%, 30%);
+  
+  /* color-scheme: light dark; */
+  /* color: rgba(255, 255, 255, 0.87); */
+  /* background-color: #242424; */
 
-  font-synthesis: none;
+  /* font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -moz-osx-font-smoothing: grayscale; */
 }
 
+/* 
 a {
   font-weight: 500;
   color: #646cff;
@@ -23,12 +33,13 @@ a {
 a:hover {
   color: #535bf2;
 }
-
+*/
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-} */
+}
+
 
 /* body:has(.login-page) {
   background:url("https://plus.unsplash.com/premium_photo-1712160355586-478ff10fb5aa?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDY4fHhqUFI0aGxrQkdBfHxlbnwwfHx8fHw%3D");
