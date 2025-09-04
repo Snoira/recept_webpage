@@ -62,12 +62,10 @@ export async function getRecipes(req, res) {
     try {
         //TODO: olika queries for filter, sort, search etc
 
-        console.log("Getting all recipes")
         const recipes = await Recipe.find()
             .populate("author", "-password -email -createdAt -updatedAt -__v")
             .sort({ createdAt: -1 })
 
-        console.log(`Found ${recipes.length} recipes`)
         res.status(200).json(recipes)
 
     } catch (error) {
@@ -75,3 +73,21 @@ export async function getRecipes(req, res) {
         res.status(500).json({ message: error.message })
     }
 }
+
+export async function getRecipeById(req, res) {
+    const recipeId = req.params.id
+    try {
+        console.log("Fetching recipe with ID:", recipeId);
+        if (!recipeId) return res.status(400).json({ error: "Missing recipe ID" })
+
+        const recipe = await Recipe.findById(recipeId)
+            .populate("author", "-password -email -createdAt -updatedAt -__v")
+        console.log("Found recipe:", recipe);
+        res.status(200).json(recipe)
+
+    } catch (error) {
+        console.log("Error in getRecipeById:", error);
+        res.status(500).json({ error: error.message })
+    }
+}
+

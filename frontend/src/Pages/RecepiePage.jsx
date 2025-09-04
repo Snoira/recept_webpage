@@ -8,6 +8,7 @@ import LikeBtn from '../Components/LikeBtn'
 import CommentSection from '../Components/CommentSection'
 import RecepieForm from '../Components/RecepieForm'
 import { useSession } from '../Context/SessionContext'
+import { useRecipeById } from '../Hooks/useRecipe'
 // import { useFavorites } from '../Context/FavoritesContext'
 
 
@@ -17,6 +18,7 @@ const RecepiePage = () => {
     const [recepie, setRecepie] = useState(null)
 
     const { recepieId } = useParams()
+    const { data, isLoading, error } = useRecipeById(recepieId);
     const { user } = useSession()
     // const { addFavorite, removeFavorite, favorites } = useFavorites()
 
@@ -78,6 +80,9 @@ const RecepiePage = () => {
         setEditMode(!editMode)
     }
 
+    if(isLoading) return <div>Loading...</div>
+    if(error) return <div>Error loading recepie</div>
+    if(data) return <div>{data.title}</div>
     return (
         <>
             {recepie ? editMode ?

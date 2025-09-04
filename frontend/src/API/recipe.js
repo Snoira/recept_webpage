@@ -33,3 +33,13 @@ export const getRecipes = async () => {
         throw error;
     }
 }
+
+export const getRecipeByID = async (id) => {
+    try {
+        const res = await apiClient.get(`/recipes/${id}`)
+        return res.data
+    } catch (error) {
+        console.error(`Error fetching recipe ${id}:`, error.response?.data.message || error.message);
+        throw error;
+    }
+}

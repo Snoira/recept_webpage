@@ -7,26 +7,28 @@ import PrivateRoute from './Components/PrivateRoute'
 import { SessionProvider } from './Context/SessionContext'
 import Header from './Components/Header'
 import RecepiePage from './Pages/RecepiePage'
+import RecipePage from './Pages/RecipePage'
 
 function App() {
 
 
   return (
     <>
-        <SessionProvider>
-            <Header />
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/user" element={
-                <PrivateRoute>
-                  <UserPage />
-                </PrivateRoute>
-              } />
-              <Route path="/recepie/:recepieId" element={<RecepiePage />} />
-              <Route path="*" element={<h1>404 Not Found</h1>} />
-            </Routes>
-        </SessionProvider>
+      <SessionProvider>
+          <Header />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/user" element={
+            <PrivateRoute>
+              <UserPage />
+            </PrivateRoute>
+          } />
+          <Route path="/recipe/:recipeId" element={<RecipePage />} />
+          <Route path="/recepie/:recepieId" element={<RecepiePage />} />
+          <Route path="*" element={<h1>404 Not Found</h1>} />
+        </Routes>
+      </SessionProvider>
     </>
   )
 }

@@ -1,5 +1,5 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { getRecipes, createRecipe } from '../API/recipe.js'
+import { getRecipes, createRecipe, getRecipeByID } from '../API/recipe.js'
 
 export const useRecipe = () => {
     const { data, isLoading, error } = useQuery({
@@ -22,5 +22,19 @@ export const useRecipe = () => {
         isLoading,
         error,
         create
+    }
+}
+
+export const useRecipeById = (id) => {
+    const { data, isLoading, error } = useQuery({
+        queryKey: ['recipes', id],
+        queryFn: () => getRecipeByID(id),
+        enabled: !!id // only run the query if id is truthy
+    })
+
+    return {
+        recipe: data,
+        isLoading,
+        error
     }
 }
