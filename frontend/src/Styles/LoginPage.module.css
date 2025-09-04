@@ -56,16 +56,6 @@
     transition: .25s ease;
 }
 
-/* .tooltip .tooltiptext {
-    visibility: hidden;
-    width: 120px;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    padding: 5px 0;
-    border-radius: 6px;
-} */
-
 .inputField {
     border: 0;
     z-index: 1;
@@ -137,60 +127,8 @@
 
 }
 
+@media screen and (min-width: 768px) {
+ 
 
-/* .inputField:focus {
-    & ~ span {
-        position: relative;
-        &::before {
-            position: absolute;
-            right: -20px;
-            top: 5px;
-        }
-    }
+    
 }
-&.isInvalid {
-    border-bottom-color: #AC3931;
-    & ~ span::before {
-        content: "✖";
-        color: #AC3931;
-    }
-}
-&.isValid {
-    &:valid ~ span::before {
-        content: "✓";
-        color: #2F69C6;
-    }
-} */
-
-/* .inputField ~ span {
-  position: relative;
-}
-
-.inputField ~ span::before {
-  position: absolute;
-  right: -20px;
-  top: 5px;
-}
-
-
-.inputField.isInvalid {
-    border-bottom-color: #AC3931;
-}
-
-.inputField.isInvalid ~ span::before {
-  content: "✖";
-  color: #AC3931;
-}
-
-.inputField:valid ~ span::before {
-  content: "✓";
-  color: #2F69C6;
-}
-
-.inputField:focus ~ span::before {
-  content: "✓";
-  color: #2F69C6;
-}
-.inputField:focus ~ span {
-  position: relative;
-} */

@@ -9,40 +9,22 @@
 
     & h2 {
         font-family: "Libre Baskerville", serif;
-        font-size: clamp(1em, 2vw, 1.6em);
-        font-weight: 700;
+        font-size: clamp(0.8em, 7cqi, 1.2em);
+        font-weight: 500;
     }
 
     & p {
-        font-size: clamp(0.5em, 2vw, 1em);
+        font-size: 12px;
         font-weight: 400;
     }
 }
 
-.cardContent {
-    padding: 0.5em;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    /* margin-bottom: 36px; */
-}
-
-.cardImage {
-    /* border-radius: 12px; */
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    object-position: 50% 50%;
-}
-
 .categories {
-    /* display: none; */
     margin-top: -1em;
     width: fit-content;
-    background-color: #dbdbdb;
+    background-color: #ffffffcc;
     border-radius: 8px;
-    padding: 0.25em 0.5em;
+    padding: 0.25em 0.5em; 
 
     & ul {
         display: flex;
@@ -52,25 +34,36 @@
         margin: 0;
 
         & li {
-             font-size: clamp(0.5em, 1vw, 1em);
+            font-size: 12px;
             text-transform: uppercase;
         }
     }
 }
 
-.titleFlex {
+.cardContent {
+    padding: 0.5em;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
-    flex-wrap: wrap;
+    align-items: center;
+    text-align: center;
+    gap: 0.5em;
+    aspect-ratio: 3/2;
 }
+
+.cardImage {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    object-position: 50% 50%;
+    background-color: #dbdbdb;
+}
+
 
 .likes {
     display: flex;
     align-items: center;
     gap: 4px;
-    font-size: 0.9rem;
+    font-size: 12px;
     font-weight: 500;
 
     & svg {
@@ -78,4 +71,12 @@
         width: 1.2em;
         height: 1.2em;
     }
+}
+
+@media screen and (max-width: 450px) {
+    .categories {
+       display: none;
+    }
+
+
 }

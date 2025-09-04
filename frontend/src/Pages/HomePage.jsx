@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-// import { Link } from 'react-router-dom'
 import axios from 'axios';
 import RenderRecepies from '../Components/RenderRecepies';
 import RecipeCard, {PlaceHolderCard} from '../Components/RecipeCard';
@@ -29,7 +28,7 @@ function HomePage() {
 
   return (
     <>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 p-2">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4 p-2 sm:p-4 max-w-6xl">
         {recipes.map(recipe => <RecipeCard key={recipe._id} recipe={recipe} />)}
         {[...Array(10)].map((_, i) => <PlaceHolderCard key={i} />)}
       </div>

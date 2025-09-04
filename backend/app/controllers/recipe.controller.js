@@ -64,6 +64,7 @@ export async function getRecipes(req, res) {
 
         console.log("Getting all recipes")
         const recipes = await Recipe.find()
+            .populate("author", "-password -email -createdAt -updatedAt -__v")
             .sort({ createdAt: -1 })
 
         console.log(`Found ${recipes.length} recipes`)

@@ -44,6 +44,7 @@ const RecipeSchema = new Schema(
             URL: { type: String, trim: true },
             alt: { type: String, trim: true, min: 2, max: 500 }
         },
+        
         likes: [{
             type: Schema.Types.ObjectId,
             ref: 'User'
