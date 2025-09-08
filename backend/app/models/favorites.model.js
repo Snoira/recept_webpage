@@ -7,9 +7,9 @@ const favoritesSchema = new Schema({
         ref: 'User',
         required: true
     },
-    recepieList: [{
+    recipes: [{
         type: Schema.Types.ObjectId,
-        ref: 'Recepie',
+        ref: 'Recipe',
     }]
   
 }, {

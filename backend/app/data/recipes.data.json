@@ -1,0 +1,529 @@
+[
+  {
+    "title": "Klassisk Kanelbulle",
+    "portions": 12,
+    "description": "Mjuka och saftiga kanelbullar med pärlsocker.",
+    "time": 120,
+    "categories": ["Bakverk", "Efterrätt"],
+    "ingredients": [
+      {
+        "title": "Deg",
+        "items": [
+          { "amount": 25, "unit": "g", "name": "jäst" },
+          { "amount": 2.5, "unit": "dl", "name": "mjölk" },
+          { "amount": 75, "unit": "g", "name": "smör" },
+          { "amount": 0.5, "unit": "dl", "name": "socker" },
+          { "amount": 7, "unit": "dl", "name": "vetemjöl" }
+        ]
+      },
+      {
+        "title": "Fyllning",
+        "items": [
+          { "amount": 50, "unit": "g", "name": "smör" },
+          { "amount": 0.5, "unit": "dl", "name": "socker" },
+          { "amount": 2, "unit": null, "name": "msk kanel" }
+        ]
+      }
+    ],
+    "instructions": [
+      "Smula jästen i en bunke och tillsätt ljummen mjölk.",
+      "Blanda i smör, socker och mjöl. Arbeta till en smidig deg.",
+      "Låt jäsa under duk i 40 minuter.",
+      "Kavla ut degen och bred på fyllningen.",
+      "Rulla ihop och skär i bitar. Lägg på plåt.",
+      "Jäs ytterligare 30 minuter.",
+      "Pensla med ägg och strö över pärlsocker.",
+      "Grädda i 225°C i ca 8 minuter."
+    ]
+  },
+  {
+    "title": "Vegetarisk Lasagne",
+    "portions": 6,
+    "description": "Lasagne med zucchini, morot och tomatsås.",
+    "time": 90,
+    "categories": ["Middag", "Vegetariskt"],
+    "ingredients": [
+      {
+        "title": null,
+        "items": [
+          { "amount": 1, "unit": null, "name": "zucchini" },
+          { "amount": 2, "unit": null, "name": "morötter" },
+          { "amount": 1, "unit": null, "name": "gul lök" },
+          { "amount": 2, "unit": "msk", "name": "tomatpuré" },
+          { "amount": 400, "unit": "g", "name": "krossade tomater" },
+          { "amount": 9, "unit": null, "name": "lasagneplattor" },
+          { "amount": 2, "unit": "dl", "name": "riven ost" }
+        ]
+      }
+    ],
+    "instructions": [
+      "Hacka och fräs grönsaker i olja.",
+      "Tillsätt tomatpuré och krossade tomater.",
+      "Varva sås och lasagneplattor i en form.",
+      "Toppa med ost.",
+      "Grädda i 200°C i 40 minuter."
+    ]
+  },
+  {
+    "title": "Havregrynsgröt",
+    "portions": 2,
+    "description": "Enkel och nyttig frukostgröt.",
+    "time": 10,
+    "categories": ["Frukost", "Vegetariskt"],
+    "ingredients": [
+      {
+        "title": null,
+        "items": [
+          { "amount": 2, "unit": "dl", "name": "havregryn" },
+          { "amount": 4, "unit": "dl", "name": "vatten" },
+          { "amount": 0.5, "unit": "tsk", "name": "salt" }
+        ]
+      }
+    ],
+    "instructions": [
+      "Koka upp vatten och salt.",
+      "Tillsätt havregryn och koka i 3 minuter.",
+      "Servera med mjölk och bär."
+    ]
+  },
+  {
+    "title": "Kycklinggryta med curry",
+    "portions": 4,
+    "description": "Krämig kycklinggryta med curry och ris.",
+    "time": 40,
+    "categories": ["Middag"],
+    "ingredients": [
+      {
+        "title": null,
+        "items": [
+          { "amount": 500, "unit": "g", "name": "kycklingfilé" },
+          { "amount": 1, "unit": null, "name": "gul lök" },
+          { "amount": 2, "unit": "dl", "name": "grädde" },
+          { "amount": 1, "unit": "msk", "name": "curry" },
+          { "amount": 2, "unit": "dl", "name": "ris" }
+        ]
+      }
+    ],
+    "instructions": [
+      "Skär kycklingen i bitar och bryn i panna.",
+      "Tillsätt hackad lök och curry.",
+      "Häll på grädde och låt sjuda 15 minuter.",
+      "Koka ris enligt anvisning.",
+      "Servera grytan med ris."
+    ]
+  },
+  {
+    "title": "Chokladbollar",
+    "portions": 20,
+    "description": "Snabba och goda chokladbollar med kokos.",
+    "time": 20,
+    "categories": ["Bakverk", "Efterrätt", "Snacks"],
+    "ingredients": [
+      {
+        "title": null,
+        "items": [
+          { "amount": 100, "unit": "g", "name": "smör" },
+          { "amount": 1, "unit": "dl", "name": "socker" },
+          { "amount": 3, "unit": "dl", "name": "havregryn" },
+          { "amount": 2, "unit": "msk", "name": "kakao" },
+          { "amount": 1, "unit": "msk", "name": "kaffe" },
+          { "amount": 1, "unit": "dl", "name": "kokosflingor" }
+        ]
+      }
+    ],
+    "instructions": [
+      "Blanda alla ingredienser utom kokos.",
+      "Forma till bollar och rulla i kokos.",
+      "Ställ kallt före servering."
+    ]
+  },
+  {
+    "title": "Tomatsoppa",
+    "portions": 4,
+    "description": "Värmande tomatsoppa med basilika.",
+    "time": 30,
+    "categories": ["Lunch", "Vegetariskt", "Sallad"],
+    "ingredients": [
+      {
+        "title": null,
+        "items": [
+          { "amount": 1, "unit": null, "name": "gul lök" },
+          { "amount": 2, "unit": "msk", "name": "tomatpuré" },
+          { "amount": 500, "unit": "g", "name": "krossade tomater" },
+          { "amount": 5, "unit": "dl", "name": "grönsaksbuljong" },
+          { "amount": 1, "unit": "dl", "name": "grädde" },
+          { "amount": 1, "unit": "msk", "name": "färsk basilika" }
+        ]
+      }
+    ],
+    "instructions": [
+      "Fräs lök och tomatpuré.",
+      "Tillsätt tomater och buljong.",
+      "Koka 15 minuter.",
+      "Mixa soppan slät.",
+      "Rör ner grädde och basilika."
+    ]
+  },
+  {
+    "title": "Pannkakor",
+    "portions": 4,
+    "description": "Tunna pannkakor, perfekta med sylt.",
+    "time": 30,
+    "categories": ["Frukost", "Lunch", "Efterrätt"],
+    "ingredients": [
+      {
+        "title": null,
+        "items": [
+          { "amount": 2.5, "unit": "dl", "name": "vetemjöl" },
+          { "amount": 6, "unit": "dl", "name": "mjölk" },
+          { "amount": 3, "unit": null, "name": "ägg" },
+          { "amount": 0.5, "unit": "tsk", "name": "salt" }
+        ]
+      }
+    ],
+    "instructions": [
+      "Vispa ihop mjöl, mjölk, ägg och salt.",
+      "Stek tunna pannkakor i smör.",
+      "Servera med sylt och grädde."
+    ]
+  },
+  {
+    "title": "Grön Smoothie",
+    "portions": 2,
+    "description": "Fräsch smoothie med spenat och banan.",
+    "time": 5,
+    "categories": ["Frukost", "Dryck", "Vegetariskt"],
+    "ingredients": [
+      {
+        "title": null,
+        "items": [
+          { "amount": 1, "unit": null, "name": "banan" },
+          { "amount": 2, "unit": "dl", "name": "spenat" },
+          { "amount": 2, "unit": "dl", "name": "äppeljuice" }
+        ]
+      }
+    ],
+    "instructions": [
+      "Mixa alla ingredienser till en slät smoothie.",
+      "Servera direkt."
+    ]
+  },
+  {
+    "title": "Potatissallad",
+    "portions": 6,
+    "description": "Kall potatissallad med örter.",
+    "time": 40,
+    "categories": ["Sallad", "Lunch", "Vegetariskt"],
+    "ingredients": [
+      {
+        "title": null,
+        "items": [
+          { "amount": 800, "unit": "g", "name": "potatis" },
+          { "amount": 1, "unit": "dl", "name": "majonnäs" },
+          { "amount": 1, "unit": "dl", "name": "crème fraiche" },
+          { "amount": 2, "unit": "msk", "name": "färska örter" }
+        ]
+      }
+    ],
+    "instructions": [
+      "Koka potatis och låt svalna.",
+      "Skär i bitar och blanda med övriga ingredienser.",
+      "Servera kall."
+    ]
+  },
+  {
+    "title": "Rabarberpaj",
+    "portions": 8,
+    "description": "Söt och syrlig rabarberpaj med smuldeg.",
+    "time": 60,
+    "categories": ["Efterrätt", "Bakverk"],
+    "ingredients": [
+      {
+        "title": null,
+        "items": [
+          { "amount": 500, "unit": "g", "name": "rabarber" },
+          { "amount": 1, "unit": "dl", "name": "socker" },
+          { "amount": 150, "unit": "g", "name": "smör" },
+          { "amount": 3, "unit": "dl", "name": "vetemjöl" },
+          { "amount": 1, "unit": "dl", "name": "havregryn" }
+        ]
+      }
+    ],
+    "instructions": [
+      "Skär rabarber i bitar och lägg i form.",
+      "Strö över socker.",
+      "Blanda smör, mjöl och havregryn till smuldeg.",
+      "Fördela över rabarbern.",
+      "Grädda i 200°C i 30 minuter."
+    ]
+  },
+  {
+    "title": "Falafel",
+    "portions": 4,
+    "description": "Krispiga falafelbollar med kikärtor.",
+    "time": 45,
+    "categories": ["Middag", "Vegetariskt", "Veganskt"],
+    "ingredients": [
+      {
+        "title": null,
+        "items": [
+          { "amount": 400, "unit": "g", "name": "kokta kikärtor" },
+          { "amount": 1, "unit": null, "name": "gul lök" },
+          { "amount": 2, "unit": "msk", "name": "persilja" },
+          { "amount": 2, "unit": "msk", "name": "mjöl" },
+          { "amount": 1, "unit": "tsk", "name": "spiskummin" }
+        ]
+      }
+    ],
+    "instructions": [
+      "Mixa kikärtor, lök och kryddor.",
+      "Forma till bollar och rulla i mjöl.",
+      "Fritera gyllene."
+    ]
+  },
+  {
+    "title": "Spenatsoppa",
+    "portions": 4,
+    "description": "Klassisk spenatsoppa med ägghalvor.",
+    "time": 25,
+    "categories": ["Lunch", "Vegetariskt"],
+    "ingredients": [
+      {
+        "title": null,
+        "items": [
+          { "amount": 400, "unit": "g", "name": "fryst spenat" },
+          { "amount": 1, "unit": "l", "name": "mjölk" },
+          { "amount": 2, "unit": "msk", "name": "mjöl" },
+          { "amount": 1, "unit": "tsk", "name": "salt" },
+          { "amount": 2, "unit": null, "name": "ägg" }
+        ]
+      }
+    ],
+    "instructions": [
+      "Koka upp mjölk och spenat.",
+      "Vispa ner mjöl och salt.",
+      "Koka äggen och dela i halvor.",
+      "Servera soppan med ägghalvor."
+    ]
+  },
+  {
+    "title": "Grillad lax med citron",
+    "portions": 4,
+    "description": "Saftig laxfilé med citron och dill.",
+    "time": 30,
+    "categories": ["Middag", "Sallad"],
+    "ingredients": [
+      {
+        "title": null,
+        "items": [
+          { "amount": 600, "unit": "g", "name": "laxfilé" },
+          { "amount": 1, "unit": null, "name": "citron" },
+          { "amount": 2, "unit": "msk", "name": "färsk dill" },
+          { "amount": 1, "unit": "tsk", "name": "salt" }
+        ]
+      }
+    ],
+    "instructions": [
+      "Lägg laxen i en ugnsform.",
+      "Pressa citron över och strö på dill och salt.",
+      "Grilla i ugn 20 minuter på 200°C."
+    ]
+  },
+  {
+    "title": "Äppelpaj",
+    "portions": 8,
+    "description": "Klassisk äppelpaj med kanel.",
+    "time": 60,
+    "categories": ["Efterrätt", "Bakverk"],
+    "ingredients": [
+      {
+        "title": null,
+        "items": [
+          { "amount": 4, "unit": null, "name": "äpplen" },
+          { "amount": 1, "unit": "dl", "name": "socker" },
+          { "amount": 2, "unit": "msk", "name": "kanel" },
+          { "amount": 150, "unit": "g", "name": "smör" },
+          { "amount": 3, "unit": "dl", "name": "vetemjöl" }
+        ]
+      }
+    ],
+    "instructions": [
+      "Skiva äpplen och lägg i form.",
+      "Strö över socker och kanel.",
+      "Blanda smör och mjöl till smuldeg.",
+      "Fördela över äpplena.",
+      "Grädda i 200°C i 30 minuter."
+    ]
+  },
+  {
+    "title": "Pastasallad med fetaost",
+    "portions": 4,
+    "description": "Fräsch pastasallad med grönsaker och fetaost.",
+    "time": 25,
+    "categories": ["Lunch", "Sallad", "Vegetariskt"],
+    "ingredients": [
+      {
+        "title": null,
+        "items": [
+          { "amount": 300, "unit": "g", "name": "pasta" },
+          { "amount": 1, "unit": null, "name": "gurka" },
+          { "amount": 2, "unit": null, "name": "tomater" },
+          { "amount": 150, "unit": "g", "name": "fetaost" },
+          { "amount": 1, "unit": "dl", "name": "oliver" }
+        ]
+      }
+    ],
+    "instructions": [
+      "Koka pastan och låt svalna.",
+      "Skär grönsaker och blanda med pasta.",
+      "Tillsätt fetaost och oliver."
+    ]
+  },
+  {
+    "title": "Morotskaka",
+    "portions": 10,
+    "description": "Saftig morotskaka med färskostglasyr.",
+    "time": 70,
+    "categories": ["Bakverk", "Efterrätt"],
+    "ingredients": [
+      {
+        "title": null,
+        "items": [
+          { "amount": 3, "unit": null, "name": "ägg" },
+          { "amount": 3, "unit": "dl", "name": "socker" },
+          { "amount": 3, "unit": "dl", "name": "rivna morötter" },
+          { "amount": 3, "unit": "dl", "name": "vetemjöl" },
+          { "amount": 2, "unit": "tsk", "name": "bakpulver" },
+          { "amount": 1, "unit": "dl", "name": "olja" }
+        ]
+      },
+      {
+        "title": "Glasyr",
+        "items": [
+          { "amount": 100, "unit": "g", "name": "färskost" },
+          { "amount": 2, "unit": "dl", "name": "florsocker" }
+        ]
+      }
+    ],
+    "instructions": [
+      "Vispa ägg och socker.",
+      "Tillsätt morötter, mjöl, bakpulver och olja.",
+      "Grädda i 175°C i 40 minuter.",
+      "Blanda färskost och florsocker till glasyr.",
+      "Bred över kakan när den svalnat."
+    ]
+  },
+  {
+    "title": "Bananpannkakor",
+    "portions": 2,
+    "description": "Enkla pannkakor med banan.",
+    "time": 15,
+    "categories": ["Frukost", "Vegetariskt"],
+    "ingredients": [
+      {
+        "title": null,
+        "items": [
+          { "amount": 2, "unit": null, "name": "bananer" },
+          { "amount": 2, "unit": null, "name": "ägg" }
+        ]
+      }
+    ],
+    "instructions": [
+      "Mosa bananerna och vispa ihop med ägg.",
+      "Stek små pannkakor i smör.",
+      "Servera med bär."
+    ]
+  },
+  {
+    "title": "Sallad Nicoise",
+    "portions": 4,
+    "description": "Fransk sallad med tonfisk och ägg.",
+    "time": 30,
+    "categories": ["Lunch", "Sallad"],
+    "ingredients": [
+      {
+        "title": null,
+        "items": [
+          { "amount": 200, "unit": "g", "name": "tonfisk" },
+          { "amount": 4, "unit": null, "name": "ägg" },
+          { "amount": 200, "unit": "g", "name": "gröna bönor" },
+          { "amount": 8, "unit": null, "name": "potatisar" },
+          { "amount": 1, "unit": "dl", "name": "oliver" }
+        ]
+      }
+    ],
+    "instructions": [
+      "Koka potatis och ägg.",
+      "Blanda med tonfisk, bönor och oliver.",
+      "Servera med dressing."
+    ]
+  },
+  {
+    "title": "Rödbetssallad",
+    "portions": 4,
+    "description": "Sallad med kokta rödbetor och fetaost.",
+    "time": 40,
+    "categories": ["Sallad", "Vegetariskt"],
+    "ingredients": [
+      {
+        "title": null,
+        "items": [
+          { "amount": 400, "unit": "g", "name": "rödbetor" },
+          { "amount": 150, "unit": "g", "name": "fetaost" },
+          { "amount": 1, "unit": "dl", "name": "valnötter" }
+        ]
+      }
+    ],
+    "instructions": [
+      "Koka rödbetorna och skär i bitar.",
+      "Blanda med fetaost och valnötter.",
+      "Servera med olivolja."
+    ]
+  },
+  {
+    "title": "Klassisk köttfärssås",
+    "portions": 4,
+    "description": "Mustig köttfärssås med tomat.",
+    "time": 40,
+    "categories": ["Middag"],
+    "ingredients": [
+      {
+        "title": null,
+        "items": [
+          { "amount": 500, "unit": "g", "name": "nötfärs" },
+          { "amount": 1, "unit": null, "name": "gul lök" },
+          { "amount": 2, "unit": "msk", "name": "tomatpuré" },
+          { "amount": 400, "unit": "g", "name": "krossade tomater" },
+          { "amount": 2, "unit": "dl", "name": "vatten" }
+        ]
+      }
+    ],
+    "instructions": [
+      "Fräs lök och köttfärs.",
+      "Tillsätt tomatpuré och tomater.",
+      "Häll på vatten och låt sjuda 20 minuter.",
+      "Servera med pasta."
+    ]
+  },
+  {
+    "title": "Vegansk chokladmousse",
+    "portions": 4,
+    "description": "Len chokladmousse utan animaliska produkter.",
+    "time": 20,
+    "categories": ["Efterrätt", "Veganskt"],
+    "ingredients": [
+      {
+        "title": null,
+        "items": [
+          { "amount": 200, "unit": "g", "name": "mörk choklad" },
+          { "amount": 2, "unit": "dl", "name": "kokosgrädde" }
+        ]
+      }
+    ],
+    "instructions": [
+      "Smält chokladen och blanda med kokosgrädde.",
+      "Vispa fluffigt och häll upp i glas.",
+      "Ställ kallt före servering."
+    ]
+  }
+]

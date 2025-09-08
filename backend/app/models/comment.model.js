@@ -7,9 +7,9 @@ const commentSchema = new Schema({
         ref: 'User',
         required: true
     },
-    recepie: {
+    recipe: {
         type: Schema.Types.ObjectId,
-        ref: 'Recepie',
+        ref: 'Recipe',
         required: true
     },
     content: {

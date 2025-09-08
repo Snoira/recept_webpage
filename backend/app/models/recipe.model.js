@@ -1,9 +1,13 @@
 import mongoose from "mongoose";
+import { ENUM_UNIT, ENUM_CATEGORY } from "../utils/validation.js";
 
 const { Schema } = mongoose;
 
-const ENUM_UNIT = ['l', 'dl', 'cl', 'ml', 'msk', 'tsk', 'krm', 'g', 'hg', 'kg'];
-const ENUM_CATEGORY = ['Bakverk', 'Frukost', 'Lunch', 'Middag', 'Efterrätt', 'Dryck', 'Snacks', 'Sallad', 'Sås', 'Vegetariskt', 'Veganskt'];
+const arrayLimit = (max) => {
+    return function (val) {
+        return val.length <= max;
+    };
+};
 
 const IngredientItemSchema = new Schema({
     amount: { type: Number, min: 0.5, max: 1000, default: null },
@@ -16,14 +20,11 @@ const IngredientItemSchema = new Schema({
 
 const IngredientGroupSchema = new Schema({
     title: { type: String, trim: true, default: null },
-    items: { type: [IngredientItemSchema], required: true }
-},
-    { _id: false }
-)
-
-const StepSchema = new Schema({
-    title: { type: String, trim: true, default: null },
-    steps: { type: [{ type: String, trim: true, min: 5, max: 1000 }], required: true }
+    items: { 
+        type: [IngredientItemSchema], 
+        required: true,
+        validate: [arrayLimit(30), '{PATH} exceeds the limit of 30 items']
+    }
 },
     { _id: false }
 )
@@ -32,19 +33,28 @@ const RecipeSchema = new Schema(
     {
         author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
         title: { type: String, trim: true, required: true, min: 2, max: 100 },
-        portions: { type: Number, min: 1, max: 100, default: 4, required: true },
-        description: { type: String, trim: true, min: 5, max: 1000, required: true },
-        time: { type: Number, min: 5, max: 1440, default: null },
-        categories: [{ type: String, enum: ENUM_CATEGORY }],
-
-        ingredients: { type: [IngredientGroupSchema], required: true },
-        instructions: { type: [StepSchema], required: true },
-
+        portions: { type: Number, default: 4, required: true, min: 1, max: 100 },
+        description: { type: String, trim: true, required: true, min: 5, max: 1000 },
+        time: { type: Number, default: null, min: 5, max: 1440 },
+        categories: {
+            type: [{ type: String, enum: ENUM_CATEGORY }],
+            default: null,
+            validate: [arrayLimit(3), '{PATH} exceeds the limit of 3 categories']
+        },
+        ingredients: {
+            type: [IngredientGroupSchema],
+            required: true,
+            validate: [arrayLimit(10), '{PATH} exceeds the limit of 10 groups']
+        },
+        instructions: {
+            type: [{ type: String, trim: true, min: 5, max: 1000 }],
+            required: true,
+            validate: [arrayLimit(50), '{PATH} exceeds the limit of 50 steps']
+        },
         image: {
             URL: { type: String, trim: true },
             alt: { type: String, trim: true, min: 2, max: 500 }
         },
-        
         likes: [{
             type: Schema.Types.ObjectId,
             ref: 'User'

@@ -1,0 +1,32 @@
+[
+  {
+    "email": "sally@example.com",
+    "username": "sally",
+    "role": "user",
+    "rating": 0
+  },
+  {
+    "email": "bob@example.com",
+    "username": "bob",
+    "role": "user",
+    "rating": 0
+  },
+  {
+    "email": "karin@example.com",
+    "username": "karin",
+    "role": "user",
+    "rating": 0
+  },
+  {
+    "email": "dan@example.com",
+    "username": "dan",
+    "role": "admin",
+    "rating": 0
+  },
+  {
+    "email": "eva@example.com",
+    "username": "eva",
+    "role": "user",
+    "rating": 0
+  }
+]

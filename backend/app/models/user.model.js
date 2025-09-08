@@ -8,49 +8,39 @@ const userSchema = new mongoose.Schema(
             required: true,
             unique: true,
             match: /^[^@]+@[^@]+\.[^@]+$/,
+            trim: true,
+            lowercase: true,
+            minlength: 5,
+            maxlength: 100,
         },
         password: {
             type: String,
             required: true,
             minlength: 8,
+            maxlength: 100,
+            trim: true,
             select: false,
             validate: {
                 validator: function (value) {
-
-                    return value.length > 7
-
+                    return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(value);
                 },
-                message: "Password must be at least 8 characters long"
+                message: "Password must be at least 8 characters long and include a letter, a number, and a special character"
             }
         },
         username: {
             type: String,
             required: true,
             unique: true,
-            validate: {
-                validator: async function (value) {
-                    // const user = await User.findOne({
-                    //     username: value
-                    // })
-                    return value.length > 3
-                },
-                message: "Username must be at least 3 characters long"
-            }
+            minlength: 3,
+            maxlength: 30,
+            trim: true,
+        
         },
-        // role: {
-        //     type: String,
-        //     enum: ["user", "admin"],
-        //     default: "user",
-        // },
-        avatar: {
+        role: {
             type: String,
+            enum: ["user", "admin"],
+            default: "user",
         },
-        // favorites: [
-        //     {
-        //         type: mongoose.Schema.Types.ObjectId,
-        //         ref: "Recipe",
-        //     }
-        // ],
         rating: {
             type: Number,
             default: 0,
