@@ -15,19 +15,21 @@ function App() {
   return (
     <>
       <SessionProvider>
-          <Header />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/user" element={
-            <PrivateRoute>
-              <UserPage />
-            </PrivateRoute>
-          } />
-          <Route path="/recipe/:recipeId" element={<RecipePage />} />
-          <Route path="/recepie/:recepieId" element={<RecepiePage />} />
-          <Route path="*" element={<h1>404 Not Found</h1>} />
-        </Routes>
+        <Header />
+        <main className="main-content">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/user" element={
+              <PrivateRoute>
+                <UserPage />
+              </PrivateRoute>
+            } />
+            <Route path="/recipe/:recipeId" element={<RecipePage />} />
+            <Route path="/recepie/:recepieId" element={<RecepiePage />} />
+            <Route path="*" element={<h1>404 Not Found</h1>} />
+          </Routes>
+        </main>
       </SessionProvider>
     </>
   )

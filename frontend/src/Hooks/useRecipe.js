@@ -29,7 +29,7 @@ export const useRecipeById = (id) => {
     const { data, isLoading, error } = useQuery({
         queryKey: ['recipes', id],
         queryFn: () => getRecipeByID(id),
-        enabled: !!id // only run the query if id is truthy
+        enabled: !!id 
     })
 
     return {

@@ -30,9 +30,8 @@ function HomePage() {
     <>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4 p-2 sm:p-4 max-w-6xl place-self-center">
         {recipes.map(recipe => <RecipeCard key={recipe._id} recipe={recipe} />)}
-        {[...Array(10)].map((_, i) => <PlaceHolderCard key={i} />)}
+        {/* {[...Array(10)].map((_, i) => <PlaceHolderCard key={i} />)} */}
       </div>
-      <RenderRecepies recepies={recepies} from={"HomePage"} />
     </>
   )
 }
