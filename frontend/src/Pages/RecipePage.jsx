@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom'
 import { useRecipeById } from '../Hooks/useRecipe'
+import FavoriteBtn from '../Components/FavoriteBtn';
 
 const RecipePage = () => {
     const { recipeId } = useParams()
@@ -16,6 +17,7 @@ const RecipePage = () => {
             <div className="p-4 flex flex-col gap-4">
                 <h1 className='text-2xl font-bold'>{recipe.title}</h1>
                 <p className='text-gray-700'>{recipe.description}</p>
+                <FavoriteBtn recipeId={recipe._id} />
             </div>
             <div className="p-4 flex flex-col gap-4">
                 <h2 className="text-xl font-semibold">Ingredients:</h2>

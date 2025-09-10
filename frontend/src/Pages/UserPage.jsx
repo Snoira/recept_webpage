@@ -3,6 +3,9 @@ import { useState, useEffect } from 'react';
 import { useSession } from '../Context/SessionContext'
 import apiClient from '../api';
 import RecepieForm from '../Components/RecepieForm';
+import { useFavoriteRecipes } from '../Hooks/useFavorites';
+import RecipeCard from '../Components/RecipeCard';
+import Recipe from '../../../backend/app/models/recipe.model';
 // import RenderRecepies from '../Components/RenderRecepies';
 
 const UserPage = () => {
@@ -10,6 +13,7 @@ const UserPage = () => {
     const [recepiesByUser, setRecepiesByUser] = useState([])
     const [showCreateRecepie, setShowCreateRecepie] = useState(false)
     const { user } = useSession()
+    const { favoriteRecipes, isLoading } = useFavoriteRecipes()
 
     const addSubRecepie = (recepie) => {
         setSubRecepies([...subRecepies, recepie])
@@ -46,6 +50,9 @@ const UserPage = () => {
 
     }, [])
 
+    if(isLoading) return <p>Loading...</p>
+    
+
     return (
         <>
             <h1>
@@ -63,6 +70,20 @@ const UserPage = () => {
                 </ul>
                 : <p>You haven't created any recepies of your own yet.</p>
             }
+            <section>
+                <h2>Your favorite recepies</h2>
+                {favoriteRecipes.length > 0 ?
+                // TODO: horisontell scroller komponent
+                    <ul className="grid grid-cols-4 gap-4">
+                        {
+                            favoriteRecipes.map((recepie, i) => {
+                                return <RecipeCard key={i} recipe={recepie} />
+                            })
+                        }
+                    </ul>
+                    : <p>You haven't added any recepies to your favorites yet.</p>
+                }
+            </section>
         </>
     )
 }
