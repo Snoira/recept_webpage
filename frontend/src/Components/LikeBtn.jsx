@@ -1,78 +1,44 @@
-import { useEffect, useState } from 'react'
 import { useSession } from '../Context/SessionContext'
 import { useNavigate, useLocation } from 'react-router-dom';
-import apiClient from '../api'
-import { AxiosError } from 'axios';
+import { useLikes } from '../Hooks/useLikes.js'
+import { useState } from 'react';
+import style from '../Styles/RecipeCard.module.css'
 
 
-const LikeBtn = ({ recepie }) => {
-    const [isLiked, setIsLiked] = useState(false)
-    const { user, refreshToken } = useSession()
-    const isAuthenticated = !!user
-    const isDisabled = recepie.user._id === user?._id
+
+const LikeBtn = ({ recipe }) => {
+    console.log("LikeBtn recipe prop:", recipe);
+    const { user } = useSession()
+    const { likes, unlike, like } = useLikes(recipe?._id);
+    const [isLiked, setIsLiked] = useState(likes?.includes(user?._id) || false);
+    const isDisabled = recipe?.author._id === user?._id;
+
 
     const navigate = useNavigate()
-    const location = useLocation()
+    const location = useLocation();
 
-    const like = async () => {
-        try {
-            await apiClient.put(`/recepies/like/${recepie._id}`)
-            setIsLiked(true)
-        } catch (error) {
-            if (error instanceof AxiosError) {
-                if (error.response?.status === 401) {
-                    const isRefreshed = await refreshToken()
-                    if (isRefreshed) return like()
-                }
-            }
-            return navigate('/login', { state: { from: location } })
+    const handleClick = () => {
+        if (!user) {
+            navigate('/login', { state: { from: location } });
+            return;
+        }
+        if (isLiked) {
+            unlike.mutate();
+            setIsLiked(false);
+        } else {
+            like.mutate();
+            setIsLiked(true);
         }
     }
-
-    const unlike = async () => {
-        try {
-            await apiClient.put(`/recepies/unlike/${recepie._id}`)
-            setIsLiked(false)
-        } catch (error) {
-            if (error instanceof AxiosError) {
-                if (error.response?.status === 401) {
-                    const isRefreshed = await refreshToken()
-                    if (isRefreshed) return unlike()
-                }
-            }
-            return navigate('/login', { state: { from: location } })
-        }
-    }
-
-    const handleLike = async () => {
-        if (!isAuthenticated) return navigate('/login', { state: { from: location } })
-        if (isLiked) await unlike()
-        else await like()
-    }
-
-    useEffect(() => {
-        if (!isAuthenticated) return
-        const fetchLikes = async () => {
-            const res = await apiClient.get(`/recepies/get/likes/${recepie._id}`)
-            if (res.status === 200) {
-                console.log(res.data)
-                if (res.data.includes(user._id)) {
-                    setIsLiked(true)
-                } else {
-                    setIsLiked(false)
-                }
-            } else {
-                console.log("Error fetching likes")
-            }
-        }
-        fetchLikes()
-
-    }, [])
 
     return (
-        <button onClick={(e) => { e.preventDefault(); handleLike() }}
-            className={`btn ${isLiked ? 'btn-secondary' : 'btn-primary'}`} >
-            {isLiked ? "Unlike" : "Like"}
+        <button onClick={handleClick} disabled={isDisabled}>
+            <span className={style.likes}>
+                <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill={`${isLiked ? 'currentColor' : 'none'}`} viewBox="0 0 24 24">
+                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
+                </svg>
+                {likes?.length || 0}
+            </span>
         </button>
     )
 }
