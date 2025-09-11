@@ -1,29 +1,43 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { getFavorites, addToFavorites, removeFromFavorites, getFavoritesPopulated } from '../API/favorites.js'
+import { useSession } from "./useSession.js";
+import { useMemo } from "react";
 
-export const useFavorites = (id) => {
-    const favoritesQuery = useQuery({
-        queryKey: ['favorites'],
+export const useFavorites = (recipeId) => {
+    const { user } = useSession();
+
+    const { data: favorites, isLoading, refetch } = useQuery({
+        queryKey: ['favorites', recipeId],
         queryFn: getFavorites,
+        enabled: !!recipeId && !!user,
     });
 
+    const isFavorite = useMemo(() => {
+        const isFav = favorites?.includes(recipeId);
+        console.log("isFav", isFav);
+        return isFav;
+    }, [isLoading, favorites, recipeId]);
+
     const addFavoriteMutation = useMutation({
-        mutationFn: () => addToFavorites(id),
-        onSuccess: (data) => {
-            setQueryData(['favorites'], data);
+        mutationFn: () => addToFavorites(recipeId),
+        enabled: !!user,
+        onSuccess: () => {
+            refetch();
         }
     });
 
     const removeFavoriteMutation = useMutation({
-        mutationFn: () => removeFromFavorites(id),
-        onSuccess: (data) => {
-            setQueryData(['favorites'], data);
+        mutationFn: () => removeFromFavorites(recipeId),
+        enabled: !!user,
+        onSuccess: () => {
+            refetch();
         }
     });
 
     return {
-        favorites: favoritesQuery.data,
-        isLoading: favoritesQuery.isLoading,
+        isFavorite,
+        favorites,
+        isLoading,
         addFavorite: addFavoriteMutation.mutate,
         removeFavorite: removeFavoriteMutation.mutate,
     };
@@ -37,6 +51,6 @@ export const useFavoriteRecipes = () => {
 
     return {
         favoriteRecipes: data,
-        isLoading,
+        isLoadingFavoriteRecipes: isLoading,
     };
 }

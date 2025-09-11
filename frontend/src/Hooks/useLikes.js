@@ -1,18 +1,26 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { getLikes, likeRecipe, unlikeRecipe } from '../API/likes.js'
-import { useMemo } from "react";
+import { useSession } from "./useSession.js";
+import { useNavigate } from "react-router-dom";
 
+export const useLikes = (recipeId, authorId) => {
+    const { user, isLoading } = useSession();
+    const navigate = useNavigate();
 
-export const useLikes = (recipeId) => {
-    const { data: likes, refetch, isLoading } = useQuery({
+    const isDisabled = !user || user._id === authorId;
+
+    const { data: likes, refetch } = useQuery({
         queryKey: ['likes', recipeId],
         queryFn: () => getLikes(recipeId),
-        enabled: !!recipeId
+        enabled: !!recipeId,
     });
+
+    const isLiked = !!user && likes?.includes(user._id);
 
     const like = useMutation({
         mutationKey: ['likes', recipeId],
         mutationFn: () => likeRecipe(recipeId),
+        enabled: !!user && !isDisabled,
         onSuccess: () => {
             refetch();
         }
@@ -21,11 +29,22 @@ export const useLikes = (recipeId) => {
     const unlike = useMutation({
         mutationKey: ['likes', recipeId],
         mutationFn: () => unlikeRecipe(recipeId),
+        enabled: !!user && !isDisabled,
         onSuccess: () => {
             refetch();
         }
     });
 
+    const handleLike = () => {
+        if (!user && !isLoading) {
+            return navigate('/login');
+        }
+        if (isLiked) {
+            unlike.mutate();
+        } else {
+            like.mutate();
+        }
+    };
 
-    return { likes, unlike, like };
+    return { likes, handleLike, isLiked, isDisabled };
 };
