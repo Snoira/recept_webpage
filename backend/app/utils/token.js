@@ -2,14 +2,14 @@ import jwt from 'jsonwebtoken';
 
 export function generateTokens(user){
     const accessToken = jwt.sign(
-        {id: user.id},
+        {id: user._id},
         process.env.ACCESS_TOKEN_SECRET,
         {expiresIn: '1h'} //12h i jonathans kod
     )
     const refreshToken =  jwt.sign(
-        {id: user.id},
+        {id: user._id},
         process.env.REFRESH_TOKEN_SECRET,
-        {expiresIn: '1d'} //28d i jonathans kod
+        {expiresIn: '1d'}, //28d i jonathans kod
     )
     return{
         accessToken: accessToken,

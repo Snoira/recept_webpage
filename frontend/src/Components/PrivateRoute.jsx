@@ -1,21 +1,21 @@
 import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useSession } from '../Context/SessionContext';
+import { useSession } from '../Hooks/useSession.js';
 
 function PrivateRoute({ children }) {
-  const { user } = useSession();
-  const isAuthenticated = !!user;
+  const { user, isLoading } = useSession();
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    console.log("PrivateRoute user:", user, "isLoading:", isLoading);
+    if (!user && !isLoading) {
       navigate('/login', { state: { from: location } });
     }
-  }, [isAuthenticated, navigate, location]);
+  }, [user, navigate, location]);
 
-  if (!isAuthenticated) {
-    return null;
+  if (!user || isLoading) {
+    return <div>Loading...</div>;
   }
 
   return children;

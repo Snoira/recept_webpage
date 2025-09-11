@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import User from '../models/user.model.js';
 import { generateTokens, verifyRefreshToken } from '../utils/token.js';
+import { MongooseError } from "mongoose";
 
 
 const accessTokenProperties = {
@@ -19,17 +20,14 @@ const refreshTokenProperties = {
 export async function registerUser(req, res) {
     const { email, username } = req.body
     try {
-        const checkEmail = await User.find({ email })
-        if (!checkEmail) return res.status(400).json({ error: "Account already registered with email" })
+        const checkEmail = await User.findOne({ email })
+        if (!!checkEmail) return res.status(400).json({ message: "This email is already in use" })
 
-        const checkUsername = await User.find({ username })
-        if (!checkUsername) return res.status(400).json({ error: "Username taken" })
+        const checkUsername = await User.findOne({ username })
+        if (!!checkUsername) return res.status(400).json({ message: "this username is taken" })
 
         const user = await User.create(req.body)
-        if (!user) return res.status(400).json({ error: "User not created" })
-
         const tokens = generateTokens(user)
-        if (!tokens) return res.status(400).json({ error: "Tokens not generated" })
 
         const safeUser = {
             _id: user._id,
@@ -39,38 +37,29 @@ export async function registerUser(req, res) {
 
         res.cookie('accessToken', tokens.accessToken, accessTokenProperties)
         res.cookie('refreshToken', tokens.refreshToken, refreshTokenProperties)
-        res.status(201).json(safeUser)
+        return res.status(201).json(safeUser)
 
     } catch (error) {
-        res.status(400).json({ error: error.message })
-        console.log("Error creating user: ", error.message)
-        // registerErrorHandler(error, res, _user?.email) i jonathans kod, kolla utils etc.
+        if (error instanceof MongooseError) {
+            //TODO: kolla in hur man hanterar errors bättre generellt och i mongoose
+            console.log("Mongoose error in registerUser: ", error)
+            return res.status(500).json({ message: error.message })
+        }
+        console.log("Error creating user: ", error)
+        return res.status(500).json({ message: "Internal server error" })
     }
 }
-
-// async function registerUser(req, res){ //jonathans kod
-//     const _user = req.body
-//     try {
-//         const user = await User.create(_user)
-//         const token = generateAccessAndRefreshToken(user)
-//         res.json(token)
-//     } catch (error) {
-//         registerErrorHandler(error, res, _user?.email)
-//     }
-// }
 
 export async function loginUser(req, res) {
     const { email, password } = req.body
     try {
-        console.log("LOGGING IN")
-        const user = await User.findOne({ email }).select("+password") //.select(["+password"]) i jonathans kod
-        if (!user) return res.status(404).json({ error: "User not found" })//404 eller 400? "Invalid credentials" för att göra en säkrare errorhantering
+        const user = await User.findOne({ email }).select("+password")
+        if (!user) return res.status(400).json({ message: "Invalid credentials" })
 
         const isMatch = await bcrypt.compare(password, user.password)
-        if (!isMatch) return res.status(401).json({ error: "Invalid credentials" })
+        if (!isMatch) return res.status(400).json({ message: "Invalid credentials" })
 
         const tokens = generateTokens(user)
-        if (!tokens) return res.status(400).json({ error: "Tokens not generated" })
 
         const safeUser = {
             _id: user._id,
@@ -80,84 +69,60 @@ export async function loginUser(req, res) {
 
         res.cookie('accessToken', tokens.accessToken, accessTokenProperties)
         res.cookie('refreshToken', tokens.refreshToken, refreshTokenProperties)
-        res.status(200).json(safeUser)
+        return res.status(200).json(safeUser)
 
     } catch (error) {
-        res.status(404).json({ error: error.message })
+        console.log("Error logging in user: ", error)
+        return res.status(500).json({ message: "Internal server error" })
     }
 }
 
 export async function getUser(req, res) {
     const userId = req.userId
     try {
-        const users = await User.findById(userId)
-        res.status(200).json(users)
+        const user = await User.findById(userId).select("-password -createdAt -updatedAt -__v")
+        if (!user) return res.status(404).json({ message: "User not found" })
+
+        return res.status(200).json(user)
+
     } catch (error) {
-        res.status(500).json({ error: error.message })
+        console.log("Error getting user: ", error)
+        return res.status(500).json({ message: "Internal server error" })
     }
 }
 
-// jonathans kod
-// async function loginUser(req, res) {
-//     const {
-//         email,
-//         password
-//     } = req.body
-//     try {
-//         const user = await User.findOne({
-//             email
-//         }).select(["+password"])
-
-//         if(!user) {
-//             throw new Error("Credentials missing")
-//         }
-//         const isPasswordTheSame = await bcrypt.compare(password, user.password)
-//         if(!isPasswordTheSame) {
-//             throw new Error("Credentials missing")
-//         }
-//         const token = generateAccessAndRefreshToken(user)
-//         res.json(token)
-
-//     } catch (error) {
-//         res.status(404).json({
-//             message: error.message
-//         })
-//     }
-// }
-
 export async function refreshToken(req, res) {
     const { refreshToken } = req.cookies
-    if (!refreshToken) return res.status(403).json({ error: "No refresh token provided" })
+    if (!refreshToken) return res.status(403).json({ message: "No refresh token provided" })
 
     try {
         const verifiedToken = verifyRefreshToken(refreshToken)
-        if (!verifiedToken) return res.status(403).json({ error: "Invalid refresh token" })
-        console.log("verify token", verifiedToken.id)
+        if (!verifiedToken) return res.status(403).json({ message: "Invalid refresh token" })
 
         const userId = verifiedToken.id
-        const user = await User.findById(userId)
-        if (!user) return res.status(404).json({ error: "User not found" })
+        const user = await User.findById(userId).select("-password -createdAt -updatedAt -__v")
+        if (!user) return res.status(404).json({ message: "User not found" })
 
         const tokens = generateTokens(user)
-        if (!tokens) return res.status(400).json({ error: "Tokens not generated" })
-
-        const safeUser = {
-            _id: user._id,
-            email: user.email,
-            username: user.username
-        }
 
         res.cookie('accessToken', tokens.accessToken, accessTokenProperties)
         res.cookie('refreshToken', tokens.refreshToken, refreshTokenProperties)
-        res.status(200).json(safeUser)
+        res.status(200).json(user)
 
     } catch (error) {
-        res.status(500).json({ error: error.message })
+        console.log("Error refreshing token: ", error)
+        res.status(500).json({ message: "Internal server error" })
     }
 }
 
 export async function logoutUser(req, res) {
-    res.clearCookie('accessToken', accessTokenProperties)
-    res.clearCookie('refreshToken', refreshTokenProperties)
-    res.status(200).json({ message: "Logged out successfully" })
+    try {
+        res.clearCookie('accessToken', accessTokenProperties)
+        res.clearCookie('refreshToken', refreshTokenProperties)
+        return res.sendStatus(204)
+        
+    } catch (error) {
+        console.log("Error logging out user: ", error)
+        return res.status(500).json({ message: "Internal server error" })
+    }
 }

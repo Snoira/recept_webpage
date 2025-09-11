@@ -1,4 +1,5 @@
 import apiClient from "../api";
+import { refreshToken } from "./auth";
 
 export const createRecipe = async (inputs) => {
     try {
@@ -9,16 +10,12 @@ export const createRecipe = async (inputs) => {
     } catch (error) {
         // bryt ut i en funktion? "error handelers typ."
         // axios nterceptor 
-        // if (error instanceof AxiosError) {
-        //     if (error.response?.status === 401) {
-        //         console.log("401 error, trying to refresh token")
-        //         const isRefreshed = await refreshToken()
-        //         if (isRefreshed) {
-        //             console.log("Token refreshed, retrying recipe creation")
-        //             return createRecipe(inputs)
-        //         }
-        //     }
-        // }
+        if (error.response?.status === 401) {
+            const isRefreshed = await refreshToken()
+            if (isRefreshed) {
+                return createRecipe(inputs)
+            }
+        }
         console.error('Error creating recipe:', error.response?.data.message || error.message);
         throw error;
     }

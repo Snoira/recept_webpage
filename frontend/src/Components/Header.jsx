@@ -1,20 +1,20 @@
 import { Link } from 'react-router-dom'
-import { useSession } from '../Context/SessionContext'
+import { useSession } from '../Hooks/useSession.js'
 import style from '../Styles/Header.module.css'
 
 
 const Header = () => {
-  const { user, logOut } = useSession()
+  const { user, logOut } = useSession();
 
 
   return (
-    <div className={style.container}>
+    <div className={style.header} id="header">
 
       <Link to="/">
-    <div className={style.logo}>
-      <p>MUMS</p>
-      <p>FILIBABBA</p>
-    </div>
+        <div className={style.logo}>
+          <p>MUMS</p>
+          <p>FILIBABBA</p>
+        </div>
       </Link>
 
       <Link to="/user">
