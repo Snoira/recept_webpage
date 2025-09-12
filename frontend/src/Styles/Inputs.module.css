@@ -1,0 +1,77 @@
+.inputLabel {
+  text-transform: uppercase;
+  font-size: 1rem;
+}
+
+.inputField {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.textAreaField {
+  width: 100%;
+  min-height: 100px;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  resize: vertical;
+}
+
+.error {
+  color: #d32f2f;
+  position: relative;
+
+  /* border: 2px solid #525050; */
+
+  & .inputField,
+  textarea {
+    border: 1px solid #d32f2f;
+  }
+
+
+  & div {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.9rem;
+    position: absolute;
+    bottom: 0.5rem;
+    right: .5rem;
+    z-index: 1;
+  }
+
+  & .inputField:focus+div,
+  & textarea:focus+div {
+    display: none;
+  }
+
+  & .errorText {
+    background: black;
+    opacity: 0;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 0.9rem;
+    position: absolute;
+    top: 1.5rem;
+    right: 0;
+    display: none;
+    max-width: 150px;
+  }
+
+  & div svg:hover+.errorText,
+  & div svg:focus+.errorText {
+    opacity: 0.9;
+    display: block;
+    width: max-content;
+  }
+
+}
+
+.errorContainer {
+  display: none;
+}
