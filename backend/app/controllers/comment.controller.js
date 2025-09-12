@@ -1,6 +1,10 @@
 import Recipe from "../models/recipe.model.js";
 import Comment from "../models/comment.model.js"
-import { isValidObjectId } from 'mongoose';
+import { isValidObjectId, Types } from 'mongoose';
+import z from "zod";
+
+const commentValidation = z.string().min(1).max(500).trim();
+
 
 export async function createComment(req, res) {
 
@@ -12,11 +16,9 @@ export async function createComment(req, res) {
         return res.status(400).json({ message: "Invalid recipe id" });
     }
 
-    if (!content) return res.status(400).json({ message: "Content is required" })
-    if (content.length < 1) return res.status(400).json({ message: "Content is too short" })
-    if (content.length > 500) return res.status(400).json({ message: "Content is too long" })
-
     try {
+        commentValidation.parse(content)
+
         const recipe = await Recipe.findById(recipeId)
         if (!recipe) return res.status(404).json({ message: "Recipe not found" })
 
@@ -74,7 +76,7 @@ export async function deleteComment(req, res) {
         if (deletedComment) return res.sendStatus(204)
 
         return res.status(500).json({ message: "Could not delete comment" })
-        
+
     } catch (error) {
         console.log("Error deleting comment: ", error)
         return res.status(500).json({ message: "Internal server error" })

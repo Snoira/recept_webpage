@@ -36,23 +36,36 @@ const CommentSection = ({ recipeId }) => {
     }
 
     const CommentField = () => {
-        if (!user) return <p>Please log in to post a comment</p>
-
-        const initialValues = { comment: '' };
+        const initialValues = { content: '' };
 
         const validationSchema = Yup.object({
-            comment: Yup.string().max(500, 'Max 500 characters')
+            content: Yup.string().max(500, 'Max 500 characters')
                 .trim()
                 .test('must-have-account', 'You must be logged in to comment', () => !!user),
         });
 
+        const isDisabled = ({ content }) => {
+            return !user || content.trim() === "";
+        }
+
+        const handleSubmit = ({ content }, { resetForm }) => {
+            postComment(content);
+            // resetForm();
+        };
+
         return (
             <div className={style.commentForm}>
-                <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={postComment}>
-                    <Form >
-                        <TextAreaInput name="comment" placeholder="Berätta vad du tyckte" disabled={!user} />
-                        <Button type="submit">Posta kommentar</Button>
-                    </Form>
+                <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
+                    {({ values }) => (
+                        <Form >
+                            <TextAreaInput name="content" placeholder="Berätta vad du tyckte" disabled={!user} />
+                            <Button
+                                type="submit"
+                                variant={isDisabled(values) ? "disabled" : "primary"}
+                                disabled={isDisabled(values)}
+                            >Posta kommentar</Button>
+                        </Form>
+                    )}
                 </Formik>
             </div>
         )

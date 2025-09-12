@@ -19,11 +19,6 @@
     &:active {
         background-color: #3e8e41;
     }
-
-    &:disabled {
-        background-color: #cccccc;
-        cursor: not-allowed;
-    }
 }
 
 .icon {
@@ -70,6 +65,16 @@
 
     &:active {
         background-color: #bd2130;
+    }
+}
+
+.disabled {
+    background-color: #e0e0e0;
+    color: #a0a0a0;
+    cursor: not-allowed;
+
+    &:hover {
+        background-color: #e0e0e0;
     }
 }
 
