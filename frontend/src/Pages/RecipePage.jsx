@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom'
 import { useRecipeById } from '../Hooks/useRecipe'
 import FavoriteBtn from '../Components/FavoriteBtn';
 import LikeBtn from '../Components/LikeBtn';
+import CommentSection from '../Components/CommentSection';
 
 const RecipePage = () => {
     const { recipeId } = useParams()
@@ -45,6 +46,9 @@ const RecipePage = () => {
                         </li>
                     ))}
                 </ol>
+            </div>
+            <div className="p-4 col-span-2">
+                <CommentSection recipeId={recipe._id} />
             </div>
         </div>
     )

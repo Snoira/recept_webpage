@@ -1,71 +1,83 @@
-import Recepie from "../models/recepie.model.js"
-import User from "../models/user.model.js"
+import Recipe from "../models/recipe.model.js";
 import Comment from "../models/comment.model.js"
+import { isValidObjectId } from 'mongoose';
 
 export async function createComment(req, res) {
+
+    const userId = req.userId
+    const recipeId = req.params.id
     const { content } = req.body
 
-    const { id } = req.params
-    const userId = req.userId
-    try {
-        const recepie = await Recepie.findById(id)
-        if (!recepie) return res.status(404).json({ message: "Recepie not found" })
-        // är denna egentligen nödvänding iom token?
-        const user = await User.findById(userId)
-        if (!user) return res.status(404).json({ message: "User not found" })
-        const newComment = await Comment.create({ user: userId, recepie: id, content })
+    if (!isValidObjectId(recipeId)) {
+        return res.status(400).json({ message: "Invalid recipe id" });
+    }
 
-        if (newComment) {
-            await newComment.populate("user")
-            console.log("newComment: ", newComment)
-            res.status(201).json(newComment)
-        } else {
-            res.status(400).json({ message: "Error creating review" })
-        }
+    if (!content) return res.status(400).json({ message: "Content is required" })
+    if (content.length < 1) return res.status(400).json({ message: "Content is too short" })
+    if (content.length > 500) return res.status(400).json({ message: "Content is too long" })
+
+    try {
+        const recipe = await Recipe.findById(recipeId)
+        if (!recipe) return res.status(404).json({ message: "Recipe not found" })
+
+        const newComment = await Comment.create({ user: userId, recipe: recipeId, content })
+
+        return res.status(201).json(newComment)
 
     } catch (error) {
-        res.status(500).json({ message: error.message })
-        console.log("Error creating review: ", error.message)
+        console.log("Error creating comment: ", error)
+        return res.status(500).json({ message: "Internal server error" })
     }
 }
 
 export async function getComments(req, res) {
-    const { id } = req.params
+    const recipeId = req.params.id
     try {
-        const recepie = await Recepie.findById(id)
-        if (!recepie) return res.status(404).json({ message: "Recepie not found" })
-
-        const comments = await Comment.find({ recepie: id }).populate("user")
-        if (comments) {
-            res.status(200).json(comments)
-        } else {
-            res.status(404).json({ message: "No comments found" })
+        if (!isValidObjectId(recipeId)) {
+            return res.status(400).json({ message: "Invalid recipe id" });
         }
 
+        const recipe = await Recipe.findById(recipeId)
+        if (!recipe) return res.status(404).json({ message: "Recipe not found" })
+
+        const comments = await Comment.find({ recipe: recipeId })
+            .populate("user", "username")
+            .sort({ createdAt: -1 })
+
+        return res.status(200).json(comments)
+
     } catch (error) {
-        res.status(500).json({ message: error.message })
-        console.log("Error fetching comments: ", error.message)
+        console.log("Error fetching comments: ", error)
+        return res.status(500).json({ message: "Internal server error" })
     }
 }
 
 export async function deleteComment(req, res) {
-    const { id } = req.params
-    const userId = req.userId
-    try {
-        const comment = await Comment.findById(id)
-        if (!comment) return res.status(404).json({ message: "Comment not found" })
-        if (comment.user.toString() !== userId) return res.status(401).json({ message: "Not authorized to delete this comment" })
 
-        const deletedComment = await Comment.findByIdAndDelete(id)
-        if (deletedComment) {
-            res.status(204).send()
-        } else {
-            res.status(400).json({ message: "Error deleting comment" })
+    const commentId = req.params.id
+    if (!isValidObjectId(commentId)) {
+        return res.status(400).json({ message: "Invalid comment id" });
+    }
+
+    const userId = req.userId
+
+    try {
+        const comment = await Comment.findById(commentId)
+        if (!comment) return res.status(404).json({ message: "Comment not found" })
+
+        if (comment.user.toString() !== userId) {
+            return res.status(409).json({ message: "Not authorized to delete this comment" })
         }
 
+        const deletedComment = await Comment.findByIdAndDelete(commentId)
+
+        if (deletedComment) return res.sendStatus(204)
+
+        return res.status(500).json({ message: "Could not delete comment" })
+        
     } catch (error) {
-        res.status(500).json({ message: error.message })
-        console.log("Error deleting comment: ", error.message)
+        console.log("Error deleting comment: ", error)
+        return res.status(500).json({ message: "Internal server error" })
     }
 }
 

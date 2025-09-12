@@ -30,7 +30,7 @@ app.use('/auth', authRouter)
 app.use('/recepies', recepieRouter)
 app.use('/recipes', recipeRouter)
 app.use('/favorites', favoritesRouter)
-app.use('/comment', commentRouter)
+app.use('/comments', commentRouter)
 
 
 export default app;

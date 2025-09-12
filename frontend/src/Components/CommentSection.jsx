@@ -1,86 +1,69 @@
-import { useState, useEffect } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom';
-import {useSession} from '../Context/SessionContext'
-import apiClient from '../api'
+import { useComments } from "../Hooks/useComments";
+import { useSession } from "../Hooks/useSession.js";
+import { Formik, Form } from "formik";
+import { TextAreaInput } from "./global/Inputs.jsx";
+import * as Yup from 'yup';
+import Button from "./global/Button.jsx";
+import style from "../Styles/CommentSection.module.css"
 
-const CommentSection = ({ recepie }) => {
-    const [comments, setComments] = useState([])
+
+const CommentSection = ({ recipeId }) => {
     const { user } = useSession()
-    const [newComment, setNewComment] = useState('')
+    const { comments, isLoading, postComment, deleteComment } = useComments(recipeId);
 
-    const isAuthenticated = !!user;
 
-    const navigate = useNavigate()
-    const location = useLocation()
+    const Comments = () => {
+        if (isLoading) return <p>Loading comments...</p>
+        if (!comments || comments.length === 0) return <p>No comments yet</p>
+        return (
+            <ul>
+                {comments && comments.map((comment, i) =>
+                    <li key={i}>
+                        <div className={style.comment}>
+                            <div className={style.commentTop}>
+                                <p className={style.username}>{comment.user.username}</p>
 
-    useEffect(() => {
-        const fetchComments = async () => {
-            try {
-                const res = await apiClient.get(`comment/recepie/${recepie._id}`)
-                if (res.status === 200) {
-                    console.log("comments res.data", res.data)
-                    setComments(res.data)
-                } else {
-                    console.log(res.status)
-                }
-            } catch (error) {
-                console.log("Error fetching comments", error)
-            }
-        }
-        fetchComments()
-    }, [])
-
-    const handleComment = async (content) => {
-        try {
-            if (!isAuthenticated) {
-                navigate('/login', { state: { from: location } })
-                return
-            }
-            const res = await apiClient.post(`/comment/create/${recepie._id}`, { content })
-            if (res.status === 201) {
-                console.log("comment res.data", res.data)
-                setComments([...comments, res.data])
-                setNewComment('')
-            } else {
-                console.log(res.status)
-            }
-        } catch (error) {
-            console.log("Error creating comment", error)
-        }
+                                {(user && comment.user._id === user._id) &&
+                                    <Button variant="danger" size="small" icon="close" onClick={() => { deleteComment(comment._id) }}></Button>
+                                }
+                            </div>
+                            <p className={style.content}>{comment.content}</p>
+                        </div>
+                    </li>
+                )}
+            </ul>
+        )
     }
 
-    const deleteComment = async (commentId) => {
-        try {
-            const res = await apiClient.delete(`/comment/delete/${commentId}`)
-            if (res.status === 204) {
-                setComments(comments.filter(comment => comment._id !== commentId))
-            } else {
-                console.log(res.status)
-            }
-        } catch (error) {
-            console.log("Error deleting comment", error)
-        }
+    const CommentField = () => {
+        if (!user) return <p>Please log in to post a comment</p>
+
+        const initialValues = { comment: '' };
+
+        const validationSchema = Yup.object({
+            comment: Yup.string().max(500, 'Max 500 characters')
+                .trim()
+                .test('must-have-account', 'You must be logged in to comment', () => !!user),
+        });
+
+        return (
+            <div className={style.commentForm}>
+                <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={postComment}>
+                    <Form >
+                        <TextAreaInput name="comment" placeholder="Berätta vad du tyckte" disabled={!user} />
+                        <Button type="submit">Posta kommentar</Button>
+                    </Form>
+                </Formik>
+            </div>
+        )
     }
 
     return (
-        <div>
-            <h2>Comments</h2>
-            <ul>
-                {comments && comments.map((comment, i) =>
-                    <div key={i}>
-                        <li>{comment.user.username}: {comment.content}</li>
-                        {(user && comment.user._id === user._id) &&
-                            <button onClick={() => {deleteComment(comment._id)}}>Delete</button>
-                        }
-                    </div>
-                )}
-            </ul>
-            <form action="comment">
-                <textarea name="comment" id="comment" placeholder='comment' className='form-control' value={newComment} onChange={(e) => { console.log(e.target.value); setNewComment(e.target.value) }}></textarea>
-                <button onClick={(e) => { e.preventDefault(); handleComment(newComment) }}>Post comment</button>
-            </form>
+        <div className={style.commentSection}>
+            <CommentField />
+            <Comments />
         </div>
     )
-}
+};
 
-export default CommentSection
+export default CommentSection;
