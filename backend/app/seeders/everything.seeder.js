@@ -39,6 +39,8 @@ const seedDatabase = async () => {
         const favoritesCount = await Favorites.countDocuments();
         const commentsCount = await Comment.countDocuments();
 
+      
+
         if (usersCount > 0 || recipesCount > 0 || favoritesCount > 0 || commentsCount > 0) {
             console.log("Database already seeded.\n", { usersCount, recipesCount, favoritesCount, commentsCount }, "\nExiting...");
             return;
@@ -115,7 +117,7 @@ const seedDatabase = async () => {
 
         console.log("Seeding database with: \n", seedingInfo);
 
-        await User.insertMany(databaseUsers);
+        await User.create(databaseUsers);
         await Recipe.insertMany(databaseRecipes);
         await Favorites.insertMany(databaseFavorites);
         await Comment.insertMany(databaseComments);

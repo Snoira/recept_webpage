@@ -9,9 +9,11 @@ const recipeRouter = Express.Router();
 recipeRouter.post("/create", authMiddleware, createRecipe)
 recipeRouter.get("/", getRecipes)
 recipeRouter.get("/:id", getRecipeById)
+
 recipeRouter.get("/:id/likes", getRecipeLikes)
 recipeRouter.put("/:id/like", authMiddleware, likeRecipe)
 recipeRouter.put("/:id/unlike", authMiddleware, unlikeRecipe)
+
 recipeRouter.get("/:id/comments", getComments)
 recipeRouter.post("/:id/comment", authMiddleware, createComment)
 

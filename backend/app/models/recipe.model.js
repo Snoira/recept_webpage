@@ -29,7 +29,7 @@ const IngredientGroupSchema = new Schema({
     { _id: false }
 )
 
-const RecipeSchema = new Schema(
+const recipeSchema = new Schema(
     {
         author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
         title: { type: String, trim: true, required: true, min: 2, max: 100 },
@@ -63,5 +63,5 @@ const RecipeSchema = new Schema(
     { timestamps: true }
 )
 
-const Recipe = mongoose.model("Recipe", RecipeSchema)
+const Recipe = mongoose.model("Recipe", recipeSchema)
 export default Recipe;
