@@ -18,7 +18,7 @@
     transition: all 0.2s ease-in-out;
     grid-column: 1/-1;
     width: max-content;
-    
+
 
     &:hover {
         transition: all 0.2s ease-in-out;
@@ -121,6 +121,11 @@ svg {
     height: 72px;
     padding: 15px 30px;
     font-size: 18px;
+}
+
+.full {
+    grid: 1/-1;
+    width: 100%;
 }
 
 .icon {

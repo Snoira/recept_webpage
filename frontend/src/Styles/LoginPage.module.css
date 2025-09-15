@@ -5,9 +5,10 @@
 }
 
 .loginPage {
+    width: 100%;
     display: grid;
     place-items: center;
-    background-color: #ffffff;
+    margin-top: -4rem;
 }
 
 .formContainer {
@@ -87,7 +88,6 @@
     }
 }
 
-
 .action {
     margin-top: 2rem;
 }
@@ -128,8 +128,4 @@
 
 }
 
-@media screen and (min-width: 768px) {
- 
-
-    
-}
+@media screen and (min-width: 768px) {}

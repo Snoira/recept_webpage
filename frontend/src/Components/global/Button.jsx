@@ -19,11 +19,12 @@ const Button = ({ children, ...props }) => {
         size = "medium",
         icon = null,
         placement = "",
+        span = "",
         ...rest } = props;
 
     return (
         <button
-            className={`${style.button} ${style[variant]} ${style[size]} ${style[placement]}`}
+            className={`${style.button} ${style[variant]} ${style[size]} ${style[placement]} ${style[span]}`}
             {...rest}>
             {icon && Icons[icon]}
             {children}

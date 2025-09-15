@@ -6,10 +6,11 @@
     border-radius: 12px;
     border: 1px solid #dbdbdb;
     overflow: hidden;
+    height: 100%;
 
     & h2 {
         font-family: "Libre Baskerville", serif;
-        font-size: clamp(0.8em, 7cqi, 1.2em);
+        font-size: clamp(0.8em, 2vw, 1.2em);
         font-weight: 500;
     }
 
@@ -47,7 +48,9 @@
     align-items: center;
     text-align: center;
     gap: 0.5em;
-    aspect-ratio: 3/2;
+    width: 100%;
+    aspect-ratio: 3/1;
+    margin-bottom: 0.5em;
 }
 
 .cardImage {
