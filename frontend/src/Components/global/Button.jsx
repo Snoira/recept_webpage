@@ -9,15 +9,12 @@ const Icons = {
     )
 }
 
-
 const Button = ({ children, ...props }) => {
     const {
         variant = "primary",
         size = "medium",
         icon = null,
         ...rest } = props;
-
-
 
     return (
         <button

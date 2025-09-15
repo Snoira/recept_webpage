@@ -8,13 +8,12 @@ function PrivateRoute({ children }) {
   const location = useLocation();
 
   useEffect(() => {
-    console.log("PrivateRoute user:", user, "isLoading:", isLoading);
     if (!user && !isLoading) {
       navigate('/login', { state: { from: location } });
     }
   }, [user, navigate, location]);
 
-  if (!user || isLoading) {
+  if (isLoading) {
     return <div>Loading...</div>;
   }
 

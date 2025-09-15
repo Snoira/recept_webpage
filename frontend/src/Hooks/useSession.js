@@ -1,8 +1,11 @@
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { register, logIn, logOut, getUser } from "../API/auth";
 
 export const useSession = () => {
-    const { isLoading, data: user, refetch } = useQuery({
+
+    const queryClient = useQueryClient();
+
+    const { isLoading, data: user, refetch: refetchUser } = useQuery({
         queryKey: ['user'],
         queryFn: getUser,
         staleTime: 5 * 60 * 1000,
@@ -10,29 +13,28 @@ export const useSession = () => {
         refetchOnWindowFocus: false,
     });
 
+
     const logInMutation = useMutation({
         mutationFn: logIn,
-        mutationKey: ['user'],
-        onSuccess: () => { refetch() }
+        onSuccess: () => { refetchUser() }
     });
 
     const logOutMutation = useMutation({
         mutationFn: logOut,
-        mutationKey: ['user'],
-        onSuccess: () => { refetch() }
+        onSuccess: () => { refetchUser() }
     });
 
     const registerMutation = useMutation({
         mutationFn: register,
-        mutationKey: ['user'],
-        onSuccess: () => { refetch() }
+        onSuccess: () => { refetchUser() }
     });
 
     return {
         user,
         isLoading,
-        logIn: logInMutation.mutate,
-        logOut: logOutMutation.mutate,
-        register: registerMutation.mutate,
+        logIn: logInMutation,
+        logInFunc: logInMutation.mutateAsync,
+        logOut: logOutMutation.mutateAsync,
+        register: registerMutation.mutateAsync,
     };
 }

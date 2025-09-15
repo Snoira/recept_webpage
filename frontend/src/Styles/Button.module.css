@@ -1,5 +1,5 @@
 .button {
-    background-color: #4CAF50;
+    /* background-color: #4CAF50; */
     /* Green */
     border: none;
     color: white;
@@ -13,11 +13,16 @@
     border-radius: 4px;
 
     &:hover {
-        background-color: #45a049;
+        filter: brightness(150%);
     }
 
     &:active {
-        background-color: #3e8e41;
+        filter: brightness(130%);
+    }
+
+    &:focus {
+        outline: transparent;
+        filter: brightness(130%);
     }
 }
 
@@ -33,62 +38,37 @@
 }
 
 .primary {
-    background-color: #007bff;
-
-    &:hover {
-        background-color: #0069d9;
-    }
-
-    &:active {
-        background-color: #005cbf;
-    }
+    background-color: var(--primary);
 }
 
 .secondary {
-    background-color: #6c757d;
-
-    &:hover {
-        background-color: #5a6268;
-    }
-
-    &:active {
-        background-color: #545b62;
-    }
+    background-color: var(--secondary);
 }
 
 .danger {
-    background-color: #dc3545;
-
-    &:hover {
-        background-color: #c82333;
-    }
-
-    &:active {
-        background-color: #bd2130;
-    }
+    background-color: var(--danger);
 }
 
 .disabled {
-    background-color: #e0e0e0;
-    color: #a0a0a0;
+    background-color: var(--disabled);
+    /* color: #a0a0a0; */
     cursor: not-allowed;
-
-    &:hover {
-        background-color: #e0e0e0;
-    }
 }
 
 .small {
+    height: 40px;
     padding: 5px 10px;
     font-size: 12px;
 }
 
 .medium {
+    height: 56px;
     padding: 10px 20px;
     font-size: 16px;
 }
 
 .large {
+    height: 72px;
     padding: 15px 30px;
     font-size: 18px;
 }

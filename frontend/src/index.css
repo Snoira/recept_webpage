@@ -13,6 +13,14 @@
   --white: hsl(0, 0%, 100%);
   --dark: hsl(0, 0%, 7%);
   --text-gray: hsl(0, 0%, 30%);
+
+  --background: #fafafa;
+  --primary: #312f2c;
+  --secondary: #525050;
+  --accent: #848383;
+  --light: #afafaf;
+  --danger: #d32f2f;
+  --disabled: #e0e0e0;
 }
 
 body {
