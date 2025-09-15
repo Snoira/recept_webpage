@@ -4,7 +4,6 @@ import { refreshToken } from "./auth";
 export const getLikes = async (id) => {
     try {
         const res = await apiClient.get(`/recipes/${id}/likes`)
-        console.log("get Likes res.data", res.data)
         return res.data
 
     } catch (error) {
@@ -16,7 +15,6 @@ export const getLikes = async (id) => {
 export const likeRecipe = async (id) => {
     try {
         const res = await apiClient.put(`/recipes/${id}/like`)
-        console.log("likeRecipe res.data", res.data)
         return res.data
     } catch (error) {
         if (error.response?.status === 401) {
@@ -33,7 +31,6 @@ export const likeRecipe = async (id) => {
 export const unlikeRecipe = async (id) => {
     try {
         const res = await apiClient.put(`/recipes/${id}/unlike`)
-        console.log("unlikeRecipe res.data", res.data)
         return res.data
 
     } catch (error) {

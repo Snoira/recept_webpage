@@ -4,7 +4,6 @@ import { refreshToken } from "./auth";
 export const addToFavorites = async (id) => {
     try {
         const res = await apiClient.post(`/favorites/add/${id}`)
-        console.log("addToFavorites res.data", res.data)
         return res.data
 
     } catch (error) {
@@ -22,7 +21,6 @@ export const addToFavorites = async (id) => {
 export const getFavorites = async () => {
     try {
         const res = await apiClient.get('/favorites')
-        console.log("getFavorites res.data", res.data)
         return res.data
     } catch (error) {
         if (error.response?.status === 401) {
@@ -39,7 +37,6 @@ export const getFavorites = async () => {
 export const removeFromFavorites = async (id) => {
     try {
         const res = await apiClient.put(`/favorites/remove/${id}`)
-        console.log("removeFromFavorites res.data", res.data)
         return res.data
 
     } catch (error) {

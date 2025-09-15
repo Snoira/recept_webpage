@@ -7,6 +7,7 @@ export const register = async (inputs) => {
 
     } catch (error) {
         console.log("Error registering user:", error);
+        return null
     }
 }
 
@@ -14,8 +15,10 @@ export const logIn = async (inputs) => {
     try {
         const res = await apiClient.post('/auth/login', inputs);
         return res.data;
+        
     } catch (error) {
         console.log('Error logging in user:', error);
+        return null
     }
 }
 
@@ -23,9 +26,8 @@ export const logOut = async () => {
     try {
         const res = await apiClient.post("/auth/logout")
         if(res.status === 204) {
-            return true
+            return null
         }
-        return false
     } catch (error) {
         console.error("Error logging out:", error);
     }
@@ -43,7 +45,7 @@ export const refreshToken = async () => {
 
 export const getUser = async () => {
     try {
-        console.log("getUser function")
+        console.log("running getUser function!! ")
         const res = await apiClient.get("/auth/user")
         return res.data
     } catch (error) {
