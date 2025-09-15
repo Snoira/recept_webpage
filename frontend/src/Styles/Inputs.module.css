@@ -1,3 +1,25 @@
+.full {
+  grid-column: 1/-1;
+  flex: 1;
+}
+
+.oneLine {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+
+  & label {
+    text-wrap: nowrap;
+  }
+
+  /* & textarea {
+    min-height: 42px;
+    height: 42px;
+    width: 100%;
+  } */
+}
+
 .inputLabel {
   text-transform: uppercase;
   color: var(--secondary);
@@ -9,6 +31,10 @@
   font-weight: 600;
   margin-bottom: 0.5rem;
   font-size: 0.9rem;
+}
+
+.none {
+  display: none;
 }
 
 .input:has(.floating) {
@@ -38,6 +64,7 @@
   border-radius: 6px;
   border: 1px solid #ccc;
   font-size: 1rem;
+  flex: 1;
 }
 
 .line {
@@ -59,6 +86,12 @@
   border: 1px solid #ccc;
   font-size: 1rem;
   resize: vertical;
+}
+
+.slim {
+  min-height: 42px;
+  height: 42px;
+  width: 100%;
 }
 
 .error {

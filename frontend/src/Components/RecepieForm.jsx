@@ -5,80 +5,82 @@ import style from '../Styles/RecipeForm.module.css'
 import apiClient from '../api.jsx';
 import { AxiosError } from 'axios';
 import { useSession } from '../Context/SessionContext.jsx';
+import { TextInput, TextAreaInput, SelectInput, CheckboxGroup } from './global/Inputs.jsx'
+import Button from './global/Button.jsx';
 
 const ENUM_UNIT = ['l', 'dl', 'cl', 'ml', 'msk', 'tsk', 'krm', 'g', 'hg', 'kg'];
 const ENUM_CATEGORY = ['Bakverk', 'Frukost', 'Lunch', 'Middag', 'Efterrätt', 'Dryck', 'Snacks', 'Sallad', 'Sås', 'Vegetariskt', 'Veganskt'];
 
 
-const TextInput = ({ label, ...props }) => {
-    const [field, meta] = useField(props);
-    const { className, ...rest } = props;
+// const TextInput = ({ label, ...props }) => {
+//     const [field, meta] = useField(props);
+//     const { className, ...rest } = props;
 
 
-    return (
-        <div className={(meta.touched && meta.error) ? `${className} ${style.error}` : className}>
-            <label htmlFor={props.id || props.name} className={style.inputLabel}>{label}</label>
-            <input className={style.inputField} {...field} {...rest} />
-            <div className={style.errorContainer}>
-                <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="red" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 13V8m0 8h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                </svg>
-                <span className={style.errorText}>{meta.error}</span>
-            </div>
+//     return (
+//         <div className={(meta.touched && meta.error) ? `${className} ${style.error}` : className}>
+//             <label htmlFor={props.id || props.name} className={style.inputLabel}>{label}</label>
+//             <input className={style.inputField} {...field} {...rest} />
+//             <div className={style.errorContainer}>
+//                 <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+//                     <path stroke="red" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 13V8m0 8h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+//                 </svg>
+//                 <span className={style.errorText}>{meta.error}</span>
+//             </div>
 
-        </div>
-    );
-};
+//         </div>
+//     );
+// };
 
-const TextAreaInput = ({ label, ...props }) => {
-    const [field, meta] = useField(props);
-    const { className, ...rest } = props;
-    return (
-        <div className={(meta.touched && meta.error) ? `${className} ${style.error}` : className}>
-            <label htmlFor={props.id || props.name} className={style.inputLabel}>{label}</label>
-            <textarea className={style.textAreaField} {...field} {...rest} />
-            <div className={style.errorContainer}>
-                <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="red" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 13V8m0 8h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                </svg>
-                <span className={style.errorText}>{meta.error}</span>
-            </div>
-        </div>
-    );
-};
+// const TextAreaInput = ({ label, ...props }) => {
+//     const [field, meta] = useField(props);
+//     const { className, ...rest } = props;
+//     return (
+//         <div className={(meta.touched && meta.error) ? `${className} ${style.error}` : className}>
+//             <label htmlFor={props.id || props.name} className={style.inputLabel}>{label}</label>
+//             <textarea className={style.textAreaField} {...field} {...rest} />
+//             <div className={style.errorContainer}>
+//                 <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+//                     <path stroke="red" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 13V8m0 8h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+//                 </svg>
+//                 <span className={style.errorText}>{meta.error}</span>
+//             </div>
+//         </div>
+//     );
+// };
 
-const SelectInput = ({ label, ...props }) => {
-    const [field, meta] = useField(props);
-    const { className, ...rest } = props;
-    return (
-        <div className={className}>
-            <label htmlFor={props.id || props.name} className={style.inputLabel}>{label}</label>
-            <select className={style.inputField} {...field} {...rest} />
-        </div>
-    );
-};
+// const SelectInput = ({ label, ...props }) => {
+//     const [field, meta] = useField(props);
+//     const { className, ...rest } = props;
+//     return (
+//         <div className={className}>
+//             <label htmlFor={props.id || props.name} className={style.inputLabel}>{label}</label>
+//             <select className={style.inputField} {...field} {...rest} />
+//         </div>
+//     );
+// };
 
-const CheckboxGroup = ({ label, options, ...props }) => {
-    const { className, ...rest } = props;
-    const [field, meta] = useField(rest);
-    return (
-        <div className={className}>
+// const CheckboxGroup = ({ label, options, ...props }) => {
+//     const { className, ...rest } = props;
+//     const [field, meta] = useField(rest);
+//     return (
+//         <div className={className}>
 
-            <label htmlFor={props.id || props.name} className={style.inputLabel}>{label}
-            </label>
-            <ul role="group" aria-labelledby={props.id || props.name} className={style.checkboxGroup}>
-                {options.map(option => (
-                    <li key={option}>
-                        <input type="checkbox" {...field} value={option} id={option} checked={field.value.includes(option)} />
-                        <label htmlFor={option} keyboardfocus={true}>
-                            {option}
-                        </label>
-                    </li>
-                ))}
-            </ul>
-        </div>
-    );
-};
+//             <label htmlFor={props.id || props.name} className={style.inputLabel}>{label}
+//             </label>
+//             <ul role="group" aria-labelledby={props.id || props.name} className={style.checkboxGroup}>
+//                 {options.map(option => (
+//                     <li key={option}>
+//                         <input type="checkbox" {...field} value={option} id={option} checked={field.value.includes(option)} />
+//                         <label htmlFor={option} keyboardfocus={true}>
+//                             {option}
+//                         </label>
+//                     </li>
+//                 ))}
+//             </ul>
+//         </div>
+//     );
+// };
 
 const AddButton = ({ onClick, description }) => {
     return (
@@ -87,6 +89,16 @@ const AddButton = ({ onClick, description }) => {
                 <path stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12h14m-7 7V5" />
             </svg>
             {description}
+        </button>
+    )
+}
+
+const RemoveButton = ({ onClick }) => {
+    return (
+        <button type="button" className={style.removeButton} onClick={onClick}>
+            <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="black" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18 17.94 6M18 18 6.06 6" />
+            </svg>
         </button>
     )
 }
@@ -158,7 +170,7 @@ const RecepieForm = () => {
         time: Yup.number().min(5, "Must be at least 5 minutes").max(1440, "Must be 1440 minutes (24 hours) or less"),
         portions: Yup.number().min(1, "Must be at least 1").max(100, "Must be 100 or less").required("Required"),
         description: Yup.string().trim().max(1000, "Must be 1000 characters or less").required("Required"),
-        categories: Yup.array().of(Yup.string().oneOf(ENUM_CATEGORY)).max(5, "Max 5 categories"),
+        categories: Yup.array().of(Yup.string().oneOf(ENUM_CATEGORY)).max(3, "Max 3 categories"),
         ingredients: Yup.array().of(
             Yup.object({
                 title: Yup.string().trim().max(100, "Must be 100 characters or less"),
@@ -218,20 +230,21 @@ const RecepieForm = () => {
         }
     }
 
+
     return (
         <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={createRecipe}>
             {({ values, errors, touched }) => (
                 <Form className={style.formContainer}>
                     <div className={`${style.section} ${style.description}`}>
-                        <TextInput name="title" id="title" label="Title" required={true} className={`${style.input} ${style.long}`} />
-                        <TextInput name="time" id="time" label="Time (min)" type="number" min="5" step="5" placeholder="30" className={style.input} />
-                        <TextInput name="portions" id="portions" label="Portions" type="number" min="1" className={style.input} />
-                        <TextAreaInput name="description" id="description" label="Description" className={`${style.input} ${style.long}`} />
+                        <TextInput name="title" id="title" label="Title" required={true} span="full" />
+                        <TextInput name="time" id="time" label="Time (min)" type="number" min="5" step="5" placeholder="30" />
+                        <TextInput name="portions" id="portions" label="Portions" type="number" min="1" />
+                        <TextAreaInput name="description" id="description" label="Description" span="full" />
 
                     </div>
                     <div className={style.placeholderImage}>
-                        <TextInput name="image.URL" id="image.URL" label="Image URL" className={style.input} />
-                        <TextInput name="image.alt" id="image.alt" label="Image Alt" className={style.input} />
+                        <TextInput name="image.URL" id="image.URL" label="Image URL" />
+                        <TextInput name="image.alt" id="image.alt" label="Image Alt" />
                     </div>
 
                     <CheckboxGroup name="categories" id="categories" label="Categories" options={ENUM_CATEGORY} className={`${style.section} ${style.categories}`} />
@@ -245,28 +258,38 @@ const RecepieForm = () => {
                                     {(errors.ingredients && values.ingredients.length < 1) && <ErrorMessage message={errors.ingredients} />}
                                     {values.ingredients.map((section, i) => (
                                         <div key={i} className={style.ingredientGroup}>
-                                            <button type="button" className={style.topRemoveButton} onClick={() => arrayHelpers.remove(i)}>
-                                                <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                    <path stroke="black" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18 17.94 6M18 18 6.06 6" />
-                                                </svg>
-                                            </button>
-                                            <TextInput name={`ingredients.${i}.title`} id={`il.${i}.t`} label="Ingredient Group" className={style.input} />
+                                            <Button
+                                                variant="flat"
+                                                size="icon"
+                                                icon="close"
+                                                placement="rightTopCorner"
+                                                onClick={() => arrayHelpers.remove(i)}
+                                            />
+                                            <TextInput name={`ingredients.${i}.title`} id={`il.${i}.t`} label="Ingredient Group" />
                                             {(errors.ingredients?.[i]?.items && typeof errors.ingredients[i].items === 'string') && <ErrorMessage message={errors.ingredients[i].items} />}
                                             <FieldArray name={`ingredients.${i}.items`}>
                                                 {itemHelpers => (
                                                     <>
                                                         {section.items.map((_, j) => (
                                                             <div key={j} className={style.formRow}>
-                                                                <button type="button" className={style.removeButton} onClick={() => itemHelpers.remove(j)}>
-                                                                    <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                                        <path stroke="black" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18 17.94 6M18 18 6.06 6" />
-                                                                    </svg>
-                                                                </button>
+                                                                <Button
+                                                                    variant="tertiary"
+                                                                    size="icon"
+                                                                    icon="close"
+                                                                    onClick={() => itemHelpers.remove(j)}
+                                                                />
+
                                                                 <div className={style.inputRow}>
                                                                     <span>
-                                                                        <TextInput name={`ingredients.${i}.items.${j}.amount`} id={`il.${i}.i.${j}.a`} label="Amount" type="number" min="0" step="0.1" className={style.inputSmall} />
+                                                                        <TextInput
+                                                                            name={`ingredients.${i}.items.${j}.amount`}
+                                                                            d={`il.${i}.i.${j}.a`}
+                                                                            label="Amount"
+                                                                            type="number"
+                                                                            min="0"
+                                                                            step="0.1" />
 
-                                                                        <SelectInput name={`ingredients.${i}.items.${j}.unit`} id={`il.${i}.i.${j}.u`} label="unit" className={style.inputSmall}>
+                                                                        <SelectInput name={`ingredients.${i}.items.${j}.unit`} id={`il.${i}.i.${j}.u`} >
                                                                             <option value="" default disabled select>unit</option>
                                                                             {ENUM_UNIT.map(unit => (
                                                                                 <option key={unit} value={unit}>{unit}</option>
@@ -276,19 +299,34 @@ const RecepieForm = () => {
                                                                     </span>
 
 
-                                                                    <TextInput name={`ingredients.${i}.items.${j}.name`} id={`il.${i}.i.${j}.n`} label="Ingredient" className={style.input} />
-                                                                    {/* <TextInput name={`ingredients.${i}.items.${j}.note`} label="Note" className={style.input} /> */}
+                                                                    <TextInput
+                                                                        name={`ingredients.${i}.items.${j}.name`}
+                                                                        id={`il.${i}.i.${j}.n`}
+                                                                        label="Ingredient"
+                                                                        span="full"
+                                                                    />
                                                                 </div>
 
                                                             </div>
                                                         ))}
-                                                        <AddButton type="button" className={style.addButton} onClick={() => itemHelpers.push({ amount: "", unit: "", name: "", note: "" })} description={"Add Ingredient"} />
+                                                        <Button
+                                                            type="button"
+                                                            variant="secondary"
+                                                            icon="plus"
+                                                            onClick={() => itemHelpers.push({ amount: "", unit: "", name: "", note: "" })}
+                                                        >Add Ingredient</Button>
                                                     </>
                                                 )}
                                             </FieldArray>
                                         </div>
                                     ))}
-                                    <AddButton type="button" className={style.addButton} onClick={() => arrayHelpers.push({ title: "", items: [{ amount: "", unit: "", name: "", note: "" }] })} description={"Add Section"} />
+                                    <Button
+                                        type="button"
+                                        variant="tertiary"
+                                        icon="plus"
+                                        placement="center"
+                                        onClick={() => arrayHelpers.push({ title: "", items: [{ amount: "", unit: "", name: "", note: "" }] })}
+                                    >Add Section</Button>
                                 </>
                             )}
                         </FieldArray>
@@ -304,23 +342,34 @@ const RecepieForm = () => {
                                     {(errors.instructions && values.instructions.length < 1) && <ErrorMessage message={errors.instructions} />}
                                     {values.instructions.map((_, i) => (
                                         <div key={i} className={style.formRow}>
-                                            <button type="button" className={style.removeButton} onClick={() => arrayHelpers.remove(i)}>
-                                                <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                    <path stroke="black" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18 17.94 6M18 18 6.06 6" />
-                                                </svg>
-                                            </button>
-                                            <TextAreaInput name={`instructions.${i}`} id={`instructions.${i}`} label={`Step ${i + 1}`} className={style.inputLine} />
+                                            <Button
+                                                variant="tertiary"
+                                                size="icon"
+                                                icon="close"
+                                                onClick={() => arrayHelpers.remove(i)}
+                                            />
+                                            <TextAreaInput
+                                                name={`instructions.${i}`}
+                                                id={`instructions.${i}`}
+                                                label={`Step ${i + 1}`}
+                                                fieldStyle="slim"
+                                                inputStyle="oneLine"
+                                            />
                                         </div>
                                     ))}
-                                    <AddButton type="button" className={style.addButton} onClick={() => arrayHelpers.push("")} description={"Add Step"} />
+                                    <Button
+                                        type="button"
+                                        variant="secondary"
+                                        icon="plus"
+                                        onClick={() => arrayHelpers.push("")}
+                                    >Add Step</Button>
                                 </>
                             )}
                         </FieldArray>
 
 
                     </div>
-
-                    <button type="submit" className={style.submitButton}>Submit</button>
+                    <Button type="submit" placement="end">Submit</Button>
                 </Form>
             )}
         </Formik>

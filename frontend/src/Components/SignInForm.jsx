@@ -1,4 +1,4 @@
-import { Formik, Form} from 'formik'
+import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import style from '../Styles/LoginPage.module.css'
 import { useSession } from '../Hooks/useSession.js'
@@ -53,7 +53,7 @@ const SignInForm = () => {
             fieldStyle="line"
             labelStyle="floating"
           />
-          <Button type="submit">Log In</Button>
+          <Button type="submit" span="full">Log In</Button>
         </Form>
       </Formik>
     </>

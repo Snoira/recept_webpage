@@ -81,7 +81,7 @@ const RegisterForm = () => {
                         labelText="bold"
                         fieldStyle="line"
                         labelStyle="floating" />
-                    <Button type="submit">Sign Up</Button>
+                    <Button type="submit" span="full">Sign Up</Button>
                 </Form>
             </Formik>
         </>

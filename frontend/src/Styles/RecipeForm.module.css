@@ -185,17 +185,7 @@ select {
         overflow: visible;
         width: 60px;
       }
-
-      &:nth-child(2) {
-        .inputLabel {
-          display: none;
-        }
-
-        .inputField {
-          margin-top: 1.5rem;
-        }
-      }
-
+      
       & input {
         height: 42px;
         border: 1px solid #ccc;
@@ -204,7 +194,7 @@ select {
         min-width: none;
         width: 60px;
       }
-
+      
       & select {
         height: 42px;
         border: 1px solid #ccc;
@@ -213,6 +203,7 @@ select {
         min-width: 70px;
         background: white;
         color: #525050;
+        margin-top: 1.5rem;
       }
     }
 
@@ -389,10 +380,10 @@ select {
 
 @media (max-width: 400px) {
 
-  .inputLine,
   .inputRow {
-    flex-wrap: wrap;
-    gap: 0.25rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
   }
 
   .ingredientGroup {
@@ -400,7 +391,7 @@ select {
     position: static;
     border: none;
     display: grid;
-    grid-template-columns: 25px 1fr;
+    /* grid-template-columns: 25px 1fr; */
 
     & .topRemoveButton {
       position: inherit;

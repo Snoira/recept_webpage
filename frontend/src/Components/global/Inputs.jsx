@@ -20,11 +20,14 @@ export const TextInput = ({ label, ...props }) => {
         labelStyle = "",
         labelText = "",
         errorStyle = "",
+        span = "",
         ...rest
     } = props;
 
+    const errorClassName = (meta.touched && meta.error) ? `${style.error} ${style[errorStyle]}` : '';
+
     return (
-        <div className={(meta.touched && meta.error) ? `${style.input} ${style.error} ${style[errorStyle]}` : style.input}>
+        <div className={`${style.input} ${errorClassName} ${style[span]}`}>
             <label
                 htmlFor={props.id || props.name}
                 className={`${style.inputLabel} ${style[labelStyle]} ${style[labelText]}`}
@@ -42,12 +45,20 @@ export const TextInput = ({ label, ...props }) => {
 
 export const TextAreaInput = ({ label, ...props }) => {
     const [field, meta] = useField(props);
-    const { className, ...rest } = props;
+    const {
+        errorStyle = "",
+        span = "",
+        inputStyle = "",
+        fieldStyle = "",
+        ...rest
+    } = props;
+
+    const errorClassName = (meta.touched && meta.error) ? `${style.error} ${style[errorStyle]}` : '';
 
     return (
-        <div className={(meta.touched && meta.error) ? `${className} ${style.error}` : className}>
+        <div className={`${style.input} ${errorClassName} ${style[span]} ${style[inputStyle]}`}>
             <label htmlFor={props.id || props.name} className={style.inputLabel}>{label}</label>
-            <textarea className={style.textAreaField} {...field} {...rest} />
+            <textarea className={`${style.textAreaField} ${style[fieldStyle]}`} {...field} {...rest} />
             <ErrorContainer error={meta.error} />
         </div>
     );

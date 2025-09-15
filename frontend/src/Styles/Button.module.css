@@ -11,38 +11,88 @@
     margin: 4px 2px;
     cursor: pointer;
     border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s ease-in-out;
+    grid-column: 1/-1;
+    width: max-content;
+    
 
     &:hover {
-        filter: brightness(150%);
+        transition: all 0.2s ease-in-out;
+        /* filter: brightness(150%); */
+        background-color: var(--secondary);
     }
 
     &:active {
+        transition: all 0.1s ease-in-out;
         filter: brightness(130%);
     }
 
     &:focus {
+
         outline: transparent;
         filter: brightness(130%);
     }
 }
 
-.icon {
-    /* margin-right: 8px; */
-    vertical-align: middle;
-    color: white;
+/* .icon { */
+/* margin-right: 8px; */
+/* vertical-align: middle;
+color: white; */
 
-    & svg {
-        width: 16px;
-        height: 16px;
-    }
+svg {
+    color: inherit;
+    /* width: 16px;
+    height: 16px; */
 }
+
+/* } */
 
 .primary {
     background-color: var(--primary);
+
+    &:hover {
+        background-color: var(--secondary);
+    }
 }
 
 .secondary {
-    background-color: var(--secondary);
+    background-color: transparent;
+    border: 2px solid var(--primary);
+    color: var(--primary);
+
+    &:hover {
+        background-color: var(--primary);
+        color: white;
+    }
+}
+
+.tertiary {
+    background-color: transparent;
+    color: var(--primary);
+
+    &:hover {
+        background-color: transparent;
+        border: 2px solid var(--primary);
+        color: var(--primary);
+    }
+}
+
+.flat {
+    background-color: transparent;
+    color: var(--primary);
+    box-shadow: none;
+
+    &:hover {
+        background-color: transparent;
+        color: var(--primary);
+        box-shadow: none;
+        border: none;
+        text-decoration: underline;
+    }
 }
 
 .danger {
@@ -71,4 +121,29 @@
     height: 72px;
     padding: 15px 30px;
     font-size: 18px;
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    margin: 0;
+}
+
+.rightTopCorner {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
+.end {
+    justify-self: end;
+}
+
+.center {
+    justify-self: center;
+}
+
+.start {
+    justify-self: start;
 }
