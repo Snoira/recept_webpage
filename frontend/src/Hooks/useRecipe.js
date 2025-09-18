@@ -1,10 +1,13 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { getRecipes, createRecipe, getRecipeByID } from '../API/recipe.js'
 
-export const useRecipe = () => {
+export const useRecipe = (filters) => {
+
+    console.log("useRecipe called with filters:", filters);
+
     const { data, isLoading, error } = useQuery({
-        queryKey: ['recipes'],
-        queryFn: getRecipes
+        queryKey: ['recipes', filters],
+        queryFn: () => getRecipes(filters)
     })
 
     const create = useMutation({

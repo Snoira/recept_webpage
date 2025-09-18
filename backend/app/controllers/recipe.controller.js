@@ -49,11 +49,17 @@ export async function createRecipe(req, res) {
 
 export async function getRecipes(req, res) {
     try {
-        const { search, category, sort } = req.query;
+        console.log("Fetching recipes with query:", req.query);
+        console.log("Query params:", req.params);
+        const filter = {}
+        const { author } = req.query;
 
-        const query = {}
+        if (author) {
+            filter.author = author
+        }
+
         //TODO: olika queries for filter, sort, search etc
-        const recipes = await Recipe.find()
+        const recipes = await Recipe.find(filter)
             .populate("author", "-password -email -createdAt -updatedAt -__v")
             .sort({ createdAt: -1 })
 

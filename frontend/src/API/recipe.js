@@ -21,9 +21,12 @@ export const createRecipe = async (inputs) => {
     }
 }
 
-export const getRecipes = async () => {
+export const getRecipes = async (filters) => {
+    console.log("getRecipes called with filters:", filters);
     try {
-        const res = await apiClient.get('/recipes')
+        const res = await apiClient.get('/recipes', {
+            params: filters
+        })
         return res.data
     } catch (error) {
         console.error('Error fetching recipes:', error.response?.data.message || error.message);

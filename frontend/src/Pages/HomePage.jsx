@@ -1,27 +1,8 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import RenderRecepies from '../Components/RenderRecepies';
-import RecipeCard, {PlaceHolderCard} from '../Components/RecipeCard';
+import RecipeCard from '../Components/RecipeCard';
 import { useRecipe } from '../Hooks/useRecipe';
-
-const API_URL = import.meta.env.API_URL || 'http://localhost:8080';
 
 function HomePage() {
   const { recipes, isLoading, error } = useRecipe();
-  const [recepies, setRecepies] = useState([])
-
-  useEffect(() => {
-    const fetchRecepies = async () => {
-      const res = await axios.get(`${API_URL}/recepies/`)
-      if (res.data) {
-        setRecepies(res.data)
-      } else {
-        console.log("Error fetching recepies")
-      }
-    }
-
-    fetchRecepies()
-  }, [])
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading recipes</div>;
