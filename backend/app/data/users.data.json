@@ -1,32 +1,44 @@
 [
   {
-    "email": "sally@example.com",
-    "username": "sally",
+    "email": "annie@example.com",
+    "username": "HectorTWE",
     "role": "user",
-    "rating": 0
+    "firstName": "Annie",
+    "lastName": "Edison"
   },
   {
-    "email": "bob@example.com",
-    "username": "bob",
+    "email": "bengt@example.com",
+    "username": "bengan_bakar",
     "role": "user",
-    "rating": 0
+    "firstName": "Bengt",
+    "lastName": "Svensson"
   },
   {
-    "email": "karin@example.com",
-    "username": "karin",
+    "email": "eleanor@example.com",
+    "username": "RealFakeEleanor",
     "role": "user",
-    "rating": 0
+    "firstName": "Eleanor",
+    "lastName": "Shellstrop"
   },
   {
-    "email": "dan@example.com",
-    "username": "dan",
+    "email": "walter@example.com",
+    "username": "heisenberg",
+    "role": "user",
+    "firstName": "Walter",
+    "lastName": "White"
+  },
+  {
+    "email": "sydney@example.com",
+    "username": "syd",
     "role": "admin",
-    "rating": 0
+    "firstName": "Sydney",
+    "lastName": "Adamu"
   },
   {
-    "email": "eva@example.com",
-    "username": "eva",
+    "email": "troy@example.com",
+    "username": "tbone",
     "role": "user",
-    "rating": 0
-  }
+    "firstName": "Troy",
+    "lastName": "Barnes"
+  } 
 ]

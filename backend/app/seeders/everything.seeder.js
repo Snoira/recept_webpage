@@ -7,6 +7,7 @@ import { readDatabaseFile } from "../utils/database.js";
 import { connect } from "../config/mongoose.js";
 import path from "path";
 import { fileURLToPath } from "url";
+import { recipeSchema } from "../utils/validation.js";
 
 const databaseURI = process.env.DATABASE_PATH;
 const USER_PASSWORD = process.env.SEED_USER_PASSWORD || "!losen1234";
@@ -27,7 +28,12 @@ const comments = [
     "Kunde haft mer kryddor.",
     "Mina barn gillade det.",
     "Lätt att följa instruktionerna.",
-    "Lite smaklöst, lade till extra örter."
+    "Lite smaklöst, lade till extra örter.",
+    "Enkel och god vardagsmat.",
+    "Kommer rekommendera till vänner.",
+    "Fantastisk kombination av smaker.",
+    "Blev en ny familjefavorit!",
+    "Tog längre tid än väntat.",
 ];
 
 connect(databaseURI);
@@ -38,8 +44,6 @@ const seedDatabase = async () => {
         const recipesCount = await Recipe.countDocuments();
         const favoritesCount = await Favorites.countDocuments();
         const commentsCount = await Comment.countDocuments();
-
-      
 
         if (usersCount > 0 || recipesCount > 0 || favoritesCount > 0 || commentsCount > 0) {
             console.log("Database already seeded.\n", { usersCount, recipesCount, favoritesCount, commentsCount }, "\nExiting...");
@@ -72,7 +76,7 @@ const seedDatabase = async () => {
                 .filter((recipe, index) => {
                     if (recipe.author === user._id) return false;
                     if (index === 0 || index === 13) return false;
-                    if (index % databaseUsers.length === 5 - i) return true;
+                    if (index % databaseUsers.length === i) return true;
                     if (i + 1 === index) return true;
                     return false;
                 })
@@ -95,8 +99,8 @@ const seedDatabase = async () => {
                 .filter((recipe, index) => {
                     if (recipe.author === user._id) return false;
                     if (index === 0 || index === 13) return false;
-                    if (index % databaseUsers.length === 5 - i) return true;
-                    if (i + 2 === index) return true;
+                    if (index % databaseUsers.length === 6 - i) return true;
+                    if (i + 5 === index) return true;
                     return false;
                 })
                 .map((recipe) => {
@@ -115,6 +119,10 @@ const seedDatabase = async () => {
             comments: databaseComments.length
         }
 
+        const validationResults = databaseRecipes.map((recipe) => recipeSchema.safeParse(recipe));
+        const invalidRecipes = validationResults.filter((result) => !result.success);
+
+        console.log("Invalid recipes found: ", invalidRecipes.length);
         console.log("Seeding database with: \n", seedingInfo);
 
         await User.create(databaseUsers);

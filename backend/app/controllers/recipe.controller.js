@@ -60,7 +60,7 @@ export async function getRecipes(req, res) {
 
         //TODO: olika queries for filter, sort, search etc
         const recipes = await Recipe.find(filter)
-            .populate("author", "-password -email -createdAt -updatedAt -__v")
+            .populate("author", "firstName lastName")
             .sort({ createdAt: -1 })
 
         return res.status(200).json(recipes)
@@ -79,7 +79,7 @@ export async function getRecipeById(req, res) {
         if (!recipeId) return res.status(400).json({ error: "Missing recipe ID" })
 
         const recipe = await Recipe.findById(recipeId)
-            .populate("author", "-password -email -createdAt -updatedAt -__v")
+            .populate("author", "firstName lastName")
         return res.status(200).json(recipe)
 
     } catch (error) {

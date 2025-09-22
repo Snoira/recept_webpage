@@ -17,7 +17,6 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: true,
             minlength: 8,
-            maxlength: 100,
             trim: true,
             select: false,
             validate: {
@@ -34,26 +33,38 @@ const userSchema = new mongoose.Schema(
             minlength: 3,
             maxlength: 30,
             trim: true,
-        
+
+        },
+        firstName: {
+            type: String,
+            maxlength: 50,
+            trim: true,
+            default: null,
+        },
+        lastName: {
+            type: String,
+            maxlength: 50,
+            trim: true,
+            default: null,
         },
         role: {
             type: String,
             enum: ["user", "admin"],
             default: "user",
-        },
-        rating: {
-            type: Number,
-            default: 0,
         }
     },
     {
         timestamps: true,
+        toJSON: { virtuals: true },
+        toObject: { virtuals: true }
     }
 )
 
-// userSchema.virtual("fullName").get(function () { 
-//     return `${this.firstName} ${this.lastName}`
-// })
+userSchema.virtual("fullName").get(function () {
+    return `${this.firstName} ${this.lastName}`
+});
+
+
 // userSchema.virtual("defaultAvatar").get(function () { 
 //     return `https://avatar.iran.liara.run/username?username=${this.username}&length=1`
 // })

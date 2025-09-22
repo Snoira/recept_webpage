@@ -47,7 +47,7 @@ const recipeSchema = new Schema(
             validate: [arrayLimit(10), '{PATH} exceeds the limit of 10 groups']
         },
         instructions: {
-            type: [{ type: String, trim: true, min: 5, max: 1000 }],
+            type: [{ type: String, trim: true, min: 5, max: 500 }],
             required: true,
             validate: [arrayLimit(50), '{PATH} exceeds the limit of 50 steps']
         },
