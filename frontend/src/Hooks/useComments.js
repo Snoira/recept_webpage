@@ -7,7 +7,7 @@ export const useComments = (recipeId) => {
     const { user } = useSession();
     const navigate = useNavigate();
 
-    const { data: comments, isLoading, refetch } = useQuery({
+    const { refetch, ...comments } = useQuery({
         queryKey: ['comments', recipeId],
         queryFn: () => fetchComments(recipeId),
         enabled: !!recipeId,
@@ -37,7 +37,6 @@ export const useComments = (recipeId) => {
 
     return {
         comments,
-        isLoading,
         postComment: handlePostComment,
         isPosting: postCommentMutation.isLoading,
         deleteComment: deleteCommentMutation.mutate,
