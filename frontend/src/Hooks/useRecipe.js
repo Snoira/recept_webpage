@@ -3,8 +3,6 @@ import { getRecipes, createRecipe, getRecipeByID } from '../API/recipe.js'
 
 export const useRecipe = (filters) => {
 
-    console.log("useRecipe called with filters:", filters);
-
     const { data, isLoading, error } = useQuery({
         queryKey: ['recipes', filters],
         queryFn: () => getRecipes(filters)
@@ -32,7 +30,7 @@ export const useRecipeById = (id) => {
     const { data, isLoading, error } = useQuery({
         queryKey: ['recipes', id],
         queryFn: () => getRecipeByID(id),
-        enabled: !!id 
+        enabled: !!id
     })
 
     return {

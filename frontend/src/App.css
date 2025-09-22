@@ -1,7 +1,6 @@
 #root {
-  display: flex;
-  flex-direction: column;
-  min-height: 100dvh;
+  background-color: var(--background);
+  color: var(--text);
 }
 
 #header {
@@ -9,10 +8,4 @@
   position: sticky;
   top: 0;
   z-index: 10;
-}
-
-.main-content {
-  flex: 1;
-  display: grid;
-  background-color: var(--background);
 }

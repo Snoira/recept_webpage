@@ -1,8 +1,7 @@
-import style from '../Styles/LoginPage.module.css'
+import style from '../Styles/pages/LoginPage.module.css'
 import { useState } from 'react';
 import SignInForm from "../Components/SignInForm"
 import RegisterForm from "../Components/RegisterForm"
-
 
 function LoginPage() {
   const [haveAccount, setHaveAccount] = useState(true)
@@ -12,7 +11,7 @@ function LoginPage() {
   }
 
   return (
-    <div className={style.loginPage}>
+    <div className={style.pageContainer}>
       <div className={style.formContainer}>
         <h2 className={style.cardHeading}>
           {haveAccount ? "Welcome back!" : "Join us!"}

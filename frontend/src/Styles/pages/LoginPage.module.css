@@ -4,11 +4,10 @@
     box-sizing: border-box;
 }
 
-.loginPage {
-    width: 100%;
+.pageContainer {
+    height: calc(100dvh - 4rem);
     display: grid;
     place-items: center;
-    margin-top: -4rem;
 }
 
 .formContainer {
